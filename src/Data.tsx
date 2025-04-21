@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useAppDispatch, useAppSelector } from './store';
-import parseData from './parseData';
-import { setError, setPhotos } from './dataSlice';
-import { stringifyError } from './util';
-import MaybeError from './MaybeError';
 import type { FeatureCollection, Point } from 'geojson';
+import MaybeError from './MaybeError';
+import { setError, setPhotos } from './dataSlice';
+import parseData from './parseData';
+import { useAppDispatch, useAppSelector } from './store';
+import { stringifyError } from './util';
 
 const Data: React.FC = () => {
   const dispatch = useAppDispatch();

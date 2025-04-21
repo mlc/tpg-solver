@@ -1,6 +1,6 @@
-import type { FeatureCollection, Point } from 'geojson';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { featureCollection } from '@turf/helpers';
+import type { FeatureCollection, Point } from 'geojson';
 
 type Photos = FeatureCollection<Point, Record<string, any>>;
 

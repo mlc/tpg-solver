@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { useAppDispatch, useAppSelector } from './store';
-import { setBasic, setLine0, setLine1, setMulti } from './gameSlice';
-import { GameMode } from './game-modes';
 import MaybeError from './MaybeError';
+import { GameMode } from './game-modes';
+import { setBasic, setLine0, setLine1, setMulti } from './gameSlice';
+import { useAppDispatch, useAppSelector } from './store';
 
 const BasicInput = () => {
   const dispatch = useAppDispatch();

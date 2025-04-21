@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { FeatureCollection, Point } from 'geojson';
+import Icon from './Icon';
 import { decorate, useGameConfig } from './computation';
 import { useAppSelector } from './store';
-import { FeatureCollection, Point } from 'geojson';
 import { formatCoord } from './util';
-import Icon from './Icon';
 
 interface PositionCellProps {
   coord: Point;

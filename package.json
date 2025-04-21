@@ -10,6 +10,7 @@
   "devDependencies": {
     "@chialab/esbuild-plugin-html": "0.18.2",
     "@deanc/esbuild-plugin-postcss": "1.0.2",
+    "@trivago/prettier-plugin-sort-imports": "5.2.2",
     "@types/geojson": "7946.0.16",
     "@types/papaparse": "5.3.15",
     "@types/react": "19.1.2",

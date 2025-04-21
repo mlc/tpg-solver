@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import gameReducer from './gameSlice';
-import dataReducer from './dataSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import dataReducer from './dataSlice';
+import gameReducer from './gameSlice';
 
 export const store = configureStore({
   reducer: {

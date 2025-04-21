@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { GameMode } from './game-modes';
-import { useAppDispatch, useAppSelector } from './store';
-import { setMode as setModeAction } from './gameSlice';
 import GameParams from './GameParams';
+import { GameMode } from './game-modes';
+import { setMode as setModeAction } from './gameSlice';
+import { useAppDispatch, useAppSelector } from './store';
 
 interface ModeProps {
   name: string;

@@ -1,9 +1,9 @@
-import type { FeatureCollection, Point } from 'geojson';
-import { useAppSelector } from './store';
-import { GameConfig, GameMode } from './game-modes';
 import { Coord, featureCollection, point } from '@turf/helpers';
-import { distance } from './util';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
+import type { FeatureCollection, Point } from 'geojson';
+import { GameConfig, GameMode } from './game-modes';
+import { useAppSelector } from './store';
+import { distance } from './util';
 
 export const useGameConfig = (): GameConfig | null => {
   const { mode, lineTarget, basicTarget, multiTarget, error } = useAppSelector(

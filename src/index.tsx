@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import Game from './Game';
-import './style.css';
-import Providers from './Providers';
 import Data from './Data';
+import Game from './Game';
+import Providers from './Providers';
 import Results from './Results';
+import './style.css';
 
 const App = () => (
   <Providers>

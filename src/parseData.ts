@@ -1,7 +1,7 @@
-import type { FeatureCollection, Point } from 'geojson';
-import { collectionOf } from '@turf/invariant';
-import Papa from 'papaparse';
 import { featureCollection, point } from '@turf/helpers';
+import { collectionOf } from '@turf/invariant';
+import type { FeatureCollection, Point } from 'geojson';
+import Papa from 'papaparse';
 
 const readFile = (f: Blob): Promise<string> =>
   new Promise((resolve, reject) => {

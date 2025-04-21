@@ -1,8 +1,8 @@
+import turfDist from '@turf/distance';
 import type { Coord } from '@turf/helpers';
 import { getCoord } from '@turf/invariant';
-import turfDist from '@turf/distance';
-import type { Point } from 'geojson';
 import DMS from 'geographiclib-dms';
+import type { Point } from 'geojson';
 
 // compute the distance between two points
 export const distance = (a: Coord, b: Coord): number =>

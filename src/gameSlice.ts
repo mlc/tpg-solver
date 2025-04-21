@@ -1,6 +1,4 @@
-import { createSlice, PayloadAction, UnknownAction } from '@reduxjs/toolkit';
-import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
-import { GameMode } from './game-modes';
+import { PayloadAction, UnknownAction, createSlice } from '@reduxjs/toolkit';
 import {
   feature,
   featureCollection,
@@ -8,6 +6,8 @@ import {
   point,
   points,
 } from '@turf/helpers';
+import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
+import { GameMode } from './game-modes';
 import { decodeCoord, stringifyError } from './util';
 
 export interface GameState {
