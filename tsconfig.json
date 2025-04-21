@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2019",
+    "sourceMap": true,
+    "noEmit": true,
+    "strict": true,
+    "lib": ["ES2019", "DOM"],
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "jsx": "react"
+  },
+  "exclude": ["node_modules/**/*", "dist/**/*"]
+}
