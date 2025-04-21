@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { GameMode } from './game-modes';
+import { useAppDispatch, useAppSelector } from './store';
+import { setMode as setModeAction } from './gameSlice';
+import GameParams from './GameParams';
 
 interface ModeProps {
   name: string;
@@ -21,7 +24,7 @@ const Mode: React.FC<ModeProps> = ({
           setMode(thisMode);
         }
       },
-      [thisMode]
+      [setMode, thisMode]
     );
 
   return (
@@ -40,8 +43,12 @@ const Mode: React.FC<ModeProps> = ({
 };
 
 const Game: React.FC = () => {
-  const [mode, setMode] = React.useState<GameMode>(GameMode.BASIC);
-
+  const mode = useAppSelector((state) => state.game.mode);
+  const dispatch = useAppDispatch();
+  const setMode = React.useCallback(
+    (mode: GameMode) => dispatch(setModeAction(mode)),
+    [dispatch, setModeAction]
+  );
   return (
     <form>
       <h2>Game Mode</h2>
@@ -65,6 +72,7 @@ const Game: React.FC = () => {
           setMode={setMode}
         />
       </p>
+      <GameParams />
     </form>
   );
 };

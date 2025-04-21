@@ -6,6 +6,7 @@ body {
   font-weight: 400;
   font-style: normal;
   font-variation-settings: 'wdth' 87.5;
+  font-variant-numeric: tabular-nums;
   font-size: 18px;
   background-color: #222;
   color: #eee;
@@ -39,4 +40,29 @@ h2 {
 #mode-selector label input {
   margin-inline: 0;
   margin-inline-end: 4px;
+}
+
+.error {
+  font-size: 0.75em;
+  color: #e77;
+}
+
+#game-params input,
+#game-params textarea {
+  font: inherit;
+  width: 12em;
+  border: none;
+  background-color: #eee;
+  color: #222;
+}
+
+#game-params input {
+  margin-inline-start: 1ex;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+#game-params textarea {
+  height: 15ex;
+  margin-top: 8px;
 }

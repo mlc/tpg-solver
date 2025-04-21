@@ -12,7 +12,7 @@ const ctx = await esbuild.context({
   legalComments: 'linked',
   sourcemap: dev ? 'inline' : 'linked',
   bundle: true,
-  minify: true,
+  minify: !dev,
   chunkNames: '[dir]/[name]-[hash]',
   platform: 'browser',
   plugins: [htmlPlugin()],

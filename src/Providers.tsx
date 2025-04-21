@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { DEFAULT_GAME, GameProvider } from './game-provider';
+import { Provider as ReduxProvider } from 'react-redux';
+import { store } from './store';
 
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <GameProvider value={DEFAULT_GAME}>{children}</GameProvider>
+  <ReduxProvider store={store}>{children}</ReduxProvider>
 );
 
 export default Providers;
