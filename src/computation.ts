@@ -15,8 +15,10 @@ export const useGameConfig = (): GameConfig | null => {
     return { mode, target: basicTarget };
   } else if (mode === GameMode.LINE) {
     return { mode, target: lineTarget };
-  } else {
+  } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
     return { mode, target: multiTarget };
+  } else {
+    return null;
   }
 };
 

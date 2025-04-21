@@ -4,6 +4,7 @@
   "scripts": {
     "build": "node build.mjs",
     "serve": "node build.mjs serve",
+    "typecheck": "tsc --noEmit",
     "postinstall": "husky"
   },
   "devDependencies": {
