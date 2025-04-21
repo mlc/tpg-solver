@@ -122,6 +122,11 @@ button:active {
   background-color: #444;
 }
 
+#results-grid td {
+  text-align: center;
+  padding: 0 0.5em;
+}
+
 a:any-link {
   color: inherit;
   text-decoration: underline;

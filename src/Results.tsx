@@ -61,7 +61,7 @@ const ResultsGrid: React.FC<GridProps> = ({ results: { features } }) => {
           <tr>
             <PositionCell coord={feature.geometry} />
             {headers.map((h) => (
-              <th>{stringify(feature.properties[h], h)}</th>
+              <td>{stringify(feature.properties[h], h)}</td>
             ))}
           </tr>
         ))}

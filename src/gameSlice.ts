@@ -23,7 +23,7 @@ export interface GameState {
 
 const initialState: GameState = {
   mode: GameMode.BASIC,
-  basicText: '',
+  basicText: '0,0',
   basicTarget: point([0, 0]),
   lineText: ['0,0', '0,0'],
   lineTarget: lineString([
@@ -62,7 +62,10 @@ export const gameSlice = createSlice({
       state.multiText = action.payload;
       try {
         state.multiTarget = featureCollection(
-          action.payload.split('\n').map((row) => feature(decodeCoord(row)))
+          action.payload
+            .trim()
+            .split('\n')
+            .map((row) => feature(decodeCoord(row)))
         );
         state.error = null;
       } catch (e) {

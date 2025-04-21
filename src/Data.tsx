@@ -54,8 +54,10 @@ const Data: React.FC = () => {
       </p>
       <MaybeError error={error} />
       <p className="hint">
-        Supported files: CSV with latitude and longitude parameters, or GeoJSON
-        Point FeatureCollection
+        Supported files:{' '}
+        <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>{' '}
+        with latitude and longitude columns, or{' '}
+        <a href="https://geojson.org/">GeoJSON</a> Point FeatureCollection
       </p>
     </form>
   );
