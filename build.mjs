@@ -1,10 +1,33 @@
-import * as esbuild from 'esbuild';
+import {
+  CloudFormationClient,
+  DescribeStacksCommand,
+} from '@aws-sdk/client-cloudformation';
+import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from '@aws-sdk/client-cloudfront';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import htmlPlugin from '@chialab/esbuild-plugin-html';
 import postCssPlugin from '@deanc/esbuild-plugin-postcss';
-import postcssPresetEnv from 'postcss-preset-env';
+import * as esbuild from 'esbuild';
+import { randomBytes } from 'node:crypto';
+import { readFile, readdir, unlink } from 'node:fs/promises';
+import { extname, join as joinPath } from 'node:path';
 import * as process from 'node:process';
+import postcssPresetEnv from 'postcss-preset-env';
 
 const dev = process.argv[2] === 'serve';
+const deploy = process.argv[2] === 'deploy';
+
+const destDir = joinPath(import.meta.dirname, 'dist');
+if (deploy) {
+  const dir = await readdir(destDir, { withFileTypes: true }).catch(() => []);
+  for (const file of dir) {
+    if (file.isFile()) {
+      await unlink(joinPath(destDir, file.name));
+    }
+  }
+}
 
 const ctx = await esbuild.context({
   //target: browserslist(),
@@ -17,7 +40,10 @@ const ctx = await esbuild.context({
   minify: !dev,
   chunkNames: '[dir]/[name]-[hash]',
   platform: 'browser',
-  plugins: [htmlPlugin(), postCssPlugin({ plugins: [postcssPresetEnv()] })],
+  plugins: [
+    htmlPlugin({ minifyOptions: { minifySvg: false } }),
+    postCssPlugin({ plugins: [postcssPresetEnv()] }),
+  ],
   charset: 'utf8',
   define: {
     DEBUG: JSON.stringify(dev),
@@ -31,4 +57,77 @@ if (dev) {
 } else {
   await ctx.rebuild();
   await ctx.dispose();
+}
+
+const mimeTypes = {
+  '.js': 'application/javascript',
+  '.css': 'text/css;charset=utf-8',
+  '.map': 'application/json',
+  '.txt': 'text/plain;charset=utf-8',
+  '.html': 'text/html;charset=utf-8',
+};
+
+if (deploy) {
+  const cf = new CloudFormationClient({ region: 'us-east-1' });
+  const s3 = new S3Client({ region: 'us-east-1' });
+  const cloudfront = new CloudFrontClient({ region: 'us-east-1' });
+  const Bucket = 'tpg.makeinstallnotwar.org';
+
+  const stack = await cf.send(
+    new DescribeStacksCommand({ StackName: 'TpgSolverStack' })
+  );
+  if (stack.Stacks.length !== 1) {
+    throw new Error('no stack');
+  }
+  const DistributionId = stack.Stacks[0].Outputs.find(
+    ({ OutputKey }) => OutputKey === 'distributionid'
+  )?.OutputValue;
+
+  if (!DistributionId) {
+    throw new Error('no distribution output');
+  }
+  const dir = await readdir(destDir, { withFileTypes: true });
+  for (const file of dir) {
+    if (file.isFile() && !file.name.endsWith('.html')) {
+      const ContentType = mimeTypes[extname(file.name)];
+      console.log(file.name, ContentType);
+      const Body = await readFile(joinPath(destDir, file.name));
+      await s3.send(
+        new PutObjectCommand({
+          Bucket,
+          Key: file.name,
+          CacheControl: 'public,max-age=15552000,immutable',
+          ContentType,
+          IfNoneMatch: '*',
+          Body,
+          ChecksumAlgorithm: 'SHA256',
+        })
+      );
+    }
+  }
+  console.log('index.html');
+  await s3.send(
+    new PutObjectCommand({
+      Bucket,
+      Key: 'index.html',
+      CacheControl: 'public,max-age=3600',
+      ContentType: mimeTypes['.html'],
+      Body: await readFile(joinPath(destDir, 'index.html')),
+      ChecksumAlgorithm: 'SHA256',
+    })
+  );
+
+  const invalidation = await cloudfront.send(
+    new CreateInvalidationCommand({
+      DistributionId,
+      InvalidationBatch: {
+        Paths: {
+          Quantity: 2,
+          Items: ['/', '/index.html'],
+        },
+        CallerReference: randomBytes(24).toString('hex'),
+      },
+    })
+  );
+  console.log(invalidation);
 }

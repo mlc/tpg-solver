@@ -4,10 +4,15 @@
   "scripts": {
     "build": "node build.mjs",
     "serve": "node build.mjs serve",
+    "deploy": "node build.mjs deploy",
+    "deploy-infra": "cdk deploy",
     "typecheck": "tsc --noEmit",
     "postinstall": "husky"
   },
   "devDependencies": {
+    "@aws-sdk/client-cloudformation": "3.787.0",
+    "@aws-sdk/client-cloudfront": "3.787.0",
+    "@aws-sdk/client-s3": "3.787.0",
     "@chialab/esbuild-plugin-html": "0.18.2",
     "@deanc/esbuild-plugin-postcss": "1.0.2",
     "@trivago/prettier-plugin-sort-imports": "5.2.2",

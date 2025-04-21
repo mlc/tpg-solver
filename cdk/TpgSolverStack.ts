@@ -28,7 +28,6 @@ export class TpgSolverStack extends cdk.Stack {
       bucketName: domainName,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: s3.BucketEncryption.S3_MANAGED,
-      websiteIndexDocument: 'index.html',
     });
     const certificate = new acm.Certificate(this, 'cert', {
       domainName,
@@ -38,11 +37,12 @@ export class TpgSolverStack extends cdk.Stack {
       certificate,
       defaultBehavior: {
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
-        origin: new origins.S3StaticWebsiteOrigin(bucket),
+        origin: origins.S3BucketOrigin.withOriginAccessControl(bucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         responseHeadersPolicy:
           cloudfront.ResponseHeadersPolicy.SECURITY_HEADERS,
       },
+      defaultRootObject: 'index.html',
       domainNames: [domainName],
       enableIpv6: true,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
@@ -60,6 +60,10 @@ export class TpgSolverStack extends cdk.Stack {
       target: route53.RecordTarget.fromAlias(
         new targets.CloudFrontTarget(distribution)
       ),
+    });
+
+    new cdk.CfnOutput(this, 'distributionid', {
+      value: distribution.distributionId,
     });
   }
 }
