@@ -57,6 +57,11 @@ h2 {
   color: var(--error-color);
 }
 
+.hint {
+  font-size: 0.75em;
+  color: #cca;
+}
+
 #game-params input,
 #game-params textarea {
   font: inherit;
@@ -115,4 +120,10 @@ button:active {
 
 #results-grid tbody tr:nth-child(even) {
   background-color: #444;
+}
+
+a:any-link {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
 }

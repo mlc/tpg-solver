@@ -859,6 +859,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:*":
+  version: 22.14.1
+  resolution: "@types/node@npm:22.14.1"
+  dependencies:
+    undici-types: "npm:~6.21.0"
+  checksum: 10c0/d49c4d00403b1c2348cf0701b505fd636d80aabe18102105998dc62fdd36dcaf911e73c7a868c48c21c1022b825c67b475b65b1222d84b704d8244d152bb7f86
+  languageName: node
+  linkType: hard
+
+"@types/papaparse@npm:5.3.15":
+  version: 5.3.15
+  resolution: "@types/papaparse@npm:5.3.15"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/9333e980b9ed4102f80b1791b6dfefb23fb4d27252b2b6ee6084b2cd847cbe802cfb838d46b4f6b4cb035f9225e0323034c956ee21bbcbcb4cbdb663302d5eeb
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:19.1.2":
   version: 19.1.2
   resolution: "@types/react-dom@npm:19.1.2"
@@ -1844,6 +1862,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"papaparse@npm:5.5.2":
+  version: 5.5.2
+  resolution: "papaparse@npm:5.5.2"
+  checksum: 10c0/83b8c0cf570395581a42331cd9231194dbba43bc8c608026739f5180827506575993dc788def039a9666bc103e2a96075de8732ea8a63e507b74c02aa757bcd5
+  languageName: node
+  linkType: hard
+
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -2564,6 +2589,7 @@ __metadata:
     "@turf/invariant": "npm:7.2.0"
     "@turf/nearest-point-on-line": "npm:7.2.0"
     "@types/geojson": "npm:7946.0.16"
+    "@types/papaparse": "npm:5.3.15"
     "@types/react": "npm:19.1.2"
     "@types/react-dom": "npm:19.1.2"
     autoprefixer: "npm:10.4.21"
@@ -2573,6 +2599,7 @@ __metadata:
     htmlnano: "npm:2.1.1"
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.1"
+    papaparse: "npm:5.5.2"
     postcss: "npm:8.5.3"
     postcss-preset-env: "npm:10.1.6"
     prettier: "npm:3.5.3"
@@ -2609,6 +2636,13 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/39117e346ff8ebd87ae1510b3a77d5d92dae5a89bde588c747d25da5c146603a99c8ee588c7ef80faaf123d89ed46f6dbd918d534d641083177d5fac38b8a1cb
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
   languageName: node
   linkType: hard
 

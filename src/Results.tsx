@@ -11,9 +11,14 @@ interface PositionCellProps {
 
 const PositionCell: React.FC<PositionCellProps> = ({ coord }) => {
   const stringCoord = formatCoord(coord);
+  const params = new URLSearchParams({
+    api: '1',
+    query: [coord.coordinates[1], coord.coordinates[0]].join(','),
+  });
+  const url = 'https://www.google.com/maps/search/?' + params.toString();
   return (
     <td className="position">
-      {stringCoord}
+      <a href={url}>{stringCoord}</a>
       <Icon
         name="copy"
         label="Copy coordinates"
