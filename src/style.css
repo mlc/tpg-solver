@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin:wdth,wght@87.5,400..700&display=swap');
 
+:root {
+  --main-bg-color: #222;
+  --main-text-color: #ffe;
+  --error-color: #e77;
+}
+
 body {
   font-family: 'Cabin', sans-serif;
   font-optical-sizing: auto;
@@ -8,8 +14,12 @@ body {
   font-variation-settings: 'wdth' 87.5;
   font-variant-numeric: tabular-nums;
   font-size: 18px;
-  background-color: #222;
-  color: #eee;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+}
+
+#sprites {
+  display: none;
 }
 
 #app {
@@ -26,7 +36,7 @@ h2 {
   font: inherit;
   font-size: 1.5rem;
   font-weight: 500;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--main-text-color);
   padding-top: 8px;
 }
 
@@ -44,7 +54,7 @@ h2 {
 
 .error {
   font-size: 0.75em;
-  color: #e77;
+  color: var(--error-color);
 }
 
 #game-params input,
@@ -52,8 +62,8 @@ h2 {
   font: inherit;
   width: 12em;
   border: none;
-  background-color: #eee;
-  color: #222;
+  background-color: var(--main-text-color);
+  color: var(--main-bg-color);
 }
 
 #game-params input {
@@ -70,12 +80,39 @@ h2 {
 button {
   font: inherit;
   background: transparent;
-  border: 1px solid #eee;
+  border: 1px solid var(--main-text-color);
   color: inherit;
   padding: 2px 4px;
 }
 
 button:active {
-  color: #222;
-  background-color: #eee;
+  color: var(--main-bg-color);
+  background-color: var(--main-text-color);
+}
+
+.icon {
+  display: inline-block;
+  width: 2em;
+  height: 1em;
+  padding: 0.5em;
+  line-height: 1em;
+  cursor: pointer;
+}
+
+.icon svg {
+  width: 1em;
+  height: 1em;
+  fill: var(--main-text-color);
+}
+
+#results-grid tbody {
+  font-size: 14px;
+}
+
+#results-grid tbody tr:nth-child(odd) {
+  background-color: #333;
+}
+
+#results-grid tbody tr:nth-child(even) {
+  background-color: #444;
 }

@@ -4,12 +4,14 @@ import Game from './Game';
 import './style.css';
 import Providers from './Providers';
 import Data from './Data';
+import Results from './Results';
 
 const App = () => (
   <Providers>
     <h1>tpg solver</h1>
     <Game />
     <Data />
+    <Results />
   </Providers>
 );
 

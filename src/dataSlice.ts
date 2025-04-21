@@ -2,7 +2,7 @@ import type { FeatureCollection, Point } from 'geojson';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { featureCollection } from '@turf/helpers';
 
-type Photos = FeatureCollection<Point>;
+type Photos = FeatureCollection<Point, Record<string, any>>;
 
 export interface DataState {
   photos: Photos;

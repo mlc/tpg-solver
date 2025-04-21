@@ -8,6 +8,7 @@ export const store = configureStore({
     game: gameReducer,
     data: dataReducer,
   },
+  devTools: DEBUG,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
