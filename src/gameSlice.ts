@@ -8,7 +8,7 @@ import {
   point,
   points,
 } from '@turf/helpers';
-import { decodeCoord } from './util';
+import { decodeCoord, stringifyError } from './util';
 
 export interface GameState {
   mode: GameMode;
@@ -33,18 +33,6 @@ const initialState: GameState = {
   multiText: '',
   multiTarget: points([]),
   error: null,
-};
-
-const stringifyError = (error: unknown): string => {
-  if (error instanceof Error) {
-    return error.message;
-  } else if (typeof error === 'object' && error !== null) {
-    return error.toString();
-  } else if (typeof error === 'string') {
-    return error;
-  } else {
-    return 'Error';
-  }
 };
 
 export const gameSlice = createSlice({

@@ -66,3 +66,16 @@ h2 {
   height: 15ex;
   margin-top: 8px;
 }
+
+button {
+  font: inherit;
+  background: transparent;
+  border: 1px solid #eee;
+  color: inherit;
+  padding: 2px 4px;
+}
+
+button:active {
+  color: #222;
+  background-color: #eee;
+}

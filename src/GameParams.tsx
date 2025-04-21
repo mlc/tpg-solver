@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useAppDispatch, useAppSelector } from './store';
 import { setBasic, setLine0, setLine1, setMulti } from './gameSlice';
 import { GameMode } from './game-modes';
+import MaybeError from './MaybeError';
 
 const BasicInput = () => {
   const dispatch = useAppDispatch();
@@ -83,11 +84,7 @@ const GameInput: React.FC = () => {
 
 const GameError: React.FC = () => {
   const error = useAppSelector((state) => state.game.error);
-  if (error) {
-    return <p className="error">{error}</p>;
-  } else {
-    return null;
-  }
+  return <MaybeError error={error} />;
 };
 
 const GameParams: React.FC = () => (
