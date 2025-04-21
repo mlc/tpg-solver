@@ -1,0 +1,4 @@
+{
+  "$schema": "https://json.schemastore.org/cdk",
+  "app": "yarn ts-node --prefer-ts-exts cdk/index.ts"
+}

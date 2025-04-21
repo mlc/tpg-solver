@@ -16,7 +16,10 @@
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
     "autoprefixer": "10.4.21",
+    "aws-cdk-lib": "2.190.0",
     "browserslist": "4.24.4",
+    "cdk": "2.1010.0",
+    "constructs": "10.4.2",
     "esbuild": "0.25.2",
     "htmlnano": "2.1.1",
     "husky": "9.1.7",
@@ -25,6 +28,7 @@
     "postcss-preset-env": "10.1.6",
     "prettier": "3.5.3",
     "svgo": "3.3.2",
+    "ts-node": "10.9.2",
     "typescript": "5.8.3"
   },
   "dependencies": {
