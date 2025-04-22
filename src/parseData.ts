@@ -24,6 +24,7 @@ const isNumeric = (s: string) => NUMERIC_RE.test(s.trim());
 const parseCsv = (csv: string) => {
   const firstRowResult = Papa.parse<string[]>(csv, {
     preview: 1,
+    skipEmptyLines: true,
     worker: false,
     download: false,
   });
@@ -58,6 +59,7 @@ const parseCsv = (csv: string) => {
     worker: false,
     download: false,
     header: true,
+    skipEmptyLines: true,
   });
 
   console.log(latCol, lngCol);
