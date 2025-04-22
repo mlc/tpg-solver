@@ -80,7 +80,7 @@ const Results: React.FC = () => {
       return null;
     }
   }, [game?.mode, game?.target, photos]);
-  if (results) {
+  if (results && results.features.length > 0) {
     return (
       <>
         <h2>Results</h2>

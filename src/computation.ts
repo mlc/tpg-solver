@@ -1,9 +1,14 @@
 import { Coord, featureCollection, point } from '@turf/helpers';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
-import type { FeatureCollection, Point } from 'geojson';
+import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
 import { GameConfig, GameMode } from './game-modes';
 import { useAppSelector } from './store';
 import { distance } from './util';
+
+const isDegenerate = (line: Feature<LineString>) =>
+  line.geometry.coordinates.length !== 2 ||
+  line.geometry.coordinates[0].join(',') ===
+    line.geometry.coordinates[1].join(',');
 
 export const useGameConfig = (): GameConfig | null => {
   const { mode, lineTarget, basicTarget, multiTarget, error } = useAppSelector(
@@ -13,7 +18,7 @@ export const useGameConfig = (): GameConfig | null => {
     return null;
   } else if (mode === GameMode.BASIC) {
     return { mode, target: basicTarget };
-  } else if (mode === GameMode.LINE) {
+  } else if (mode === GameMode.LINE && !isDegenerate(lineTarget)) {
     return { mode, target: lineTarget };
   } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
     return { mode, target: multiTarget };
@@ -39,12 +44,17 @@ export const decorate = <P extends {}>(
   photos: FeatureCollection<Point, P>
 ): FeatureCollection<Point, P & { distance: number }> => {
   const calculator = distanceCalc(game);
-  return featureCollection(
-    photos.features
-      .map((photo) => ({
-        ...photo,
-        properties: { ...photo.properties, distance: calculator(photo) },
-      }))
-      .sort((a, b) => a.properties.distance - b.properties.distance)
-  );
+  try {
+    return featureCollection(
+      photos.features
+        .map((photo) => ({
+          ...photo,
+          properties: { ...photo.properties, distance: calculator(photo) },
+        }))
+        .sort((a, b) => a.properties.distance - b.properties.distance)
+    );
+  } catch (error) {
+    console.error(error);
+    return featureCollection([]);
+  }
 };
