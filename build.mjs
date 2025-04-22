@@ -92,17 +92,30 @@ if (deploy) {
       const ContentType = mimeTypes[extname(file.name)];
       console.log(file.name, ContentType);
       const Body = await readFile(joinPath(destDir, file.name));
-      await s3.send(
-        new PutObjectCommand({
-          Bucket,
-          Key: file.name,
-          CacheControl: 'public,max-age=15552000,immutable',
-          ContentType,
-          IfNoneMatch: '*',
-          Body,
-          ChecksumAlgorithm: 'SHA256',
-        })
-      );
+      await s3
+        .send(
+          new PutObjectCommand({
+            Bucket,
+            Key: file.name,
+            CacheControl: 'public,max-age=15552000,immutable',
+            ContentType,
+            IfNoneMatch: '*',
+            Body,
+            ChecksumAlgorithm: 'SHA256',
+          })
+        )
+        .catch((e) => {
+          if (
+            typeof e === 'object' &&
+            e !== null &&
+            e.Code === 'PreconditionFailed' &&
+            e.Condition === 'If-None-Match'
+          ) {
+            console.info('already exists');
+          } else {
+            throw e;
+          }
+        });
     }
   }
   console.log('index.html');
