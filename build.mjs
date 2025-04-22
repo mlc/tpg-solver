@@ -8,13 +8,11 @@ import {
 } from '@aws-sdk/client-cloudfront';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import htmlPlugin from '@chialab/esbuild-plugin-html';
-import postCssPlugin from '@deanc/esbuild-plugin-postcss';
 import * as esbuild from 'esbuild';
 import { randomBytes } from 'node:crypto';
 import { readFile, readdir, unlink } from 'node:fs/promises';
 import { extname, join as joinPath } from 'node:path';
 import * as process from 'node:process';
-import postcssPresetEnv from 'postcss-preset-env';
 
 const dev = process.argv[2] === 'serve';
 const deploy = process.argv[2] === 'deploy';
@@ -42,7 +40,7 @@ const ctx = await esbuild.context({
   platform: 'browser',
   plugins: [
     htmlPlugin({ minifyOptions: { minifySvg: false } }),
-    postCssPlugin({ plugins: [postcssPresetEnv()] }),
+    //postCssPlugin({ plugins: [postcssPresetEnv()] }),
   ],
   charset: 'utf8',
   define: {
@@ -50,6 +48,7 @@ const ctx = await esbuild.context({
     'process.env.NODE_ENV': dev ? '"development"' : '"production"',
   },
   target: ['chrome125', 'firefox118', 'edge133', 'ios15', 'safari17'],
+  loader: { '.woff2': 'file' },
 });
 
 if (dev) {
@@ -65,6 +64,7 @@ const mimeTypes = {
   '.map': 'application/json',
   '.txt': 'text/plain;charset=utf-8',
   '.html': 'text/html;charset=utf-8',
+  '.woff2': 'font/woff2',
 };
 
 if (deploy) {

@@ -1,18 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Cabin:wdth,wght@87.5,400..700&display=swap');
-
 :root {
   --main-bg-color: #222;
   --main-text-color: #ffe;
   --error-color: #e77;
 }
 
-body {
-  font-family: 'Cabin', sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
+@font-face {
+  font-family: 'Inter';
   font-style: normal;
-  font-variation-settings: 'wdth' 87.5;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(InterVariable.woff2) format('woff2');
+}
+
+@font-feature-values Inter {
+  @character-variant {
+    cv01: 1;
+    cv02: 2;
+    cv03: 3;
+    cv04: 4;
+    cv05: 5;
+    cv06: 6;
+    cv07: 7;
+    cv08: 8;
+    cv09: 9;
+    cv10: 10;
+    cv11: 11;
+    cv12: 12;
+    cv13: 13;
+    alt-1: 1; /* Alternate one */
+    alt-3: 9; /* Flat-top three */
+    open-4: 2; /* Open four */
+    open-6: 3; /* Open six */
+    open-9: 4; /* Open nine */
+    lc-l-with-tail: 5; /* Lower-case L with tail */
+    simplified-u: 6; /* Simplified u */
+    alt-double-s: 7; /* Alternate German double s */
+    uc-i-with-serif: 8; /* Upper-case i with serif */
+    uc-g-with-spur: 10; /* Capital G with spur */
+    single-story-a: 11; /* Single-story a */
+    compact-lc-f: 12; /* Compact f */
+    compact-lc-t: 13; /* Compact t */
+  }
+  @styleset {
+    ss01: 1;
+    ss02: 2;
+    ss03: 3;
+    ss04: 4;
+    ss05: 5;
+    ss06: 6;
+    ss07: 7;
+    ss08: 8;
+    open-digits: 1; /* Open digits */
+    disambiguation: 2; /* Disambiguation (with zero) */
+    disambiguation-except-zero: 4; /* Disambiguation (no zero) */
+    round-quotes-and-commas: 3; /* Round quotes &amp; commas */
+    square-punctuation: 7; /* Square punctuation */
+    square-quotes: 8; /* Square quotes */
+    circled-characters: 5; /* Circled characters */
+    squared-characters: 6; /* Squared characters */
+  }
+}
+
+:root {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
   font-variant-numeric: tabular-nums;
+  font-variant-alternates: character-variant(open-6, open-9);
+}
+
+body {
   font-size: 18px;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
@@ -30,14 +88,20 @@ body {
 h1 {
   font: inherit;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 550;
 }
 h2 {
   font: inherit;
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 425;
   border-top: 1px solid var(--main-text-color);
   padding-top: 8px;
+}
+
+th,
+strong,
+b {
+  font-weight: 550;
 }
 
 #mode-selector {

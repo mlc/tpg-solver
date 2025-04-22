@@ -38,7 +38,7 @@ const stringify = (p: unknown, hint: string) => {
   if (typeof p === 'string') {
     return p;
   } else if (typeof p === 'number') {
-    return hint === 'distance' ? p.toFixed(3) : p.toString();
+    return hint === 'distance' ? `${p.toFixed(3)}\u2009km` : p.toString();
   } else {
     return '';
   }

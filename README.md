@@ -14,8 +14,13 @@ Go to https://tpg.makeinstallnotwar.org/
 - Technologies used: [react][], [redux][], [typescript][], [turf.js][], [GeoJSON][], etc.
 - Contact mlc if you have any questions
 
+## Typography
+
+[Inter][]
+
 [react]: https://react.dev/
 [redux]: https://redux-toolkit.js.org/
 [typescript]: https://www.typescriptlang.org/
 [turf.js]: https://turfjs.org/
 [GeoJSON]: https://geojson.org/
+[Inter]: https://rsms.me/inter/

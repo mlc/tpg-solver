@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
+import About from './About';
 import Data from './Data';
 import Game from './Game';
 import Providers from './Providers';
@@ -12,6 +13,7 @@ const App = () => (
     <Game />
     <Data />
     <Results />
+    <About />
   </Providers>
 );
 
