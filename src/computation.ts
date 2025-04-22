@@ -1,4 +1,4 @@
-import { Coord, featureCollection, point } from '@turf/helpers';
+import { Coord, featureCollection } from '@turf/helpers';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
 import { GameConfig, GameMode } from './game-modes';
