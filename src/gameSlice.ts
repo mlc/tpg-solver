@@ -8,7 +8,7 @@ import {
 } from '@turf/helpers';
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
 import { GameMode } from './game-modes';
-import { decodeCoord, stringifyError } from './util';
+import { decodeCoord, formatCoord, stringifyError } from './util';
 
 export interface GameState {
   mode: GameMode;
@@ -72,6 +72,27 @@ export const gameSlice = createSlice({
         state.error = stringifyError(e);
       }
     },
+    setUploadError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+    setUploadLine: (
+      state,
+      { payload: line }: PayloadAction<Feature<LineString>>
+    ) => {
+      if (line.geometry.coordinates.length === 2) {
+        state.lineText = line.geometry.coordinates.map(formatCoord) as [
+          string,
+          string,
+        ];
+      } else {
+        state.lineText = [
+          'Uploaded Line',
+          line.properties?.name ?? 'Uploaded Line',
+        ];
+      }
+      state.lineTarget = line;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -91,7 +112,14 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { setMode, setBasic, setLine0, setLine1, setMulti } =
-  gameSlice.actions;
+export const {
+  setMode,
+  setBasic,
+  setLine0,
+  setLine1,
+  setMulti,
+  setUploadLine,
+  setUploadError,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;

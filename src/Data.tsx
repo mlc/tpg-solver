@@ -3,7 +3,7 @@ import type { FeatureCollection, Point } from 'geojson';
 import FileInput from './FileInput';
 import MaybeError from './MaybeError';
 import { setError, setPhotos } from './dataSlice';
-import parseData from './parseData';
+import { parseData } from './parseData';
 import { useAppDispatch, useAppSelector } from './store';
 import { stringifyError } from './util';
 

@@ -6,7 +6,7 @@ import { useAppSelector } from './store';
 import { distance } from './util';
 
 const isDegenerate = (line: Feature<LineString>) =>
-  line.geometry.coordinates.length !== 2 ||
+  line.geometry.coordinates.length < 2 ||
   line.geometry.coordinates[0].join(',') ===
     line.geometry.coordinates[1].join(',');
 
@@ -14,6 +14,7 @@ export const useGameConfig = (): GameConfig | null => {
   const { mode, lineTarget, basicTarget, multiTarget, error } = useAppSelector(
     ({ game }) => game
   );
+  console.log(lineTarget, isDegenerate(lineTarget));
   if (error) {
     return null;
   } else if (mode === GameMode.BASIC) {

@@ -1,8 +1,18 @@
 import * as React from 'react';
+import FileInput from './FileInput';
 import MaybeError from './MaybeError';
 import { GameMode } from './game-modes';
-import { setBasic, setLine0, setLine1, setMulti } from './gameSlice';
+import {
+  setBasic,
+  setLine0,
+  setLine1,
+  setMulti,
+  setUploadError,
+  setUploadLine,
+} from './gameSlice';
+import { parseLineString } from './parseData';
 import { useAppDispatch, useAppSelector } from './store';
+import { stringifyError } from './util';
 
 const BasicInput = () => {
   const dispatch = useAppDispatch();
@@ -53,6 +63,17 @@ const LineInput = () => {
       (evt) => dispatch(setLine1(evt.target.value)),
       [dispatch]
     );
+  const onFile = React.useCallback(
+    async (file: File) => {
+      try {
+        const line = await parseLineString(file);
+        dispatch(setUploadLine(line));
+      } catch (e) {
+        dispatch(setUploadError(stringifyError(e)));
+      }
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -65,6 +86,12 @@ const LineInput = () => {
         Point 2:
         <input name="line1" onChange={onChange1} value={text[1]} />
       </label>
+      <FileInput
+        onFile={onFile}
+        accept="application/vnd.google-earth.kml+xml,application/json,application/geo+json,.kml,.json,.geojson"
+      >
+        Upload KML or GeoJSON
+      </FileInput>
     </>
   );
 };

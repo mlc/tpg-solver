@@ -1,7 +1,15 @@
-import { featureCollection, point } from '@turf/helpers';
-import { collectionOf } from '@turf/invariant';
-import type { FeatureCollection, Point } from 'geojson';
+import { feature, featureCollection, lineString, point } from '@turf/helpers';
+import { collectionOf, featureOf, geojsonType } from '@turf/invariant';
+import type {
+  Feature,
+  FeatureCollection,
+  GeoJSON,
+  Geometry,
+  LineString,
+  Point,
+} from 'geojson';
 import Papa from 'papaparse';
+import { kml } from './togeojson.mjs';
 
 const readFile = (f: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -11,9 +19,12 @@ const readFile = (f: Blob): Promise<string> =>
     reader.readAsText(f);
   });
 
-const parseJson = (json: string): FeatureCollection<Point> => {
+const parseJson = <T extends Geometry>(
+  json: string,
+  type: T['type']
+): FeatureCollection<T> => {
   const result = JSON.parse(json);
-  collectionOf(result, 'Point', 'parseJson');
+  collectionOf(result, type, 'parseJson');
   return result;
 };
 
@@ -75,16 +86,64 @@ const parseCsv = (csv: string) => {
 const isJson = (data: string, type: string) =>
   type.includes('json') || data[0] === '{' || data[0] === '[';
 
-const parseData = async (f: Blob): Promise<FeatureCollection<Point>> => {
+export const parseData = async (f: Blob): Promise<FeatureCollection<Point>> => {
   const data = await readFile(f);
   if (data.length === 0) {
     throw new Error('Empty file');
   } else if (isJson(data, f.type)) {
-    return parseJson(data);
+    return parseJson(data, 'Point');
   } else {
     console.log('csv');
     return parseCsv(data);
   }
 };
 
-export default parseData;
+export const parseLineString = async (
+  f: Blob
+): Promise<Feature<LineString>> => {
+  const data = await readFile(f);
+  let json: unknown;
+  if (data.length === 0) {
+    throw new Error('Empty file');
+  } else if (isJson(data, f.type)) {
+    json = JSON.parse(data);
+  } else {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data, 'application/xml');
+    json = kml(doc);
+  }
+  if (Array.isArray(json)) {
+    if (json.length === 1) {
+      json = json[0];
+    } else {
+      throw new Error('Only one object allowed');
+    }
+  }
+  if (typeof json !== 'object' || json === null) {
+    throw new Error('Invalid data');
+  }
+  if (!('type' in json)) {
+    throw new Error('Invalid GeoJSON');
+  }
+  if (json.type === 'FeatureCollection') {
+    if (
+      'features' in json &&
+      Array.isArray(json.features) &&
+      json.features.length === 1 &&
+      'type' in json.features[0]
+    ) {
+      json = json.features[0];
+    } else {
+      throw new Error('Need exactly one feature');
+    }
+  }
+  if ((json as GeoJSON).type === 'LineString') {
+    geojsonType(json, 'LineString', 'LineString');
+    return feature(json as LineString);
+  }
+  if ((json as GeoJSON).type === 'Feature') {
+    featureOf(json as Feature<any>, 'LineString', 'Feature');
+    return json as Feature<LineString>;
+  }
+  throw new Error('Invalid geometry type');
+};
