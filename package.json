@@ -1,5 +1,11 @@
 {
   "name": "tpg-solver",
+  "homepage": "https://tpg.makeinstallnotwar.org/",
+  "license": "WTFPL",
+  "author": {
+    "name": "mlc"
+  },
+  "repository": "github:mlc/tpg-solver",
   "packageManager": "yarn@4.9.1",
   "scripts": {
     "build": "node build.mjs",
