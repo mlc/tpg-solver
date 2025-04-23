@@ -73,8 +73,6 @@ const parseCsv = (csv: string) => {
     skipEmptyLines: true,
   });
 
-  console.log(latCol, lngCol);
-
   return featureCollection(
     result.data.map((row) => {
       const { [latCol]: lat, [lngCol]: lng, ...rest } = row;
@@ -93,7 +91,6 @@ export const parseData = async (f: Blob): Promise<FeatureCollection<Point>> => {
   } else if (isJson(data, f.type)) {
     return parseJson(data, 'Point');
   } else {
-    console.log('csv');
     return parseCsv(data);
   }
 };

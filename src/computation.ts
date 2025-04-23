@@ -14,7 +14,6 @@ export const useGameConfig = (): GameConfig | null => {
   const { mode, lineTarget, basicTarget, multiTarget, error } = useAppSelector(
     ({ game }) => game
   );
-  console.log(lineTarget, isDegenerate(lineTarget));
   if (error) {
     return null;
   } else if (mode === GameMode.BASIC) {
