@@ -10,7 +10,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import htmlPlugin from '@chialab/esbuild-plugin-html';
 import * as esbuild from 'esbuild';
 import { randomBytes } from 'node:crypto';
-import { readFile, readdir, unlink } from 'node:fs/promises';
+import { readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { extname, join as joinPath } from 'node:path';
 import * as process from 'node:process';
 
@@ -49,13 +49,17 @@ const ctx = await esbuild.context({
   },
   target: ['chrome125', 'firefox118', 'edge133', 'ios15', 'safari17'],
   loader: { '.woff2': 'file' },
+  metafile: !dev,
 });
 
 if (dev) {
   await ctx.serve({ servedir: 'dist' });
 } else {
-  await ctx.rebuild();
-  await ctx.dispose();
+  const { metafile } = await ctx.rebuild();
+  await Promise.all([
+    ctx.dispose(),
+    writeFile('meta.json', JSON.stringify(metafile), 'utf-8'),
+  ]);
 }
 
 const mimeTypes = {

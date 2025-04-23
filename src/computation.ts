@@ -47,9 +47,10 @@ export const decorate = <P extends {}>(
   try {
     return featureCollection(
       photos.features
-        .map((photo) => ({
+        .map((photo, i) => ({
           ...photo,
           properties: { ...photo.properties, distance: calculator(photo) },
+          id: i,
         }))
         .sort((a, b) => a.properties.distance - b.properties.distance)
     );
