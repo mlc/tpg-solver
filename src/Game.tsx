@@ -34,7 +34,7 @@ const Game: React.FC = () => {
             [Geoid.WGS84, 'WGS84 Ellipsoid'],
           ]}
         >
-          Geoid:
+          Datum:
         </Selector>
       )}
     </form>
