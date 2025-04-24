@@ -3474,6 +3474,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"geographiclib-geodesic@npm:2.1.1":
+  version: 2.1.1
+  resolution: "geographiclib-geodesic@npm:2.1.1"
+  checksum: 10c0/9a79d24a3a95d9bdc53499e35983ae717b48459d58a79279313df309570d342c6fbcca4b274b068d3ff39d8bf3080bce7c48c9c795641f46918241951226e30b
+  languageName: node
+  linkType: hard
+
 "get-east-asian-width@npm:^1.0.0":
   version: 1.3.0
   resolution: "get-east-asian-width@npm:1.3.0"
@@ -5168,6 +5175,7 @@ __metadata:
     constructs: "npm:10.4.2"
     esbuild: "npm:0.25.2"
     geographiclib-dms: "npm:2.1.1"
+    geographiclib-geodesic: "npm:2.1.1"
     htmlnano: "npm:2.1.1"
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.1"

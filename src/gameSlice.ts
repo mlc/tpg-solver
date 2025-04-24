@@ -7,7 +7,7 @@ import {
   points,
 } from '@turf/helpers';
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
-import { GameMode } from './game-modes';
+import { GameMode, Geoid } from './game-modes';
 import { decodeCoord, formatCoord, stringifyError } from './util';
 
 export interface GameState {
@@ -18,6 +18,7 @@ export interface GameState {
   lineTarget: Feature<LineString>;
   multiText: string;
   multiTarget: FeatureCollection<Point>;
+  geoid: Geoid;
   error: string | null;
 }
 
@@ -32,6 +33,7 @@ const initialState: GameState = {
   ]),
   multiText: '',
   multiTarget: points([]),
+  geoid: Geoid.SPHERE,
   error: null,
 };
 
@@ -93,6 +95,9 @@ export const gameSlice = createSlice({
       state.lineTarget = line;
       state.error = null;
     },
+    setGeoid: (state, action: PayloadAction<Geoid>) => {
+      state.geoid = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -120,6 +125,7 @@ export const {
   setMulti,
   setUploadLine,
   setUploadError,
+  setGeoid,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

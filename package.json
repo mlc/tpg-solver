@@ -49,6 +49,7 @@
     "@turf/invariant": "7.2.0",
     "@turf/nearest-point-on-line": "patch:@turf/nearest-point-on-line@npm%3A7.2.0#~/.yarn/patches/@turf-nearest-point-on-line-npm-7.2.0-4a7f893df8.patch",
     "geographiclib-dms": "2.1.1",
+    "geographiclib-geodesic": "2.1.1",
     "papaparse": "5.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",

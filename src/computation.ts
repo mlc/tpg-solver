@@ -11,17 +11,16 @@ const isDegenerate = (line: Feature<LineString>) =>
     line.geometry.coordinates[1].join(',');
 
 export const useGameConfig = (): GameConfig | null => {
-  const { mode, lineTarget, basicTarget, multiTarget, error } = useAppSelector(
-    ({ game }) => game
-  );
+  const { mode, lineTarget, basicTarget, multiTarget, geoid, error } =
+    useAppSelector(({ game }) => game);
   if (error) {
     return null;
   } else if (mode === GameMode.BASIC) {
-    return { mode, target: basicTarget };
+    return { mode, target: basicTarget, geoid };
   } else if (mode === GameMode.LINE && !isDegenerate(lineTarget)) {
-    return { mode, target: lineTarget };
+    return { mode, target: lineTarget, geoid };
   } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
-    return { mode, target: multiTarget };
+    return { mode, target: multiTarget, geoid };
   } else {
     return null;
   }
@@ -30,12 +29,14 @@ export const useGameConfig = (): GameConfig | null => {
 const distanceCalc = (game: GameConfig): ((p: Coord) => number) => {
   switch (game.mode) {
     case GameMode.BASIC:
-      return (p) => distance(p, game.target);
+      return (p) => distance(p, game.target, game.geoid);
     case GameMode.LINE:
       return (p) => nearestPointOnLine(game.target, p).properties.dist;
     default:
       return (p) =>
-        Math.min(...game.target.features.map((f) => distance(p, f)));
+        Math.min(
+          ...game.target.features.map((f) => distance(p, f, game.geoid))
+        );
   }
 };
 

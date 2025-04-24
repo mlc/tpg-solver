@@ -10,6 +10,7 @@ import {
   persistReducer,
   persistStore,
 } from 'redux-persist';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import dataReducer from './dataSlice';
 import gameReducer from './gameSlice';
@@ -19,12 +20,14 @@ const rootReducer = combineReducers({
   data: dataReducer,
 });
 
-const persistConfig = {
-  key: 'root',
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
+  {
+    key: 'root',
+    storage,
+    stateReconciler: autoMergeLevel2,
+  },
+  rootReducer
+);
 
 export const store = configureStore({
   reducer: persistedReducer,
