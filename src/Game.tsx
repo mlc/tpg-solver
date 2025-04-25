@@ -24,19 +24,17 @@ const Game: React.FC = () => {
         ]}
       />
       <GameParams />
-      {mode !== GameMode.LINE && (
-        <Selector
-          group="geoid"
-          current={geoid}
-          action={setGeoid}
-          values={[
-            [Geoid.SPHERE, 'Sphere (Great Circle)'],
-            [Geoid.WGS84, 'WGS84 Ellipsoid'],
-          ]}
-        >
-          Datum:
-        </Selector>
-      )}
+      <Selector
+        group="geoid"
+        current={geoid}
+        action={setGeoid}
+        values={[
+          [Geoid.SPHERE, 'Sphere (Great Circle)'],
+          [Geoid.WGS84, 'WGS84 Ellipsoid'],
+        ]}
+      >
+        Datum:
+      </Selector>
     </form>
   );
 };

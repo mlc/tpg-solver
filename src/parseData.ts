@@ -1,4 +1,4 @@
-import { feature, featureCollection, lineString, point } from '@turf/helpers';
+import { feature, featureCollection, point } from '@turf/helpers';
 import { collectionOf, featureOf, geojsonType } from '@turf/invariant';
 import type {
   Feature,

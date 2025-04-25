@@ -1,7 +1,8 @@
 import { Coord, featureCollection } from '@turf/helpers';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
-import { GameConfig, GameMode } from './game-modes';
+import { GameConfig, GameMode, Geoid } from './game-modes';
+import geodesicCrosstrack from './geodesic-crosstrack';
 import { useAppSelector } from './store';
 import { distance } from './util';
 
@@ -31,7 +32,12 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => number) => {
     case GameMode.BASIC:
       return (p) => distance(p, game.target, game.geoid);
     case GameMode.LINE:
-      return (p) => nearestPointOnLine(game.target, p).properties.dist;
+      if (game.geoid === Geoid.WGS84) {
+        return (p) =>
+          geodesicCrosstrack(game.target.geometry, p).properties.s12 / 1000;
+      } else {
+        return (p) => nearestPointOnLine(game.target, p).properties.dist;
+      }
     default:
       return (p) =>
         Math.min(

@@ -1,10 +1,10 @@
-import { point } from '@turf/helpers';
+import { Coord, point } from '@turf/helpers';
 import { getCoord } from '@turf/invariant';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
 import geodesic from 'geographiclib-geodesic';
 import type { LineString, Point, Position } from 'geojson';
 import Vector3 from './Vector3';
-import Gnomonic, { GnomonicData } from './gnomonic';
+import Gnomonic from './gnomonic';
 
 // https://doi.org/10.1007/s00190-012-0578-z
 // https://sourceforge.net/p/geographiclib/discussion/1026621/thread/299518a3e4/
@@ -32,7 +32,7 @@ const decoratedPoint = ([lonc, latc]: Position, [lon, lat]: Position) => {
   return point([lon, lat], { s12: s12!, azi1: azi1! });
 };
 
-const geodesicCrosstrack = (line: LineString, p: Point) => {
+const geodesicCrosstrack = (line: LineString, p: Coord) => {
   if (line.coordinates.length !== 2) {
     throw new Error('not presently supported');
   }
@@ -42,7 +42,7 @@ const geodesicCrosstrack = (line: LineString, p: Point) => {
     ptsEqual(initialGuess.geometry.coordinates, line.coordinates[1])
   ) {
     // if the intersection of the great circles is not on the segment, short-circuit
-    return decoratedPoint(p.coordinates, initialGuess.geometry.coordinates);
+    return decoratedPoint(getCoord(p), initialGuess.geometry.coordinates);
   }
 
   const [lona, lata] = line.coordinates[0];
