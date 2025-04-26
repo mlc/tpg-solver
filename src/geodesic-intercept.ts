@@ -1,13 +1,17 @@
 import { Coord, point } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
 import * as geodesic from 'geographiclib-geodesic';
-import { GeodesicClass } from 'geographiclib-geodesic';
-import type { Feature, LineString, Position } from 'geojson';
+import type { Feature, LineString, Point, Position } from 'geojson';
+
+interface OutputPointProps {
+  s12: number;
+  azi1: number;
+}
 
 const decoratedPoint = (
   [lonc, latc]: Position,
   [lon, lat]: Position,
-  ellipse: GeodesicClass
+  ellipse: geodesic.GeodesicClass
 ) => {
   const { s12, azi1 } = ellipse.Inverse(
     latc,
@@ -34,7 +38,7 @@ const geodesicIntercept = (
   line: LineString | Feature<LineString>,
   p: Coord,
   ellipse = geodesic.Geodesic.WGS84
-) => {
+): Feature<Point, OutputPointProps> => {
   const coordinates: [number, number][] = getCoords(line);
   if (coordinates.length !== 2) {
     throw new Error('not presently supported');
