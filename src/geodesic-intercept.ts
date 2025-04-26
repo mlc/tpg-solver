@@ -44,8 +44,7 @@ const geodesicIntercept = (
     throw new Error('not presently supported');
   }
 
-  // @ts-ignore
-  const R: number = ellipse.a;
+  const R = ellipse.a;
 
   let [[lona, lata], [lonb, latb]] = coordinates;
   const [lonp, latp] = getCoord(p);
@@ -79,7 +78,7 @@ const geodesicIntercept = (
             lonb,
             Geodesic.STANDARD | Geodesic.DISTANCE_IN
           );
-    const alphaAB = ab.azi1 as number;
+    const alphaAB = ab.azi1;
     const { d: Alpha } = GMath.AngDiff(alphaAP, alphaAB);
     const { c: cosAlpha } = GMath.sincosd(Alpha);
     const sAX = R * Math.atan2(Math.sin(sAP) * cosAlpha, Math.cos(sAP));
@@ -88,8 +87,8 @@ const geodesicIntercept = (
     }
     totalSAX += sAX;
     const a2 = ab.Position(sAX, Geodesic.LATITUDE | Geodesic.LONGITUDE);
-    lata = a2.lat2;
-    lona = a2.lon2;
+    lata = a2.lat2!;
+    lona = a2.lon2!;
   }
 
   let result: [number, number];

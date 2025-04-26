@@ -3481,6 +3481,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"geographiclib-geodesic@patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch":
+  version: 2.1.1
+  resolution: "geographiclib-geodesic@patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch::version=2.1.1&hash=fcd512"
+  checksum: 10c0/77224357da9ec35687554aade5b6159410b8e6632fc31cb89141397f4221bb09de174db39d7d77a488dfcdde9c438f7620b47b267a37ddb396159f6abf82f692
+  languageName: node
+  linkType: hard
+
 "get-east-asian-width@npm:^1.0.0":
   version: 1.3.0
   resolution: "get-east-asian-width@npm:1.3.0"
@@ -5175,7 +5182,7 @@ __metadata:
     constructs: "npm:10.4.2"
     esbuild: "npm:0.25.3"
     geographiclib-dms: "npm:2.1.1"
-    geographiclib-geodesic: "npm:2.1.1"
+    geographiclib-geodesic: "patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch"
     htmlnano: "npm:2.1.1"
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.1"
