@@ -1,6 +1,6 @@
 import { Coord, point } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
-import * as geodesic from 'geographiclib-geodesic';
+import { Math as GMath, Geodesic, GeodesicClass } from 'geographiclib-geodesic';
 import type { Feature, LineString, Point, Position } from 'geojson';
 
 interface OutputPointProps {
@@ -11,14 +11,14 @@ interface OutputPointProps {
 const decoratedPoint = (
   [lonc, latc]: Position,
   [lon, lat]: Position,
-  ellipse: geodesic.GeodesicClass
+  ellipse: GeodesicClass
 ) => {
   const { s12, azi1 } = ellipse.Inverse(
     latc,
     lonc,
     lat,
     lon,
-    geodesic.Geodesic.AZIMUTH | geodesic.Geodesic.DISTANCE
+    Geodesic.AZIMUTH | Geodesic.DISTANCE
   );
   return point([lon, lat], { s12: s12!, azi1: azi1! });
 };
@@ -37,7 +37,7 @@ const decoratedPoint = (
 const geodesicIntercept = (
   line: LineString | Feature<LineString>,
   p: Coord,
-  ellipse = geodesic.Geodesic.WGS84
+  ellipse = Geodesic.WGS84
 ): Feature<Point, OutputPointProps> => {
   const coordinates: [number, number][] = getCoords(line);
   if (coordinates.length !== 2) {
@@ -56,7 +56,7 @@ const geodesicIntercept = (
     lona,
     latb,
     lonb,
-    geodesic.Geodesic.STANDARD | geodesic.Geodesic.DISTANCE_IN
+    Geodesic.STANDARD | Geodesic.DISTANCE_IN
   );
 
   for (let i = 0; i < 10; ++i) {
@@ -65,7 +65,7 @@ const geodesicIntercept = (
       lona,
       latp,
       lonp,
-      geodesic.Geodesic.DISTANCE | geodesic.Geodesic.AZIMUTH
+      Geodesic.DISTANCE | Geodesic.AZIMUTH
     );
     const sAP = ap.s12! / R;
     const alphaAP = ap.azi1!;
@@ -77,20 +77,17 @@ const geodesicIntercept = (
             lona,
             latb,
             lonb,
-            geodesic.Geodesic.STANDARD | geodesic.Geodesic.DISTANCE_IN
+            Geodesic.STANDARD | Geodesic.DISTANCE_IN
           );
     const alphaAB = ab.azi1 as number;
-    const { d: Alpha } = geodesic.Math.AngDiff(alphaAP, alphaAB);
-    const { c: cosAlpha } = geodesic.Math.sincosd(Alpha);
+    const { d: Alpha } = GMath.AngDiff(alphaAP, alphaAB);
+    const { c: cosAlpha } = GMath.sincosd(Alpha);
     const sAX = R * Math.atan2(Math.sin(sAP) * cosAlpha, Math.cos(sAP));
     if (Math.abs(sAX) < 0.0001) {
       break;
     }
     totalSAX += sAX;
-    const a2 = ab.Position(
-      sAX,
-      geodesic.Geodesic.LATITUDE | geodesic.Geodesic.LONGITUDE
-    );
+    const a2 = ab.Position(sAX, Geodesic.LATITUDE | Geodesic.LONGITUDE);
     lata = a2.lat2;
     lona = a2.lon2;
   }
