@@ -1,13 +1,15 @@
 import { Coord, point } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
 import * as geodesic from 'geographiclib-geodesic';
+import { GeodesicClass } from 'geographiclib-geodesic';
 import type { Feature, LineString, Position } from 'geojson';
 
-// @ts-ignore
-const R: number = geodesic.Constants.WGS84.a;
-
-const decoratedPoint = ([lonc, latc]: Position, [lon, lat]: Position) => {
-  const { s12, azi1 } = geodesic.Geodesic.WGS84.Inverse(
+const decoratedPoint = (
+  [lonc, latc]: Position,
+  [lon, lat]: Position,
+  ellipse: GeodesicClass
+) => {
+  const { s12, azi1 } = ellipse.Inverse(
     latc,
     lonc,
     lat,
@@ -30,18 +32,30 @@ const decoratedPoint = ([lonc, latc]: Position, [lon, lat]: Position) => {
 
 const geodesicIntercept = (
   line: LineString | Feature<LineString>,
-  p: Coord
+  p: Coord,
+  ellipse = geodesic.Geodesic.WGS84
 ) => {
   const coordinates = getCoords(line);
   if (coordinates.length !== 2) {
     throw new Error('not presently supported');
   }
 
+  // @ts-ignore
+  const R: number = ellipse.a;
+
   let [[lona, lata], [lonb, latb]] = coordinates;
   const [lonp, latp] = getCoord(p);
 
+  const abInitial = ellipse.InverseLine(
+    lata,
+    lona,
+    latb,
+    lonb,
+    geodesic.Geodesic.STANDARD | geodesic.Geodesic.DISTANCE_IN
+  );
+
   for (let i = 0; i < 10; ++i) {
-    const ap = geodesic.Geodesic.WGS84.Inverse(
+    const ap = ellipse.Inverse(
       lata,
       lona,
       latp,
@@ -50,13 +64,16 @@ const geodesicIntercept = (
     );
     const sAP = ap.s12!;
     const alphaAP = ap.azi1!;
-    const ab = geodesic.Geodesic.WGS84.InverseLine(
-      lata,
-      lona,
-      latb,
-      lonb,
-      geodesic.Geodesic.STANDARD | geodesic.Geodesic.DISTANCE_IN
-    );
+    const ab =
+      i === 0
+        ? abInitial
+        : ellipse.InverseLine(
+            lata,
+            lona,
+            latb,
+            lonb,
+            geodesic.Geodesic.STANDARD | geodesic.Geodesic.DISTANCE_IN
+          );
     const alphaAB = ab.azi1 as number;
     const Alpha: number = geodesic.Math.AngDiff(alphaAP, alphaAB).d;
     const { c: cosAlpha } = geodesic.Math.sincosd(Alpha);
@@ -72,7 +89,7 @@ const geodesicIntercept = (
     }
   }
 
-  return decoratedPoint(getCoord(p), [lona, lata]);
+  return decoratedPoint(getCoord(p), [lona, lata], ellipse);
 };
 
 export default geodesicIntercept;
