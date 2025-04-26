@@ -35,7 +35,7 @@ const geodesicIntercept = (
   p: Coord,
   ellipse = geodesic.Geodesic.WGS84
 ) => {
-  const coordinates = getCoords(line);
+  const coordinates: [number, number][] = getCoords(line);
   if (coordinates.length !== 2) {
     throw new Error('not presently supported');
   }
@@ -45,6 +45,7 @@ const geodesicIntercept = (
 
   let [[lona, lata], [lonb, latb]] = coordinates;
   const [lonp, latp] = getCoord(p);
+  let totalSAX = 0;
 
   const abInitial = ellipse.InverseLine(
     lata,
@@ -62,7 +63,7 @@ const geodesicIntercept = (
       lonp,
       geodesic.Geodesic.DISTANCE | geodesic.Geodesic.AZIMUTH
     );
-    const sAP = ap.s12!;
+    const sAP = ap.s12! / R;
     const alphaAP = ap.azi1!;
     const ab =
       i === 0
@@ -75,21 +76,30 @@ const geodesicIntercept = (
             geodesic.Geodesic.STANDARD | geodesic.Geodesic.DISTANCE_IN
           );
     const alphaAB = ab.azi1 as number;
-    const Alpha: number = geodesic.Math.AngDiff(alphaAP, alphaAB).d;
+    const { d: Alpha } = geodesic.Math.AngDiff(alphaAP, alphaAB);
     const { c: cosAlpha } = geodesic.Math.sincosd(Alpha);
-    const sAX = R * Math.atan2(Math.sin(sAP / R) * cosAlpha, Math.cos(sAP / R));
+    const sAX = R * Math.atan2(Math.sin(sAP) * cosAlpha, Math.cos(sAP));
+    if (Math.abs(sAX) < 0.0001) {
+      break;
+    }
+    totalSAX += sAX;
     const a2 = ab.Position(
       sAX,
       geodesic.Geodesic.LATITUDE | geodesic.Geodesic.LONGITUDE
     );
     lata = a2.lat2;
     lona = a2.lon2;
-    if (Math.abs(sAX) < 0.0001) {
-      break;
-    }
   }
 
-  return decoratedPoint(getCoord(p), [lona, lata], ellipse);
+  let result: [number, number];
+  if (totalSAX < 0) {
+    result = coordinates[0];
+  } else if (totalSAX > abInitial.s13) {
+    result = coordinates[1];
+  } else {
+    result = [lona, lata];
+  }
+  return decoratedPoint(getCoord(p), result, ellipse);
 };
 
 export default geodesicIntercept;
