@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { FeatureCollection, Point } from 'geojson';
+import type { FeatureCollection, Point, Position } from 'geojson';
 import Icon from './Icon';
-import { decorate, useGameConfig } from './computation';
+import { DistanceProps, decorate, useGameConfig } from './computation';
+import { GameMode } from './game-modes';
 import { useAppSelector } from './store';
 import { formatCoord } from './util';
 
@@ -34,11 +35,11 @@ const PositionCell: React.FC<PositionCellProps> = ({ coord }) => {
   );
 };
 
-const stringify = (p: unknown, hint: string) => {
+const stringify = (p: unknown) => {
   if (typeof p === 'string') {
     return p;
   } else if (typeof p === 'number') {
-    return hint === 'distance' ? `${p.toFixed(3)}\u2009km` : p.toString();
+    return p.toString();
   } else {
     return '';
   }
@@ -46,11 +47,10 @@ const stringify = (p: unknown, hint: string) => {
 
 interface DataCellProps {
   data: any;
-  hint: string;
 }
 
-const DataCell: React.FC<DataCellProps> = ({ data, hint }) => {
-  const val = stringify(data, hint);
+const DataCell: React.FC<DataCellProps> = ({ data }) => {
+  const val = stringify(data);
   const isUrl = URL_REGEX.test(val);
   if (isUrl) {
     return (
@@ -63,12 +63,55 @@ const DataCell: React.FC<DataCellProps> = ({ data, hint }) => {
   }
 };
 
-interface GridProps {
-  results: FeatureCollection<Point, Record<string, any>>;
+interface DistanceCellProps extends DistanceProps {
+  coord: Point;
+  extraGc?: string[];
 }
 
-const ResultsGrid: React.FC<GridProps> = ({ results: { features } }) => {
-  const headers = Object.keys(features[0].properties);
+const gcFmt = (p: Position): string => {
+  const [lng, lat] = p;
+  return [
+    Math.abs(lat),
+    lat >= 0 ? 'N' : 'S',
+    Math.abs(lng),
+    lng >= 0 ? 'E' : 'W',
+  ].join('');
+};
+
+const gcFmtLine = (p: Position[]) => p.map(gcFmt).join('-');
+
+const DistanceCell: React.FC<DistanceCellProps> = ({
+  distance,
+  dest,
+  coord,
+  extraGc = [],
+}) => {
+  const km = `${distance.toFixed(3)}\u2009km`;
+  const params = new URLSearchParams({
+    P: [gcFmtLine([dest.coordinates, coord.coordinates]), ...extraGc].join(','),
+    MS: 'wls',
+    DU: 'km',
+  });
+  const url = 'http://www.gcmap.com/mapui?' + params.toString();
+  return (
+    <td>
+      <a href={url}>{km}</a>
+    </td>
+  );
+};
+
+interface GridProps {
+  results: FeatureCollection<Point, Record<string, any>>;
+  extraGc?: string[];
+}
+
+const ResultsGrid: React.FC<GridProps> = ({
+  results: { features },
+  extraGc,
+}) => {
+  const headers = Object.keys(features[0].properties).filter(
+    (h) => !['distance', 'dest'].includes(h)
+  );
   return (
     <table id="results-grid">
       <thead>
@@ -77,6 +120,7 @@ const ResultsGrid: React.FC<GridProps> = ({ results: { features } }) => {
           {headers.map((h) => (
             <th key={h}>{h}</th>
           ))}
+          <th>Distance</th>
         </tr>
       </thead>
       <tbody>
@@ -84,8 +128,14 @@ const ResultsGrid: React.FC<GridProps> = ({ results: { features } }) => {
           <tr key={feature.id}>
             <PositionCell coord={feature.geometry} />
             {headers.map((h) => (
-              <DataCell key={h} data={feature.properties[h]} hint={h} />
+              <DataCell key={h} data={feature.properties[h]} />
             ))}
+            <DistanceCell
+              coord={feature.geometry}
+              distance={feature.properties.distance}
+              dest={feature.properties.dest}
+              extraGc={extraGc}
+            />
           </tr>
         ))}
       </tbody>
@@ -103,11 +153,17 @@ const Results: React.FC = () => {
       return null;
     }
   }, [game?.mode, game?.target, game?.geoid, photos]);
+  let extraGc: string[] | undefined;
+  if (game?.mode === GameMode.LINE) {
+    extraGc = [gcFmtLine(game.target.geometry.coordinates)];
+  } else if (game?.mode === GameMode.MULTI) {
+    extraGc = game.target.features.map((f) => gcFmt(f.geometry.coordinates));
+  }
   if (results && results.features.length > 0) {
     return (
       <>
         <h2>Results</h2>
-        <ResultsGrid results={results} />
+        <ResultsGrid results={results} extraGc={extraGc} />
       </>
     );
   } else {
