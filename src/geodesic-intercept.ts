@@ -2,6 +2,8 @@ import { Coord, point } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
 import { Math as GMath, Geodesic, GeodesicClass } from 'geographiclib-geodesic';
 import type { Feature, LineString, Point, Position } from 'geojson';
+import { Geoid } from './game-modes';
+import { distance } from './util';
 
 interface OutputPointProps {
   s12: number;
@@ -92,10 +94,10 @@ const geodesicIntercept = (
   }
 
   let result: [number, number];
-  if (totalSAX < 0) {
-    result = coordinates[0];
-  } else if (totalSAX > abInitial.s13) {
-    result = coordinates[1];
+  if (totalSAX < 0 || totalSAX > abInitial.s13) {
+    const sAX = distance(p, coordinates[0], Geoid.WGS84);
+    const sBX = distance(p, coordinates[1], Geoid.WGS84);
+    result = sAX < sBX ? coordinates[0] : coordinates[1];
   } else {
     result = [lona, lata];
   }
