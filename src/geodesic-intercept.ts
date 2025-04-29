@@ -2,26 +2,27 @@ import { Coord, point } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
 import { Math as GMath, Geodesic, GeodesicClass } from 'geographiclib-geodesic';
 import type { Feature, LineString, Point, Position } from 'geojson';
-import { Geoid } from './game-modes';
-import { distance } from './util';
 
 interface OutputPointProps {
   s12: number;
   azi1: number;
 }
 
+type InverseSolution = ReturnType<GeodesicClass['Inverse']>;
+const FINAL_FLAGS = Geodesic.DISTANCE | Geodesic.AZIMUTH;
+
 const decoratedPoint = (
-  [lonc, latc]: Position,
+  [lonp, latp]: Position,
   [lon, lat]: Position,
-  ellipse: GeodesicClass
-) => {
-  const { s12, azi1 } = ellipse.Inverse(
-    latc,
-    lonc,
-    lat,
-    lon,
-    Geodesic.AZIMUTH | Geodesic.DISTANCE
-  );
+  solutionOrEllipse: InverseSolution | GeodesicClass
+): Feature<Point, OutputPointProps> => {
+  let solution: InverseSolution;
+  if ('lat1' in solutionOrEllipse) {
+    solution = solutionOrEllipse;
+  } else {
+    solution = solutionOrEllipse.Inverse(latp, lonp, lat, lon, FINAL_FLAGS);
+  }
+  const { s12, azi1 } = solution;
   return point([lon, lat], { s12: s12!, azi1: azi1! });
 };
 
@@ -73,13 +74,7 @@ const geodesicIntercept = (
     const ab =
       i === 0
         ? abInitial
-        : ellipse.InverseLine(
-            lata,
-            lona,
-            latb,
-            lonb,
-            Geodesic.STANDARD | Geodesic.DISTANCE_IN
-          );
+        : ellipse.InverseLine(lata, lona, latb, lonb, FINAL_FLAGS);
     const alphaAB = ab.azi1;
     const { d: Alpha } = GMath.AngDiff(alphaAP, alphaAB);
     const { c: cosAlpha } = GMath.sincosd(Alpha);
@@ -93,15 +88,29 @@ const geodesicIntercept = (
     lona = a2.lon2!;
   }
 
-  let result: [number, number];
   if (totalSAX < 0 || totalSAX > abInitial.s13) {
-    const sAX = distance(p, coordinates[0], Geoid.WGS84);
-    const sBX = distance(p, coordinates[1], Geoid.WGS84);
-    result = sAX < sBX ? coordinates[0] : coordinates[1];
+    const ap = ellipse.Inverse(
+      latp,
+      lonp,
+      coordinates[0][1],
+      coordinates[0][0],
+      FINAL_FLAGS
+    );
+    const bp = ellipse.Inverse(
+      latp,
+      lonp,
+      coordinates[1][1],
+      coordinates[1][0],
+      FINAL_FLAGS
+    );
+    if (ap.s12! < bp.s12!) {
+      return decoratedPoint(getCoord(p), coordinates[0], ap);
+    } else {
+      return decoratedPoint(getCoord(p), coordinates[1], bp);
+    }
   } else {
-    result = [lona, lata];
+    return decoratedPoint(getCoord(p), [lona, lata], ellipse);
   }
-  return decoratedPoint(getCoord(p), result, ellipse);
 };
 
 export default geodesicIntercept;
