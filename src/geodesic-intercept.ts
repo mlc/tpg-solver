@@ -9,7 +9,10 @@ interface OutputPointProps {
 }
 
 type InverseSolution = ReturnType<GeodesicClass['Inverse']>;
+const WORKING_FLAGS = Geodesic.STANDARD | Geodesic.DISTANCE_IN;
 const FINAL_FLAGS = Geodesic.DISTANCE | Geodesic.AZIMUTH;
+// in meters
+const EPSILON = 0.0001;
 
 const decoratedPoint = (
   [lonp, latp]: Position,
@@ -53,13 +56,7 @@ const geodesicIntercept = (
   const [lonp, latp] = getCoord(p);
   let totalSAX = 0;
 
-  const abInitial = ellipse.InverseLine(
-    lata,
-    lona,
-    latb,
-    lonb,
-    Geodesic.STANDARD | Geodesic.DISTANCE_IN
-  );
+  const abInitial = ellipse.InverseLine(lata, lona, latb, lonb, WORKING_FLAGS);
 
   for (let i = 0; i < 10; ++i) {
     const ap = ellipse.Inverse(
@@ -74,12 +71,12 @@ const geodesicIntercept = (
     const ab =
       i === 0
         ? abInitial
-        : ellipse.InverseLine(lata, lona, latb, lonb, FINAL_FLAGS);
+        : ellipse.InverseLine(lata, lona, latb, lonb, WORKING_FLAGS);
     const alphaAB = ab.azi1;
     const { d: Alpha } = GMath.AngDiff(alphaAP, alphaAB);
     const { c: cosAlpha } = GMath.sincosd(Alpha);
     const sAX = R * Math.atan2(Math.sin(sAP) * cosAlpha, Math.cos(sAP));
-    if (Math.abs(sAX) < 0.0001) {
+    if (Math.abs(sAX) < EPSILON) {
       break;
     }
     totalSAX += sAX;
@@ -89,6 +86,8 @@ const geodesicIntercept = (
   }
 
   if (totalSAX < 0 || totalSAX > abInitial.s13) {
+    // the computed intercept is not on the segment AB; return the
+    // appropriate endpoint
     const ap = ellipse.Inverse(
       latp,
       lonp,
