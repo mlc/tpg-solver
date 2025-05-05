@@ -93,6 +93,22 @@ const LineInput = () => {
   );
 };
 
+const CrossInput = () => {
+  const dispatch = useAppDispatch();
+
+  return (
+    <>
+      <p>
+        <strong>Warning!</strong> This mode is experimental and may give wrong
+        results.
+      </p>
+      <BasicInput />
+      <br />
+      <label>Allow o,</label>
+    </>
+  );
+};
+
 const GameInput: React.FC = () => {
   const mode = useAppSelector((state) => state.game.mode);
 
@@ -103,6 +119,8 @@ const GameInput: React.FC = () => {
       return <LineInput />;
     case GameMode.MULTI:
       return <MultiInput />;
+    case GameMode.CROSS:
+      return <CrossInput />;
   }
 };
 

@@ -21,6 +21,7 @@ const Game: React.FC = () => {
           [GameMode.BASIC, 'Basic'],
           [GameMode.MULTI, 'Multi'],
           [GameMode.LINE, 'Line'],
+          [GameMode.CROSS, 'Team'],
         ]}
       />
       <GameParams />

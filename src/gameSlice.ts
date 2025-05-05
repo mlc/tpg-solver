@@ -18,6 +18,8 @@ export interface GameState {
   lineTarget: Feature<LineString>;
   multiText: string;
   multiTarget: FeatureCollection<Point>;
+  teamAllowFar: boolean;
+  teamRingSize: number;
   geoid: Geoid;
   error: string | null;
 }
@@ -33,6 +35,8 @@ const initialState: GameState = {
   ]),
   multiText: '',
   multiTarget: points([]),
+  teamAllowFar: false,
+  teamRingSize: 7,
   geoid: Geoid.SPHERE,
   error: null,
 };

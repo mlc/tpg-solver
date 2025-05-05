@@ -4,6 +4,7 @@ export enum GameMode {
   BASIC = 'basic',
   LINE = 'line',
   MULTI = 'multi',
+  CROSS = 'cross',
 }
 
 export enum Geoid {

@@ -2393,6 +2393,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@turf/bearing@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@turf/bearing@npm:7.2.0"
+  dependencies:
+    "@turf/helpers": "npm:^7.2.0"
+    "@turf/invariant": "npm:^7.2.0"
+    "@types/geojson": "npm:^7946.0.10"
+    tslib: "npm:^2.8.1"
+  checksum: 10c0/970f1a87f9489f8ca812e6f3193dd4da6b7f89a93dfb46e5c4b11b1064db99e56a04917f0e46ea443aff28e30392da529d7db08315c2bcd2d492b9350070b6e5
+  languageName: node
+  linkType: hard
+
+"@turf/destination@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@turf/destination@npm:7.2.0"
+  dependencies:
+    "@turf/helpers": "npm:^7.2.0"
+    "@turf/invariant": "npm:^7.2.0"
+    "@types/geojson": "npm:^7946.0.10"
+    tslib: "npm:^2.8.1"
+  checksum: 10c0/64ca7562d081a3bc9000d7b08a417577a9d5431e91b002f39e771df4c0f8b323becbff2bddaadd414069e7fe8704c7ae1880c4d6cb5c140d3333fba2b65bd6e0
+  languageName: node
+  linkType: hard
+
 "@turf/distance@npm:7.2.0, @turf/distance@npm:^7.2.0":
   version: 7.2.0
   resolution: "@turf/distance@npm:7.2.0"
@@ -3529,6 +3553,13 @@ __metadata:
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: 10c0/386d011a553e02bc594ac2ca0bd6d9e4c22d7fa8cfbfc448a6d148c59ea881b092db9dbe3547ae4b88e55f1b01f7c4a2ecc53b310c042793e63aa44cf6c257f2
+  languageName: node
+  linkType: hard
+
+"h3-js@npm:4.2.1":
+  version: 4.2.1
+  resolution: "h3-js@npm:4.2.1"
+  checksum: 10c0/3c72c51149e4e6f9920cd47ff1b9a2ac4cdc1a1d8e41072e31b10db60ba9e264009dc833a30d06d421c083605495d14eca848bd25d85c7840a467c4db95bc50a
   languageName: node
   linkType: hard
 
@@ -5159,6 +5190,8 @@ __metadata:
     "@deanc/esbuild-plugin-postcss": "npm:1.0.2"
     "@reduxjs/toolkit": "npm:2.7.0"
     "@trivago/prettier-plugin-sort-imports": "npm:5.2.2"
+    "@turf/bearing": "npm:7.2.0"
+    "@turf/destination": "npm:7.2.0"
     "@turf/distance": "npm:7.2.0"
     "@turf/helpers": "npm:7.2.0"
     "@turf/invariant": "npm:7.2.0"
@@ -5175,6 +5208,7 @@ __metadata:
     esbuild: "npm:0.25.3"
     geographiclib-dms: "npm:2.1.1"
     geographiclib-geodesic: "patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch"
+    h3-js: "npm:4.2.1"
     htmlnano: "npm:2.1.2"
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.1"
