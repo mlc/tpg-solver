@@ -2489,12 +2489,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@types/react-dom@npm:19.1.2"
+"@types/react-dom@npm:19.1.3":
+  version: 19.1.3
+  resolution: "@types/react-dom@npm:19.1.3"
   peerDependencies:
     "@types/react": ^19.0.0
-  checksum: 10c0/100c341cacba9ec8ae1d47ee051072a3450e9573bf8eeb7262490e341cb246ea0f95a07a1f2077e61cf92648f812a0324c602fcd811bd87b7ce41db2811510cd
+  checksum: 10c0/bb1e3f7a446958f5aa7e46f74cf8470dab7444ab958a57efacca1abcc9847e4ca71e2df68515176ed8fe3fc89315bd949d60f1f346cbadbdbf302bff59d3961b
   languageName: node
   linkType: hard
 
@@ -2650,9 +2650,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-cdk-lib@npm:2.192.0":
-  version: 2.192.0
-  resolution: "aws-cdk-lib@npm:2.192.0"
+"aws-cdk-lib@npm:2.194.0":
+  version: 2.194.0
+  resolution: "aws-cdk-lib@npm:2.194.0"
   dependencies:
     "@aws-cdk/asset-awscli-v1": "npm:^2.2.229"
     "@aws-cdk/asset-node-proxy-agent-v6": "npm:^2.1.0"
@@ -2670,13 +2670,13 @@ __metadata:
     yaml: "npm:1.10.2"
   peerDependencies:
     constructs: ^10.0.0
-  checksum: 10c0/d0ff4cea105add6f18bb46ef4de9ebd2ab3d7378d92e93125f61c810ae9f06b404bb5919a7e24a898418544d856a9e7ed86f048615f967bc98f61e9abe63c87d
+  checksum: 10c0/b923cf2709ad4ad76a261760a7510884fbf699b68d08b588f7106785be7d7e9e982762c3c049630b0582960bdee91334d76641051d9d012a9af906328879e5a9
   languageName: node
   linkType: hard
 
-"aws-cdk@npm:2.1012.0":
-  version: 2.1012.0
-  resolution: "aws-cdk@npm:2.1012.0"
+"aws-cdk@npm:2.1013.0":
+  version: 2.1013.0
+  resolution: "aws-cdk@npm:2.1013.0"
   dependencies:
     fsevents: "npm:2.3.2"
   dependenciesMeta:
@@ -2684,7 +2684,7 @@ __metadata:
       optional: true
   bin:
     cdk: bin/cdk
-  checksum: 10c0/db44ec2a4d9937e02fd51e000e2fb6ddf4c93bbd9b1a7ae027be8db02209b99c4165e8ab0d66ce79e020f9785a6fff813a0311704e84518fa7123318164027ea
+  checksum: 10c0/829e5cf6dd5c66bb32cad764a5d99266a90151167f8babd843641340a544953f01f69f4993df92700610aaae5caebc6060f3cc46ec65e761edfc0ec9e7f6c169
   languageName: node
   linkType: hard
 
@@ -2737,17 +2737,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:4.24.4, browserslist@npm:^4.24.4":
-  version: 4.24.4
-  resolution: "browserslist@npm:4.24.4"
+"browserslist@npm:4.24.5, browserslist@npm:^4.24.4":
+  version: 4.24.5
+  resolution: "browserslist@npm:4.24.5"
   dependencies:
-    caniuse-lite: "npm:^1.0.30001688"
-    electron-to-chromium: "npm:^1.5.73"
+    caniuse-lite: "npm:^1.0.30001716"
+    electron-to-chromium: "npm:^1.5.149"
     node-releases: "npm:^2.0.19"
-    update-browserslist-db: "npm:^1.1.1"
+    update-browserslist-db: "npm:^1.1.3"
   bin:
     browserslist: cli.js
-  checksum: 10c0/db7ebc1733cf471e0b490b4f47e3e2ea2947ce417192c9246644e92c667dd56a71406cc58f62ca7587caf828364892e9952904a02b7aead752bc65b62a37cfe9
+  checksum: 10c0/f4c1ce1a7d8fdfab5e5b88bb6e93d09e8a883c393f86801537a252da0362dbdcde4dbd97b318246c5d84c6607b2f6b47af732c1b000d6a8a881ee024bad29204
   languageName: node
   linkType: hard
 
@@ -2778,10 +2778,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001688, caniuse-lite@npm:^1.0.30001702":
-  version: 1.0.30001715
-  resolution: "caniuse-lite@npm:1.0.30001715"
-  checksum: 10c0/0109a7da797ffbe1aa197baa5242b205011098eecec1087ef3d0c58ceea19be325ab6679b2751a78660adc3051a9f77e99d5789938fd1eb1235e6fdf6a1dbf8e
+"caniuse-lite@npm:^1.0.30001702, caniuse-lite@npm:^1.0.30001716":
+  version: 1.0.30001717
+  resolution: "caniuse-lite@npm:1.0.30001717"
+  checksum: 10c0/6c0bb1e5182fd578ebe97ee2203250849754a4e17d985839fab527ad27e125a4c4ffce3ece5505217fedf30ea0bbc17ac9f93e9ac525c0389ccba61c6e8345dc
   languageName: node
   linkType: hard
 
@@ -2792,14 +2792,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cdk@npm:2.1012.0":
-  version: 2.1012.0
-  resolution: "cdk@npm:2.1012.0"
+"cdk@npm:2.1013.0":
+  version: 2.1013.0
+  resolution: "cdk@npm:2.1013.0"
   dependencies:
-    aws-cdk: "npm:2.1012.0"
+    aws-cdk: "npm:2.1013.0"
   bin:
     cdk: bin/cdk
-  checksum: 10c0/8e199b0ab54903e1c7c0ce4de9907a995c7a8d71b6dba8595514bc31dc31d050fa8d602733c59a082e19b5c1b8285aeb42cebe99deed4b89c69b7c6fac5a18e8
+  checksum: 10c0/529a54c8067d2eea7446dbe90b59b0d74e2d8ea5a811bac4101f49ea0d63478d15ea719decb837518e12c1b4165da6ae10614c871e35c27b827b27e838c88ba4
   languageName: node
   linkType: hard
 
@@ -3141,10 +3141,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.73":
-  version: 1.5.139
-  resolution: "electron-to-chromium@npm:1.5.139"
-  checksum: 10c0/1b468c0c02a38322261b50b12ed090ff792a0d2ea24f299368babd484d5b81829528540463158572a3524fd835014d877d6c4bf097509bdb13ca696609b04aca
+"electron-to-chromium@npm:^1.5.149":
+  version: 1.5.150
+  resolution: "electron-to-chromium@npm:1.5.150"
+  checksum: 10c0/898c232d5678a1e50f254b93902042e7287c6435ec8adab2a0f35e9f11f343eac901b799babaac92ec455a36f35ac0321847a391470629dd0060a681f850797d
   languageName: node
   linkType: hard
 
@@ -3532,17 +3532,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htmlnano@npm:2.1.1":
-  version: 2.1.1
-  resolution: "htmlnano@npm:2.1.1"
+"htmlnano@npm:2.1.2":
+  version: 2.1.2
+  resolution: "htmlnano@npm:2.1.2"
   dependencies:
     cosmiconfig: "npm:^9.0.0"
     posthtml: "npm:^0.16.5"
-    timsort: "npm:^0.3.0"
   peerDependencies:
     cssnano: ^7.0.0
     postcss: ^8.3.11
-    purgecss: ^6.0.0
+    purgecss: ^7.0.2
     relateurl: ^0.2.7
     srcset: 5.0.1
     svgo: ^3.0.2
@@ -3565,7 +3564,7 @@ __metadata:
       optional: true
     uncss:
       optional: true
-  checksum: 10c0/3610259a3ccfb84be45525b1a02bce8bc392a2d0dcea0b069ff673e7330dad1f2bc4c3eb48abc69b344fe327345fb9be0650d9da13c25a1a654a879288f76f38
+  checksum: 10c0/dfd9a4f5a0b8911d8958b970fe5d752a235f763b5b4be581454cdaab1b5e3e6c61d338f69c6b31c04923e06e8fbed07685a7b5314dd49a86109940b51abc0a5a
   languageName: node
   linkType: hard
 
@@ -5123,13 +5122,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"timsort@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "timsort@npm:0.3.0"
-  checksum: 10c0/571b2054a0db3cf80eb255f8609a1f798cae9176f9ec6e3fbd03d64186c015cc9e1e75b88ba38e1d71aebcc03a931352522c7387dcb90caeb148375c7bc106f4
-  languageName: node
-  linkType: hard
-
 "tinyglobby@npm:^0.2.12":
   version: 0.2.13
   resolution: "tinyglobby@npm:0.2.13"
@@ -5174,16 +5166,16 @@ __metadata:
     "@types/geojson": "npm:7946.0.16"
     "@types/papaparse": "npm:5.3.15"
     "@types/react": "npm:19.1.2"
-    "@types/react-dom": "npm:19.1.2"
+    "@types/react-dom": "npm:19.1.3"
     autoprefixer: "npm:10.4.21"
-    aws-cdk-lib: "npm:2.192.0"
-    browserslist: "npm:4.24.4"
-    cdk: "npm:2.1012.0"
+    aws-cdk-lib: "npm:2.194.0"
+    browserslist: "npm:4.24.5"
+    cdk: "npm:2.1013.0"
     constructs: "npm:10.4.2"
     esbuild: "npm:0.25.3"
     geographiclib-dms: "npm:2.1.1"
     geographiclib-geodesic: "patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch"
-    htmlnano: "npm:2.1.1"
+    htmlnano: "npm:2.1.2"
     husky: "npm:9.1.7"
     lint-staged: "npm:15.5.1"
     papaparse: "npm:5.5.2"
@@ -5299,7 +5291,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"update-browserslist-db@npm:^1.1.1":
+"update-browserslist-db@npm:^1.1.3":
   version: 1.1.3
   resolution: "update-browserslist-db@npm:1.1.3"
   dependencies:
