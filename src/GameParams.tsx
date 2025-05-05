@@ -86,10 +86,7 @@ const LineInput = () => {
         Point 2:
         <input name="line1" onChange={onChange1} value={text[1]} />
       </label>
-      <FileInput
-        onFile={onFile}
-        accept="application/vnd.google-earth.kml+xml,application/json,application/geo+json,.kml,.json,.geojson"
-      >
+      <FileInput onFile={onFile} kind={['kml', 'json']}>
         Upload KML or GeoJSON
       </FileInput>
     </>

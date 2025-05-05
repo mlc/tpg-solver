@@ -29,10 +29,7 @@ const Data: React.FC = () => {
     <form>
       <h2>Photos Data</h2>
       <p>Currently loaded {count} photos.</p>
-      <FileInput
-        onFile={onFile}
-        accept="text/csv,application/json,application/geo+json,.csv,.json,.geojson"
-      >
+      <FileInput onFile={onFile} kind={['csv', 'json']}>
         Load File
       </FileInput>
       <MaybeError error={error} />

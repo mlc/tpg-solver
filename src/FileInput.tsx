@@ -1,12 +1,26 @@
 import * as React from 'react';
 
+type Kind = 'csv' | 'kml' | 'json';
+
 interface Props {
-  accept?: string;
+  kind: Kind[];
   onFile?: (file: File) => void;
   children?: React.ReactNode;
 }
 
-const FileInput: React.FC<Props> = ({ accept, onFile, children }) => {
+const mimes: Record<Kind, string> = {
+  csv: 'text/csv',
+  json: 'application/json,application/geo+json',
+  kml: 'application/vnd.google-earth.kml+xml',
+};
+
+const exts: Record<Kind, string> = {
+  csv: '.csv',
+  json: '.json,.geojson',
+  kml: '.kml',
+};
+
+const FileInput: React.FC<Props> = ({ kind, onFile, children }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const onLoadClick = React.useCallback(() => {
@@ -23,6 +37,10 @@ const FileInput: React.FC<Props> = ({ accept, onFile, children }) => {
       },
       [onFile]
     );
+
+  const accept = [mimes, exts]
+    .flatMap((map) => kind.map((k) => map[k]))
+    .join(',');
 
   return (
     <p>
