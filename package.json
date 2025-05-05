@@ -16,9 +16,9 @@
     "postinstall": "husky"
   },
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "3.797.0",
-    "@aws-sdk/client-cloudfront": "3.797.0",
-    "@aws-sdk/client-s3": "3.797.0",
+    "@aws-sdk/client-cloudformation": "3.803.0",
+    "@aws-sdk/client-cloudfront": "3.803.0",
+    "@aws-sdk/client-s3": "3.803.0",
     "@chialab/esbuild-plugin-html": "0.18.2",
     "@deanc/esbuild-plugin-postcss": "1.0.2",
     "@trivago/prettier-plugin-sort-imports": "5.2.2",
