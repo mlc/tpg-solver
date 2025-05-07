@@ -20,7 +20,6 @@ export function Radio<T extends string | number>({
   const onChange: React.ChangeEventHandler<HTMLInputElement> =
     React.useCallback(
       (evt) => {
-        console.log(thisMode);
         setMode(thisMode);
       },
       [setMode, thisMode]
