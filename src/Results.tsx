@@ -152,7 +152,13 @@ const Results: React.FC = () => {
     } else {
       return null;
     }
-  }, [game?.mode, game?.target, game?.geoid, photos]);
+  }, [
+    game?.mode,
+    game?.target,
+    game?.geoid,
+    game && 'constrainToSegment' in game && game.constrainToSegment,
+    photos,
+  ]);
   let extraGc: string[] | undefined;
   if (game?.mode === GameMode.LINE) {
     extraGc = [gcFmtLine(game.target.geometry.coordinates)];

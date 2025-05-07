@@ -111,7 +111,8 @@ b {
   gap: 16px;
 }
 
-.selector label input {
+.selector label input,
+#game-params input[type='checkbox'] {
   margin-inline: 0;
   margin-inline-end: 4px;
 }
@@ -126,7 +127,8 @@ b {
   color: #cca;
 }
 
-#game-params input,
+#game-params input:not([type]),
+#game-params input[type='text'],
 #game-params textarea {
   font: inherit;
   width: 12em;

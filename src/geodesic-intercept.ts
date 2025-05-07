@@ -43,6 +43,7 @@ const decoratedPoint = (
 const geodesicIntercept = (
   line: LineString | Feature<LineString>,
   p: Coord,
+  constrainToSegment = true,
   ellipse = Geodesic.WGS84
 ): Feature<Point, OutputPointProps> => {
   const coordinates: [number, number][] = getCoords(line);
@@ -85,7 +86,7 @@ const geodesicIntercept = (
     lona = a2.lon2!;
   }
 
-  if (totalSAX < 0 || totalSAX > abInitial.s13) {
+  if (constrainToSegment && (totalSAX < 0 || totalSAX > abInitial.s13)) {
     // the computed intercept is not on the segment AB; return the
     // appropriate endpoint
     const ap = ellipse.Inverse(

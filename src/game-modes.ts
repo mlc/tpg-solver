@@ -20,6 +20,7 @@ interface BasicGame {
 interface LineGame {
   mode: GameMode.LINE;
   target: Feature<LineString>;
+  constrainToSegment: boolean;
   geoid: Geoid;
 }
 

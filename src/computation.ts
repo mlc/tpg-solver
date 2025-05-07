@@ -12,14 +12,26 @@ const isDegenerate = (line: Feature<LineString>) =>
     line.geometry.coordinates[1].join(',');
 
 export const useGameConfig = (): GameConfig | null => {
-  const { mode, lineTarget, basicTarget, multiTarget, geoid, error } =
-    useAppSelector(({ game }) => game);
+  const {
+    mode,
+    lineTarget,
+    lineWraparound,
+    basicTarget,
+    multiTarget,
+    geoid,
+    error,
+  } = useAppSelector(({ game }) => game);
   if (error) {
     return null;
   } else if (mode === GameMode.BASIC) {
     return { mode, target: basicTarget, geoid };
   } else if (mode === GameMode.LINE && !isDegenerate(lineTarget)) {
-    return { mode, target: lineTarget, geoid };
+    return {
+      mode,
+      target: lineTarget,
+      geoid,
+      constrainToSegment: !lineWraparound,
+    };
   } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
     return { mode, target: multiTarget, geoid };
   } else {
@@ -38,6 +50,7 @@ const FARAWAY_DISTANCE: DistanceProps = {
 };
 
 const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
+  console.log(game);
   switch (game.mode) {
     case GameMode.BASIC:
       return (p) => ({
@@ -47,7 +60,11 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
     case GameMode.LINE:
       if (game.geoid === Geoid.WGS84) {
         return (p) => {
-          const result = geodesicIntercept(game.target.geometry, p);
+          const result = geodesicIntercept(
+            game.target.geometry,
+            p,
+            game.constrainToSegment
+          );
           return {
             distance: result.properties.s12 / 1000,
             dest: result.geometry,

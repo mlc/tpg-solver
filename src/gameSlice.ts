@@ -16,6 +16,7 @@ export interface GameState {
   basicTarget: Feature<Point>;
   lineText: [string, string];
   lineTarget: Feature<LineString>;
+  lineWraparound: boolean;
   multiText: string;
   multiTarget: FeatureCollection<Point>;
   geoid: Geoid;
@@ -31,6 +32,7 @@ const initialState: GameState = {
     [0, 0],
     [0, 0],
   ]),
+  lineWraparound: false,
   multiText: '',
   multiTarget: points([]),
   geoid: Geoid.SPHERE,
@@ -59,6 +61,9 @@ export const gameSlice = createSlice({
     },
     setLine1: (state, action: PayloadAction<string>) => {
       state.lineText[1] = action.payload;
+    },
+    setLineWraparound: (state, action: PayloadAction<boolean>) => {
+      state.lineWraparound = action.payload;
     },
     setMulti: (state, action: PayloadAction<string>) => {
       state.multiText = action.payload;
@@ -122,6 +127,7 @@ export const {
   setBasic,
   setLine0,
   setLine1,
+  setLineWraparound,
   setMulti,
   setUploadLine,
   setUploadError,

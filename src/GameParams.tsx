@@ -1,11 +1,12 @@
 import * as React from 'react';
 import FileInput from './FileInput';
 import MaybeError from './MaybeError';
-import { GameMode } from './game-modes';
+import { GameMode, Geoid } from './game-modes';
 import {
   setBasic,
   setLine0,
   setLine1,
+  setLineWraparound,
   setMulti,
   setUploadError,
   setUploadLine,
@@ -53,6 +54,12 @@ const MultiInput = () => {
 const LineInput = () => {
   const dispatch = useAppDispatch();
   const text = useAppSelector((state) => state.game.lineText);
+  const canWraparound = useAppSelector(
+    (state) =>
+      state.game.lineTarget.geometry.coordinates.length === 2 &&
+      state.game.geoid === Geoid.WGS84
+  );
+  const wraparound = useAppSelector((state) => state.game.lineWraparound);
   const onChange0: React.ChangeEventHandler<HTMLInputElement> =
     React.useCallback(
       (evt) => dispatch(setLine0(evt.target.value)),
@@ -61,6 +68,11 @@ const LineInput = () => {
   const onChange1: React.ChangeEventHandler<HTMLInputElement> =
     React.useCallback(
       (evt) => dispatch(setLine1(evt.target.value)),
+      [dispatch]
+    );
+  const onChangeWraparound: React.ChangeEventHandler<HTMLInputElement> =
+    React.useCallback(
+      (evt) => dispatch(setLineWraparound(evt.target.checked)),
       [dispatch]
     );
   const onFile = React.useCallback(
@@ -86,6 +98,20 @@ const LineInput = () => {
         Point 2:
         <input name="line1" onChange={onChange1} value={text[1]} />
       </label>
+      {canWraparound && (
+        <>
+          <br />
+          <label>
+            <input
+              name="wraparound"
+              onChange={onChangeWraparound}
+              checked={wraparound}
+              type="checkbox"
+            />
+            Wrap around the entire globe
+          </label>
+        </>
+      )}
       <FileInput onFile={onFile} kind={['kml', 'json']}>
         Upload KML or GeoJSON
       </FileInput>
