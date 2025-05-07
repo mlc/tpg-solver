@@ -2,9 +2,9 @@ import * as React from 'react';
 import type { FeatureCollection, Point, Position } from 'geojson';
 import Icon from './Icon';
 import { DistanceProps, decorate, useGameConfig } from './computation';
-import { GameMode } from './game-modes';
+import { GameMode, Geoid } from './game-modes';
 import { useAppSelector } from './store';
-import { formatCoord } from './util';
+import { extendLine, formatCoord } from './util';
 
 // https://stackoverflow.com/a/9284473
 const URL_REGEX =
@@ -161,7 +161,15 @@ const Results: React.FC = () => {
   ]);
   let extraGc: string[] | undefined;
   if (game?.mode === GameMode.LINE) {
-    extraGc = [gcFmtLine(game.target.geometry.coordinates)];
+    if (game.geoid === Geoid.WGS84 && !game.constrainToSegment) {
+      extraGc = [
+        ...game.target.geometry.coordinates.map(gcFmt),
+        'm:-',
+        gcFmtLine(extendLine(game.target)),
+      ];
+    } else {
+      extraGc = [gcFmtLine(game.target.geometry.coordinates)];
+    }
   } else if (game?.mode === GameMode.MULTI) {
     extraGc = game.target.features.map((f) => gcFmt(f.geometry.coordinates));
   }

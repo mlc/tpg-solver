@@ -50,7 +50,6 @@ const FARAWAY_DISTANCE: DistanceProps = {
 };
 
 const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
-  console.log(game);
   switch (game.mode) {
     case GameMode.BASIC:
       return (p) => ({
