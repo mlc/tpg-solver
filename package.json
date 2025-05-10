@@ -34,7 +34,7 @@
     "esbuild": "0.25.3",
     "htmlnano": "2.1.2",
     "husky": "9.1.7",
-    "lint-staged": "15.5.1",
+    "lint-staged": "16.0.0",
     "postcss": "8.5.3",
     "postcss-preset-env": "10.1.6",
     "prettier": "3.5.3",
