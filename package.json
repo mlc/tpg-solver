@@ -33,6 +33,7 @@
     "cdk": "2.1014.0",
     "constructs": "10.4.2",
     "esbuild": "0.25.4",
+    "esbuild-plugin-browserslist": "1.0.0",
     "htmlnano": "2.1.2",
     "husky": "9.1.7",
     "lint-staged": "16.0.0",

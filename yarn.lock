@@ -3230,6 +3230,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild-plugin-browserslist@npm:1.0.0":
+  version: 1.0.0
+  resolution: "esbuild-plugin-browserslist@npm:1.0.0"
+  dependencies:
+    debug: "npm:^4.4.0"
+    zod: "npm:^3.24.2"
+  peerDependencies:
+    browserslist: ^4.21.8
+    esbuild: ~0.25.1
+  checksum: 10c0/8b41f8dd5bc003445221058683a8ee112736cf856f6eaaa14857fd37d13dfc755c51c1529b767d386878380827a2f0c3dc647f0fbb260ded32b04ee2a81efbcc
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:0.25.4":
   version: 0.25.4
   resolution: "esbuild@npm:0.25.4"
@@ -5098,6 +5111,7 @@ __metadata:
     cdk: "npm:2.1014.0"
     constructs: "npm:10.4.2"
     esbuild: "npm:0.25.4"
+    esbuild-plugin-browserslist: "npm:1.0.0"
     geographiclib-dms: "npm:2.1.1"
     geographiclib-geodesic: "patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch"
     htmlnano: "npm:2.1.2"
@@ -5351,5 +5365,12 @@ __metadata:
   version: 3.1.1
   resolution: "yn@npm:3.1.1"
   checksum: 10c0/0732468dd7622ed8a274f640f191f3eaf1f39d5349a1b72836df484998d7d9807fbea094e2f5486d6b0cd2414aad5775972df0e68f8604db89a239f0f4bf7443
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.24.2":
+  version: 3.24.4
+  resolution: "zod@npm:3.24.4"
+  checksum: 10c0/ab3112f017562180a41a0f83d870b333677f7d6b77f106696c56894567051b91154714a088149d8387a4f50806a2520efcb666f108cd384a35c236a191186d91
   languageName: node
   linkType: hard
