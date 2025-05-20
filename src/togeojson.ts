@@ -1,5 +1,5 @@
 // https://github.com/mapbox/togeojson/blob/master/togeojson.js
-/* @license
+/*
  * Copyright (c) 2016 Mapbox All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -10,6 +10,7 @@
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import { featureCollection } from '@turf/helpers';
 import type {
   Feature,
   FeatureCollection,
@@ -34,34 +35,24 @@ function okhash(x: string): number {
   return h;
 }
 // all Y children of X
-function get(x: Element | Document, y: string) {
-  return x.getElementsByTagName(y);
-}
-function attr(x: Element, y: string): string | null {
-  return x.getAttribute(y);
-}
 function attrf(x: Element, y: string) {
-  return parseFloat(attr(x, y) ?? '0.0');
+  return parseFloat(x.getAttribute(y) ?? '0.0');
 }
 // one Y child of X, if any, otherwise null
 function get1(x: Element, y: string): Element | null {
-  const n = get(x, y);
+  const n = x.getElementsByTagName(y);
   return n.length ? n[0] : null;
 }
 // https://developer.mozilla.org/en-US/docs/Web/API/Node.normalize
-function norm(el: Node) {
-  if (el.normalize) {
+function norm<T extends Node | null | undefined>(el: T): T {
+  if (el && el.normalize) {
     el.normalize();
   }
   return el;
 }
 // cast array x into numbers
 function numarray(x: any[]): number[] {
-  let o: number[] = [];
-  for (let j = 0; j < x.length; j++) {
-    o[j] = parseFloat(x[j]);
-  }
-  return o;
+  return x.map((item) => parseFloat(item));
 }
 // get the content of a text node, if any
 function nodeVal(x: Node | null): string {
@@ -119,21 +110,20 @@ function coordPair(x: Element): CoordPair {
   };
 }
 
-// create a new feature collection parent object
-function fc<G extends Geometry>(): FeatureCollection<G> {
-  return {
-    type: 'FeatureCollection',
-    features: [],
-  };
+const serializer = new XMLSerializer();
+
+interface GxCoords {
+  coords: Position[];
+  times: string[];
 }
 
-const serializer = new XMLSerializer();
-function xml2str(str: Node): string {
-  return serializer.serializeToString(str);
+interface GeomAndTimes {
+  geoms: Geometry[];
+  coordTimes: string[][];
 }
 
 export function kml(doc: XMLDocument): FeatureCollection {
-  const gj = fc();
+  const gj = featureCollection([]);
   // styleindex keeps track of hashed styles in order to match features
   const styleIndex: Record<string, string> = {};
   const styleByHash: Record<string, Element> = {};
@@ -143,27 +133,27 @@ export function kml(doc: XMLDocument): FeatureCollection {
   // handled separately
   const geotypes = ['Polygon', 'LineString', 'Point', 'Track', 'gx:Track'];
   // all root placemarks in the file
-  const placemarks = get(doc, 'Placemark');
-  const styles = get(doc, 'Style');
-  const styleMaps = get(doc, 'StyleMap');
+  const placemarks = doc.getElementsByTagName('Placemark');
+  const styles = doc.getElementsByTagName('Style');
+  const styleMaps = doc.getElementsByTagName('StyleMap');
 
   for (let k = 0; k < styles.length; k++) {
-    const hash = okhash(xml2str(styles[k])).toString(16);
-    styleIndex['#' + attr(styles[k], 'id')] = hash;
+    const hash = okhash(serializer.serializeToString(styles[k])).toString(16);
+    styleIndex['#' + styles[k].getAttribute('id')] = hash;
     styleByHash[hash] = styles[k];
   }
   for (let l = 0; l < styleMaps.length; l++) {
-    styleIndex['#' + attr(styleMaps[l], 'id')] = okhash(
-      xml2str(styleMaps[l])
+    styleIndex['#' + styleMaps[l].getAttribute('id')] = okhash(
+      serializer.serializeToString(styleMaps[l])
     ).toString(16);
-    const pairs = get(styleMaps[l], 'Pair');
+    const pairs = styleMaps[l].getElementsByTagName('Pair');
     const pairsMap: Record<string, string> = {};
     for (let m = 0; m < pairs.length; m++) {
       pairsMap[nodeVal(get1(pairs[m], 'key'))] = nodeVal(
         get1(pairs[m], 'styleUrl')
       );
     }
-    styleMapIndex['#' + attr(styleMaps[l], 'id')] = pairsMap;
+    styleMapIndex['#' + styleMaps[l].getAttribute('id')] = pairsMap;
   }
   for (let j = 0; j < placemarks.length; j++) {
     gj.features.push(...getPlacemark(placemarks[j]));
@@ -189,24 +179,21 @@ export function kml(doc: XMLDocument): FeatureCollection {
   function gxCoord(v: string): Position {
     return numarray(v.split(' '));
   }
-  function gxCoords(root: Element): { coords: Position[]; times: string[] } {
-    let elems = get(root, 'coord');
+  function gxCoords(root: Element): GxCoords {
+    let elems = root.getElementsByTagName('coord');
     const coords: Position[] = [];
     const times: string[] = [];
-    if (elems.length === 0) elems = get(root, 'gx:coord');
+    if (elems.length === 0) elems = root.getElementsByTagName('gx:coord');
     for (let i = 0; i < elems.length; i++)
       coords.push(gxCoord(nodeVal(elems[i])));
-    const timeElems = get(root, 'when');
+    const timeElems = root.getElementsByTagName('when');
     for (let j = 0; j < timeElems.length; j++)
       times.push(nodeVal(timeElems[j]));
     return { coords, times };
   }
-  function getGeometry(root: Element): {
-    geoms: Geometry[];
-    coordTimes: string[][];
-  } {
-    let geoms: Geometry[] = [];
-    let coordTimes: string[][] = [];
+  function getGeometry(root: Element): GeomAndTimes {
+    const geoms: Geometry[] = [];
+    const coordTimes: string[][] = [];
     let mg = get1(root, 'MultiGeometry');
     if (mg) {
       return getGeometry(mg);
@@ -219,23 +206,23 @@ export function kml(doc: XMLDocument): FeatureCollection {
     if (mg) {
       return getGeometry(mg);
     }
-    for (let i = 0; i < geotypes.length; i++) {
-      const geomNodes = get(root, geotypes[i]);
-      if (geomNodes) {
+    for (const geotype of geotypes) {
+      const geomNodes = root.getElementsByTagName(geotype);
+      if (geomNodes && geomNodes.length) {
         for (let j = 0; j < geomNodes.length; j++) {
           const geomNode = geomNodes[j];
-          if (geotypes[i] === 'Point') {
+          if (geotype === 'Point') {
             geoms.push({
               type: 'Point',
               coordinates: coord1(nodeVal(get1(geomNode, 'coordinates'))),
             });
-          } else if (geotypes[i] === 'LineString') {
+          } else if (geotype === 'LineString') {
             geoms.push({
               type: 'LineString',
               coordinates: coord(nodeVal(get1(geomNode, 'coordinates'))),
             });
-          } else if (geotypes[i] === 'Polygon') {
-            const rings = get(geomNode, 'LinearRing');
+          } else if (geotype === 'Polygon') {
+            const rings = geomNode.getElementsByTagName('LinearRing');
             const coordinates: Position[][] = [];
             for (let k = 0; k < rings.length; k++) {
               coordinates.push(coord(nodeVal(get1(rings[k], 'coordinates'))));
@@ -244,7 +231,7 @@ export function kml(doc: XMLDocument): FeatureCollection {
               type: 'Polygon',
               coordinates,
             });
-          } else if (geotypes[i] === 'Track' || geotypes[i] === 'gx:Track') {
+          } else if (geotype === 'Track' || geotype === 'gx:Track') {
             const track = gxCoords(geomNode);
             geoms.push({
               type: 'LineString',
@@ -338,8 +325,8 @@ export function kml(doc: XMLDocument): FeatureCollection {
       }
     }
     if (extendedData) {
-      const datas = get(extendedData, 'Data');
-      const simpleDatas = get(extendedData, 'SimpleData');
+      const datas = extendedData.getElementsByTagName('Data');
+      const simpleDatas = extendedData.getElementsByTagName('SimpleData');
 
       for (let i = 0; i < datas.length; i++) {
         properties[datas[i].getAttribute('name')!] = nodeVal(
@@ -372,7 +359,7 @@ export function kml(doc: XMLDocument): FeatureCollection {
             },
       properties: properties,
     };
-    const id = attr(root, 'id');
+    const id = root.getAttribute('id');
     if (id) {
       feature.id = id;
     }
@@ -388,11 +375,11 @@ interface JsonLink {
 }
 
 export function gpx(doc: XMLDocument): FeatureCollection {
-  const tracks = get(doc, 'trk');
-  const routes = get(doc, 'rte');
-  const waypoints = get(doc, 'wpt');
+  const tracks = doc.getElementsByTagName('trk');
+  const routes = doc.getElementsByTagName('rte');
+  const waypoints = doc.getElementsByTagName('wpt');
   // a feature collection
-  const gj = fc();
+  const gj = featureCollection([]);
   for (let i = 0; i < tracks.length; i++) {
     const feature = getTrack(tracks[i]);
     if (feature) {
@@ -412,7 +399,7 @@ export function gpx(doc: XMLDocument): FeatureCollection {
     node: Element,
     pointname: string
   ): null | { line: Position[]; times?: string[]; heartRates?: number[] } {
-    const pts = get(node, pointname);
+    const pts = node.getElementsByTagName(pointname);
     const line: Position[] = [];
     const times: string[] = [];
     const heartRates: number[] = [];
@@ -436,7 +423,7 @@ export function gpx(doc: XMLDocument): FeatureCollection {
   function getTrack(
     node: Element
   ): Feature<LineString | MultiLineString> | undefined {
-    const segments = get(node, 'trkseg');
+    const segments = node.getElementsByTagName('trkseg');
     const track: Position[][] = [];
     const times: string[][] = [];
     const heartRates: number[][] = [];
@@ -520,11 +507,11 @@ export function gpx(doc: XMLDocument): FeatureCollection {
       'time',
       'keywords',
     ]);
-    const links = get(node, 'link');
+    const links = node.getElementsByTagName('link');
     if (links.length) {
       const jsonLinks: JsonLink[] = [];
       for (let i = 0; i < links.length; i++) {
-        const link: JsonLink = { href: attr(links[i], 'href') };
+        const link: JsonLink = { href: links[i].getAttribute('href') };
         Object.assign(link, getMulti(links[i], ['text', 'type']));
         jsonLinks.push(link);
       }

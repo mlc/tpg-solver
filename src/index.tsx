@@ -1,3 +1,10 @@
+/**
+ * @license WTFPL
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import About from './About';
