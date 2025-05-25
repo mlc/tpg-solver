@@ -9,7 +9,7 @@ import type {
   Point,
 } from 'geojson';
 import Papa from 'papaparse';
-import { kml } from './togeojson.mjs';
+import { kml } from './togeojson';
 
 const readFile = (f: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
