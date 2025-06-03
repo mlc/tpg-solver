@@ -29,6 +29,17 @@ export class TpgSolverStack extends cdk.Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
+    const logsBucket = new s3.Bucket(this, 'logsbucket', {
+      bucketName: `logs.${domainName}`,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
+      lifecycleRules: [
+        {
+          expiration: cdk.Duration.days(180),
+        },
+      ],
+    });
     const certificate = new acm.Certificate(this, 'cert', {
       domainName,
       validation: acm.CertificateValidation.fromDns(zone),
@@ -46,6 +57,8 @@ export class TpgSolverStack extends cdk.Stack {
       domainNames: [domainName],
       enableIpv6: true,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
+      logBucket: logsBucket,
+      enableLogging: true,
     });
     new route53.ARecord(this, 'arecord', {
       zone,
