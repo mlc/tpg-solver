@@ -6,6 +6,7 @@ import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
+import { LogDelivery } from './LogDelivery';
 
 interface Props extends cdk.StackProps {
   zone: string;
@@ -29,17 +30,6 @@ export class TpgSolverStack extends cdk.Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
-    const logsBucket = new s3.Bucket(this, 'logsbucket', {
-      bucketName: `logs.${domainName}`,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
-      lifecycleRules: [
-        {
-          expiration: cdk.Duration.days(180),
-        },
-      ],
-    });
     const certificate = new acm.Certificate(this, 'cert', {
       domainName,
       validation: acm.CertificateValidation.fromDns(zone),
@@ -57,8 +47,10 @@ export class TpgSolverStack extends cdk.Stack {
       domainNames: [domainName],
       enableIpv6: true,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-      logBucket: logsBucket,
-      enableLogging: true,
+    });
+    new LogDelivery(this, 'logDelivery', {
+      distribution,
+      logGroupName: `/access/` + domainName,
     });
     new route53.ARecord(this, 'arecord', {
       zone,
