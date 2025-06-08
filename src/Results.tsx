@@ -52,7 +52,13 @@ interface DataCellProps {
 const DataCell: React.FC<DataCellProps> = ({ data }) => {
   const val = stringify(data);
   const isUrl = URL_REGEX.test(val);
-  if (isUrl) {
+  if (typeof data === 'boolean') {
+    return (
+      <td>
+        <Icon name={data ? 'check' : 'xmark'} label={String(data)} />
+      </td>
+    );
+  } else if (isUrl) {
     return (
       <td>
         <a href={val}>{val}</a>

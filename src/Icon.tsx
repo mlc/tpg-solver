@@ -7,7 +7,12 @@ interface Props {
 }
 
 const Icon: React.FC<Props> = ({ name, label, onClick }) => (
-  <span className="icon" role="button" aria-label={label} onClick={onClick}>
+  <span
+    className="icon"
+    role={onClick ? 'button' : 'img'}
+    aria-label={label}
+    onClick={onClick}
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"

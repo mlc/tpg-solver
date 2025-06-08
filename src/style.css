@@ -164,13 +164,16 @@ button:active {
   height: 1em;
   padding: 0.5em;
   line-height: 1em;
-  cursor: pointer;
 }
 
 .icon svg {
   width: 1em;
   height: 1em;
   fill: var(--main-text-color);
+}
+
+.icon[role='button'] {
+  cursor: pointer;
 }
 
 #results-grid tbody {
