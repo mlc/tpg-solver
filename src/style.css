@@ -1,9 +1,3 @@
-:root {
-  --main-bg-color: #222;
-  --main-text-color: #ffe;
-  --error-color: #e77;
-}
-
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -62,6 +56,9 @@
 }
 
 :root {
+  --main-bg-color: #222;
+  --main-text-color: #ffe;
+  --error-color: #e77;
   font-family: 'Inter', sans-serif;
   font-optical-sizing: auto;
   font-weight: 300;
@@ -191,6 +188,15 @@ button:active {
 #results-grid td {
   text-align: center;
   padding: 0 0.5em;
+}
+
+#results-grid thead {
+  position: sticky;
+  top: 0;
+}
+
+#results-grid thead tr {
+  background-color: var(--main-bg-color);
 }
 
 a:any-link {
