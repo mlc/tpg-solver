@@ -70,6 +70,20 @@ const mimeTypes = {
   '.txt': 'text/plain;charset=utf-8',
   '.html': 'text/html;charset=utf-8',
   '.woff2': 'font/woff2',
+  '.svg': 'image/svg+xml',
+};
+
+const ifNoneMatchOkay = (e) => {
+  if (
+    typeof e === 'object' &&
+    e !== null &&
+    e.Code === 'PreconditionFailed' &&
+    e.Condition === 'If-None-Match'
+  ) {
+    console.info('already exists');
+  } else {
+    throw e;
+  }
 };
 
 if (deploy) {
@@ -109,20 +123,25 @@ if (deploy) {
             ChecksumAlgorithm: 'SHA256',
           })
         )
-        .catch((e) => {
-          if (
-            typeof e === 'object' &&
-            e !== null &&
-            e.Code === 'PreconditionFailed' &&
-            e.Condition === 'If-None-Match'
-          ) {
-            console.info('already exists');
-          } else {
-            throw e;
-          }
-        });
+        .catch(ifNoneMatchOkay);
     }
   }
+
+  console.log('globe-solid.svg');
+  await s3.send(
+    new PutObjectCommand({
+      Bucket,
+      Key: 'globe-solid.svg',
+      CacheControl: 'public,max-age=86400',
+      ContentType: mimeTypes['.svg'],
+      IfNoneMatch: '*',
+      Body: await readFile(
+        joinPath(import.meta.dirname, 'src', 'globe-solid.svg')
+      ),
+      ChecksumAlgorithm: 'SHA256',
+    }).catch(ifNoneMatchOkay)
+  );
+
   console.log('index.html');
   await s3.send(
     new PutObjectCommand({
