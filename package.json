@@ -36,7 +36,7 @@
     "esbuild-plugin-browserslist": "1.0.1",
     "htmlnano": "2.1.2",
     "husky": "9.1.7",
-    "lint-staged": "16.1.1",
+    "lint-staged": "16.1.2",
     "postcss": "8.5.5",
     "postcss-preset-env": "10.2.3",
     "prettier": "3.5.3",
