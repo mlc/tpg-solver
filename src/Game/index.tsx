@@ -1,9 +1,9 @@
 import * as React from 'react';
-import GameParams from './GameParams';
-import { Selector } from './Radio';
-import { GameMode, Geoid } from './game-modes';
-import { setGeoid, setMode } from './gameSlice';
-import { useAppSelector } from './store';
+import { Selector } from '../Radio';
+import { GameMode, Geoid } from '../game-modes';
+import { setGeoid, setMode } from '../gameSlice';
+import { useAppSelector } from '../store';
+import GameParams from './Params';
 
 const Game: React.FC = () => {
   const mode = useAppSelector((state) => state.game.mode);
