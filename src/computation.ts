@@ -1,4 +1,4 @@
-import { Coord, featureCollection } from '@turf/helpers';
+import { Coord, earthRadius, featureCollection } from '@turf/helpers';
 import { Geodesic } from 'geographiclib-geodesic';
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
 import { GameConfig, GameMode, Geoid } from './game-modes';
@@ -6,7 +6,7 @@ import geodesicIntercept from './geodesic-intercept';
 import { useAppSelector } from './store';
 import { distance } from './util';
 
-const ROUND_EARTH = new Geodesic.Geodesic(6371200, 0);
+const SPHERICAL_EARTH = new Geodesic.Geodesic(earthRadius, 0);
 
 const isDegenerate = (line: Feature<LineString>) =>
   line.geometry.coordinates.length < 2 ||
@@ -64,7 +64,7 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
           game.target.geometry,
           p,
           game.constrainToSegment,
-          game.geoid === Geoid.SPHERE ? ROUND_EARTH : undefined
+          game.geoid === Geoid.SPHERE ? SPHERICAL_EARTH : undefined
         );
         return {
           distance: result.properties.s12 / 1000,
