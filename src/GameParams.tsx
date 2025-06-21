@@ -77,9 +77,7 @@ const LineInput = () => {
   const dispatch = useAppDispatch();
   const text = useAppSelector((state) => state.game.lineText);
   const canWraparound = useAppSelector(
-    (state) =>
-      state.game.lineTarget.geometry.coordinates.length === 2 &&
-      state.game.geoid === Geoid.WGS84
+    (state) => state.game.lineTarget.geometry.coordinates.length === 2
   );
   const wraparound = useAppSelector((state) => state.game.lineWraparound);
   const onChange0: React.ChangeEventHandler<HTMLInputElement> =

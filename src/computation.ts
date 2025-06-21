@@ -1,10 +1,12 @@
 import { Coord, featureCollection } from '@turf/helpers';
-import nearestPointOnLine from '@turf/nearest-point-on-line';
+import { Geodesic } from 'geographiclib-geodesic';
 import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
 import { GameConfig, GameMode, Geoid } from './game-modes';
 import geodesicIntercept from './geodesic-intercept';
 import { useAppSelector } from './store';
 import { distance } from './util';
+
+const ROUND_EARTH = new Geodesic.Geodesic(6371200, 0);
 
 const isDegenerate = (line: Feature<LineString>) =>
   line.geometry.coordinates.length < 2 ||
@@ -57,27 +59,19 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
         dest: game.target.geometry,
       });
     case GameMode.LINE:
-      if (game.geoid === Geoid.WGS84) {
-        return (p) => {
-          const result = geodesicIntercept(
-            game.target.geometry,
-            p,
-            game.constrainToSegment
-          );
-          return {
-            distance: result.properties.s12 / 1000,
-            dest: result.geometry,
-          };
+      return (p) => {
+        const result = geodesicIntercept(
+          game.target.geometry,
+          p,
+          game.constrainToSegment,
+          game.geoid === Geoid.SPHERE ? ROUND_EARTH : undefined
+        );
+        return {
+          distance: result.properties.s12 / 1000,
+          dest: result.geometry,
         };
-      } else {
-        return (p) => {
-          const result = nearestPointOnLine(game.target, p);
-          return {
-            distance: result.properties.dist,
-            dest: result.geometry,
-          };
-        };
-      }
+      };
+
     default:
       return (p) =>
         game.target.features.reduce<DistanceProps>((best, f) => {

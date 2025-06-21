@@ -24,7 +24,7 @@ const Results: React.FC = () => {
   ]);
   let extraGc: string[] | undefined;
   if (game?.mode === GameMode.LINE) {
-    if (game.geoid === Geoid.WGS84 && !game.constrainToSegment) {
+    if (!game.constrainToSegment) {
       extraGc = [
         ...game.target.geometry.coordinates.map(gcFmt),
         'm:-',

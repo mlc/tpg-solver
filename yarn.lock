@@ -2417,7 +2417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@turf/distance@npm:7.2.0, @turf/distance@npm:^7.2.0":
+"@turf/distance@npm:7.2.0":
   version: 7.2.0
   resolution: "@turf/distance@npm:7.2.0"
   dependencies:
@@ -2447,44 +2447,6 @@ __metadata:
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
   checksum: 10c0/6968b766d5522488bb2b149a72f863e3f0d4bb0342b14f3992e3e920d9e32c252e1e07e84213732cb51609aef7a82833a8fe76b1c7d0db4cd384954cfedaa4e5
-  languageName: node
-  linkType: hard
-
-"@turf/meta@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "@turf/meta@npm:7.2.0"
-  dependencies:
-    "@turf/helpers": "npm:^7.2.0"
-    "@types/geojson": "npm:^7946.0.10"
-  checksum: 10c0/707ed63ba64fe48769806bf2419f5c0cd2ebf821a6467aeffb784ba7ebd6a63ec98d4192b97915948529c00304ed46ddc83842a80714fb1f2018fd4e3c455498
-  languageName: node
-  linkType: hard
-
-"@turf/nearest-point-on-line@npm:7.2.0":
-  version: 7.2.0
-  resolution: "@turf/nearest-point-on-line@npm:7.2.0"
-  dependencies:
-    "@turf/distance": "npm:^7.2.0"
-    "@turf/helpers": "npm:^7.2.0"
-    "@turf/invariant": "npm:^7.2.0"
-    "@turf/meta": "npm:^7.2.0"
-    "@types/geojson": "npm:^7946.0.10"
-    tslib: "npm:^2.8.1"
-  checksum: 10c0/2a2236612db6adbd75337fa35ee89a2acad2897f18f34a55a736bcf313c3d2d1887aa17390580945985e6bc302dce772fd1ed2ce36b1cc299ca48a80ddc2de6e
-  languageName: node
-  linkType: hard
-
-"@turf/nearest-point-on-line@patch:@turf/nearest-point-on-line@npm%3A7.2.0#~/.yarn/patches/@turf-nearest-point-on-line-npm-7.2.0-4a7f893df8.patch":
-  version: 7.2.0
-  resolution: "@turf/nearest-point-on-line@patch:@turf/nearest-point-on-line@npm%3A7.2.0#~/.yarn/patches/@turf-nearest-point-on-line-npm-7.2.0-4a7f893df8.patch::version=7.2.0&hash=c890b0"
-  dependencies:
-    "@turf/distance": "npm:^7.2.0"
-    "@turf/helpers": "npm:^7.2.0"
-    "@turf/invariant": "npm:^7.2.0"
-    "@turf/meta": "npm:^7.2.0"
-    "@types/geojson": "npm:^7946.0.10"
-    tslib: "npm:^2.8.1"
-  checksum: 10c0/fa53e4c5f7911aeca010e603ea99886934a081950a2a1eb86c5ed1b945d46bbba3c53b18a407b8c03e789730f9400faa8f75bbbcd17a7abe819bd8fe1dbbb5c5
   languageName: node
   linkType: hard
 
@@ -5123,7 +5085,6 @@ __metadata:
     "@turf/distance": "npm:7.2.0"
     "@turf/helpers": "npm:7.2.0"
     "@turf/invariant": "npm:7.2.0"
-    "@turf/nearest-point-on-line": "patch:@turf/nearest-point-on-line@npm%3A7.2.0#~/.yarn/patches/@turf-nearest-point-on-line-npm-7.2.0-4a7f893df8.patch"
     "@types/geojson": "npm:7946.0.16"
     "@types/node": "npm:22.15.32"
     "@types/papaparse": "npm:5.3.16"
