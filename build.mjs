@@ -128,19 +128,21 @@ if (deploy) {
   }
 
   console.log('globe-solid.svg');
-  await s3.send(
-    new PutObjectCommand({
-      Bucket,
-      Key: 'globe-solid.svg',
-      CacheControl: 'public,max-age=86400',
-      ContentType: mimeTypes['.svg'],
-      IfNoneMatch: '*',
-      Body: await readFile(
-        joinPath(import.meta.dirname, 'src', 'globe-solid.svg')
-      ),
-      ChecksumAlgorithm: 'SHA256',
-    }).catch(ifNoneMatchOkay)
-  );
+  await s3
+    .send(
+      new PutObjectCommand({
+        Bucket,
+        Key: 'globe-solid.svg',
+        CacheControl: 'public,max-age=86400',
+        ContentType: mimeTypes['.svg'],
+        IfNoneMatch: '*',
+        Body: await readFile(
+          joinPath(import.meta.dirname, 'src', 'globe-solid.svg')
+        ),
+        ChecksumAlgorithm: 'SHA256',
+      })
+    )
+    .catch(ifNoneMatchOkay);
 
   console.log('index.html');
   await s3.send(
