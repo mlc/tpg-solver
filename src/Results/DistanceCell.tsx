@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { Point } from 'geojson';
 import { DistanceProps } from '../computation';
-import { gcFmtLine } from './gcmap';
+import { gcFmtLine } from '../gcmap';
 
 interface Props extends DistanceProps {
   coord: Point;

@@ -1,23 +1,23 @@
 import { createSelector } from '@reduxjs/toolkit';
 import type { Feature, LineString } from 'geojson';
 import { GameConfig, GameMode } from './game-modes';
+import { gcFmt, gcFmtLine } from './gcmap';
 import { RootState, useAppSelector } from './store';
+import { extendLine } from './util';
 
 const isDegenerate = (line: Feature<LineString>) =>
   line.geometry.coordinates.length < 2 ||
   line.geometry.coordinates[0].join(',') ===
     line.geometry.coordinates[1].join(',');
 
-const selectGameConfig = createSelector(
-  [
-    (state: RootState) => state.game.mode,
-    (state: RootState) => state.game.lineTarget,
-    (state: RootState) => state.game.lineWraparound,
-    (state: RootState) => state.game.basicTarget,
-    (state: RootState) => state.game.multiTarget,
-    (state: RootState) => state.game.geoid,
-    (state: RootState) => state.game.error,
-  ],
+export const selectGameConfig = createSelector(
+  (state: RootState) => state.game.mode,
+  (state: RootState) => state.game.lineTarget,
+  (state: RootState) => state.game.lineWraparound,
+  (state: RootState) => state.game.basicTarget,
+  (state: RootState) => state.game.multiTarget,
+  (state: RootState) => state.game.geoid,
+  (state: RootState) => state.game.error,
   (
     mode,
     lineTarget,
@@ -46,5 +46,23 @@ const selectGameConfig = createSelector(
   }
 );
 
-export const useGameConfig = (): GameConfig | null =>
-  useAppSelector(selectGameConfig);
+export const selectExtraGc = createSelector(
+  selectGameConfig,
+  (game): string[] => {
+    if (game?.mode === GameMode.LINE) {
+      if (!game.constrainToSegment) {
+        return [
+          ...game.target.geometry.coordinates.map(gcFmt),
+          'm:-',
+          gcFmtLine(extendLine(game.target)),
+        ];
+      } else {
+        return [gcFmtLine(game.target.geometry.coordinates)];
+      }
+    } else if (game?.mode === GameMode.MULTI) {
+      return game.target.features.map((f) => gcFmt(f.geometry.coordinates));
+    } else {
+      return [];
+    }
+  }
+);
