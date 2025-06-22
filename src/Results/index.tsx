@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { decorate, useGameConfig } from '../computation';
-import { GameMode, Geoid } from '../game-modes';
+import { decorate } from '../computation';
+import { GameMode } from '../game-modes';
+import { useGameConfig } from '../gameConfig';
 import { useAppSelector } from '../store';
 import { extendLine } from '../util';
 import Grid from './Grid';
@@ -15,27 +16,22 @@ const Results: React.FC = () => {
     } else {
       return null;
     }
-  }, [
-    game?.mode,
-    game?.target,
-    game?.geoid,
-    game && 'constrainToSegment' in game && game.constrainToSegment,
-    photos,
-  ]);
-  let extraGc: string[] | undefined;
-  if (game?.mode === GameMode.LINE) {
-    if (!game.constrainToSegment) {
-      extraGc = [
-        ...game.target.geometry.coordinates.map(gcFmt),
-        'm:-',
-        gcFmtLine(extendLine(game.target)),
-      ];
-    } else {
-      extraGc = [gcFmtLine(game.target.geometry.coordinates)];
+  }, [game, photos]);
+  const extraGc = React.useMemo(() => {
+    if (game?.mode === GameMode.LINE) {
+      if (!game.constrainToSegment) {
+        return [
+          ...game.target.geometry.coordinates.map(gcFmt),
+          'm:-',
+          gcFmtLine(extendLine(game.target)),
+        ];
+      } else {
+        return [gcFmtLine(game.target.geometry.coordinates)];
+      }
+    } else if (game?.mode === GameMode.MULTI) {
+      return game.target.features.map((f) => gcFmt(f.geometry.coordinates));
     }
-  } else if (game?.mode === GameMode.MULTI) {
-    extraGc = game.target.features.map((f) => gcFmt(f.geometry.coordinates));
-  }
+  }, [game]);
   if (results && results.features.length > 0) {
     return (
       <>

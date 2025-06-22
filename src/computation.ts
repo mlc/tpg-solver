@@ -1,45 +1,11 @@
 import { Coord, earthRadius, featureCollection } from '@turf/helpers';
 import { Geodesic } from 'geographiclib-geodesic';
-import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
+import type { FeatureCollection, Point } from 'geojson';
 import { GameConfig, GameMode, Geoid } from './game-modes';
 import geodesicIntercept from './geodesic-intercept';
-import { useAppSelector } from './store';
 import { distance } from './util';
 
 const SPHERICAL_EARTH = new Geodesic.Geodesic(earthRadius, 0);
-
-const isDegenerate = (line: Feature<LineString>) =>
-  line.geometry.coordinates.length < 2 ||
-  line.geometry.coordinates[0].join(',') ===
-    line.geometry.coordinates[1].join(',');
-
-export const useGameConfig = (): GameConfig | null => {
-  const {
-    mode,
-    lineTarget,
-    lineWraparound,
-    basicTarget,
-    multiTarget,
-    geoid,
-    error,
-  } = useAppSelector(({ game }) => game);
-  if (error) {
-    return null;
-  } else if (mode === GameMode.BASIC) {
-    return { mode, target: basicTarget, geoid };
-  } else if (mode === GameMode.LINE && !isDegenerate(lineTarget)) {
-    return {
-      mode,
-      target: lineTarget,
-      geoid,
-      constrainToSegment: !lineWraparound,
-    };
-  } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
-    return { mode, target: multiTarget, geoid };
-  } else {
-    return null;
-  }
-};
 
 export interface DistanceProps {
   distance: number;
