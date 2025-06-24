@@ -1,5 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  combineReducers,
+  configureStore,
+  createSelector,
+} from '@reduxjs/toolkit';
 import {
   FLUSH,
   PAUSE,
@@ -47,3 +51,4 @@ export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
+export const createAppSelector = createSelector.withTypes<RootState>();

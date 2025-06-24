@@ -1,8 +1,7 @@
-import { createSelector } from '@reduxjs/toolkit';
 import type { Feature, LineString } from 'geojson';
 import { GameConfig, GameMode } from './game-modes';
 import { gcFmt, gcFmtLine } from './gcmap';
-import { RootState, useAppSelector } from './store';
+import { createAppSelector } from './store';
 import { extendLine } from './util';
 
 const isDegenerate = (line: Feature<LineString>) =>
@@ -10,14 +9,16 @@ const isDegenerate = (line: Feature<LineString>) =>
   line.geometry.coordinates[0].join(',') ===
     line.geometry.coordinates[1].join(',');
 
-export const selectGameConfig = createSelector(
-  (state: RootState) => state.game.mode,
-  (state: RootState) => state.game.lineTarget,
-  (state: RootState) => state.game.lineWraparound,
-  (state: RootState) => state.game.basicTarget,
-  (state: RootState) => state.game.multiTarget,
-  (state: RootState) => state.game.geoid,
-  (state: RootState) => state.game.error,
+export const selectGameConfig = createAppSelector(
+  [
+    (state) => state.game.mode,
+    (state) => state.game.lineTarget,
+    (state) => state.game.lineWraparound,
+    (state) => state.game.basicTarget,
+    (state) => state.game.multiTarget,
+    (state) => state.game.geoid,
+    (state) => state.game.error,
+  ],
   (
     mode,
     lineTarget,
@@ -46,7 +47,7 @@ export const selectGameConfig = createSelector(
   }
 );
 
-export const selectExtraGc = createSelector(
+export const selectExtraGc = createAppSelector(
   selectGameConfig,
   (game): string[] => {
     if (game?.mode === GameMode.LINE) {
