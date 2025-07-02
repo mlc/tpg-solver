@@ -1,11 +1,8 @@
-import { Coord, earthRadius, featureCollection } from '@turf/helpers';
-import { Geodesic } from 'geographiclib-geodesic';
+import { Coord, featureCollection } from '@turf/helpers';
 import type { FeatureCollection, Point } from 'geojson';
-import { GameConfig, GameMode, Geoid } from './game-modes';
-import geodesicIntercept from './geodesic-intercept';
+import { GameConfig, GameMode } from './game-modes';
+import nearestPointOnLine from './nearest-point-on-line';
 import { distance } from './util';
-
-const SPHERICAL_EARTH = new Geodesic.Geodesic(earthRadius, 0);
 
 export interface DistanceProps {
   distance: number;
@@ -26,11 +23,11 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
       });
     case GameMode.LINE:
       return (p) => {
-        const result = geodesicIntercept(
+        const result = nearestPointOnLine(
           game.target.geometry,
           p,
           game.constrainToSegment,
-          game.geoid === Geoid.SPHERE ? SPHERICAL_EARTH : undefined
+          game.geoid
         );
         return {
           distance: result.properties.s12 / 1000,

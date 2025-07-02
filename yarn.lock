@@ -2450,6 +2450,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@turf/meta@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@turf/meta@npm:7.2.0"
+  dependencies:
+    "@turf/helpers": "npm:^7.2.0"
+    "@types/geojson": "npm:^7946.0.10"
+  checksum: 10c0/707ed63ba64fe48769806bf2419f5c0cd2ebf821a6467aeffb784ba7ebd6a63ec98d4192b97915948529c00304ed46ddc83842a80714fb1f2018fd4e3c455498
+  languageName: node
+  linkType: hard
+
 "@types/geojson@npm:7946.0.16, @types/geojson@npm:^7946.0.10":
   version: 7946.0.16
   resolution: "@types/geojson@npm:7946.0.16"
@@ -5085,6 +5095,7 @@ __metadata:
     "@turf/distance": "npm:7.2.0"
     "@turf/helpers": "npm:7.2.0"
     "@turf/invariant": "npm:7.2.0"
+    "@turf/meta": "npm:7.2.0"
     "@types/geojson": "npm:7946.0.16"
     "@types/node": "npm:22.15.34"
     "@types/papaparse": "npm:5.3.16"

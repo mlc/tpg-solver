@@ -49,6 +49,7 @@
     "@turf/distance": "7.2.0",
     "@turf/helpers": "7.2.0",
     "@turf/invariant": "7.2.0",
+    "@turf/meta": "7.2.0",
     "geographiclib-dms": "2.1.1",
     "geographiclib-geodesic": "patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch",
     "papaparse": "5.5.3",

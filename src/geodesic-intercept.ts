@@ -3,7 +3,7 @@ import { getCoord, getCoords } from '@turf/invariant';
 import { Math as GMath, Geodesic, GeodesicClass } from 'geographiclib-geodesic';
 import type { Feature, LineString, Point, Position } from 'geojson';
 
-interface OutputPointProps {
+export interface NearestPointProps {
   s12: number;
   azi1: number;
 }
@@ -18,7 +18,7 @@ const decoratedPoint = (
   [lonp, latp]: Position,
   [lon, lat]: Position,
   solutionOrEllipse: InverseSolution | GeodesicClass
-): Feature<Point, OutputPointProps> => {
+): Feature<Point, NearestPointProps> => {
   let solution: InverseSolution;
   if ('lat1' in solutionOrEllipse) {
     solution = solutionOrEllipse;
@@ -45,7 +45,7 @@ const geodesicIntercept = (
   p: Coord,
   constrainToSegment = true,
   ellipse = Geodesic.WGS84
-): Feature<Point, OutputPointProps> => {
+): Feature<Point, NearestPointProps> => {
   const coordinates: [number, number][] = getCoords(line);
   if (coordinates.length !== 2) {
     throw new Error('not presently supported');

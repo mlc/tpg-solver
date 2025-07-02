@@ -1,6 +1,6 @@
 import type { Feature, LineString } from 'geojson';
 import { GameConfig, GameMode } from './game-modes';
-import { gcFmt, gcFmtLine } from './gcmap';
+import { gcFmt, gcFmtFeature } from './gcmap';
 import { createAppSelector } from './store';
 import { extendLine } from './util';
 
@@ -37,7 +37,8 @@ export const selectGameConfig = createAppSelector(
         mode,
         target: lineTarget,
         geoid,
-        constrainToSegment: !lineWraparound,
+        constrainToSegment:
+          !lineWraparound || lineTarget.geometry.coordinates.length > 2,
       };
     } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
       return { mode, target: multiTarget, geoid };
@@ -51,17 +52,17 @@ export const selectExtraGc = createAppSelector(
   selectGameConfig,
   (game): string[] => {
     if (game?.mode === GameMode.LINE) {
-      if (!game.constrainToSegment) {
+      if (game.constrainToSegment) {
+        return [gcFmtFeature(game.target)];
+      } else {
         return [
           ...game.target.geometry.coordinates.map(gcFmt),
           'm:-',
-          gcFmtLine(extendLine(game.target)),
+          gcFmtFeature(extendLine(game.target)),
         ];
-      } else {
-        return [gcFmtLine(game.target.geometry.coordinates)];
       }
     } else if (game?.mode === GameMode.MULTI) {
-      return game.target.features.map((f) => gcFmt(f.geometry.coordinates));
+      return game.target.features.map(gcFmtFeature);
     } else {
       return [];
     }

@@ -1,5 +1,5 @@
 import turfDist from '@turf/distance';
-import type { Coord } from '@turf/helpers';
+import { Coord, lineString } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
 import { Geodesic } from 'geographiclib-geodesic';
 import type { Feature, LineString, Position } from 'geojson';
@@ -22,7 +22,7 @@ const wgs84Dist = (a: Coord, b: Coord) => {
 export const distance = (a: Coord, b: Coord, geoid: Geoid): number => {
   switch (geoid) {
     case Geoid.SPHERE:
-      return turfDist(a, b, { units: 'kilometres' });
+      return turfDist(a, b, { units: 'kilometers' });
     case Geoid.WGS84:
       return wgs84Dist(a, b);
     default:
@@ -32,10 +32,12 @@ export const distance = (a: Coord, b: Coord, geoid: Geoid): number => {
 
 // given a geodetic line segment, compute some points on the line so that
 // it is extended to wrap around the globe when drawn in mapping software
-export const extendLine = (l: LineString | Feature<LineString>): Position[] => {
+export const extendLine = (
+  l: LineString | Feature<LineString>
+): Feature<LineString> => {
   const coords: Position[] = getCoords(l);
   if (coords.length !== 2) {
-    return coords;
+    return lineString(coords);
   }
   const [[lona, lata], [lonb, latb]] = coords;
   const ab = Geodesic.WGS84.InverseLine(
@@ -47,10 +49,10 @@ export const extendLine = (l: LineString | Feature<LineString>): Position[] => {
   );
   const c = ab.ArcPosition(120, Geodesic.LATITUDE | Geodesic.LONGITUDE);
   const d = ab.ArcPosition(-120, Geodesic.LATITUDE | Geodesic.LONGITUDE);
-  return [
+  return lineString([
     [lona, lata],
     [c.lon2!, c.lat2!],
     [d.lon2!, d.lat2!],
     [lona, lata],
-  ];
+  ]);
 };

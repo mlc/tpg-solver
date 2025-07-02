@@ -1,4 +1,5 @@
-import type { Position } from 'geojson';
+import { feature } from '@turf/helpers';
+import type { Feature, Position } from 'geojson';
 
 export const gcFmt = (p: Position): string => {
   const [lng, lat] = p;
@@ -11,3 +12,21 @@ export const gcFmt = (p: Position): string => {
 };
 
 export const gcFmtLine = (p: Position[]) => p.map(gcFmt).join('-');
+
+export const gcFmtFeature = ({ geometry: g }: Feature): string => {
+  switch (g.type) {
+    case 'Point':
+      return gcFmt(g.coordinates);
+    case 'MultiPoint':
+      return g.coordinates.map(gcFmt).join(',');
+    case 'LineString':
+      return gcFmtLine(g.coordinates);
+    case 'MultiLineString':
+    case 'Polygon':
+      return g.coordinates.map(gcFmtLine).join(',');
+    case 'MultiPolygon':
+      return g.coordinates.flat().map(gcFmtLine).join(',');
+    case 'GeometryCollection':
+      return g.geometries.map((g) => gcFmtFeature(feature(g))).join(',');
+  }
+};
