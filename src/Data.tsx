@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import type { FeatureCollection, Point } from 'geojson';
 import FileInput from './FileInput';
 import MaybeError from './MaybeError';
@@ -12,7 +12,7 @@ const Data: React.FC = () => {
   const count = useAppSelector((state) => state.data.photos.features.length);
   const error = useAppSelector((state) => state.data.error);
 
-  const onFile = React.useCallback(
+  const onFile = useCallback(
     (file: File) => {
       parseData(file).then(
         (data) =>

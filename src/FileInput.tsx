@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback, useRef } from 'react';
 
 type Kind = 'csv' | 'kml' | 'json';
 
@@ -21,11 +21,11 @@ const exts: Record<Kind, string> = {
 };
 
 const FileInput: React.FC<Props> = ({ kind, onFile, children }) => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const onLoadClick = React.useCallback(() => {
+  const onLoadClick = useCallback(() => {
     inputRef.current?.click();
-  }, [inputRef]);
+  }, []);
 
   const onFileChange: React.ChangeEventHandler<HTMLInputElement> =
     React.useCallback(

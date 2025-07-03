@@ -8,7 +8,7 @@
     "lib": ["ES2019", "DOM"],
     "esModuleInterop": true,
     "importHelpers": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "exclude": ["node_modules/**/*", "dist/**/*", ".yarn/**/*"]
 }

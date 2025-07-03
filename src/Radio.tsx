@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import { ActionCreator } from 'redux';
 import { useAppDispatch } from './store';
 
@@ -17,13 +17,12 @@ export function Radio<T extends string | number>({
   setMode,
   group,
 }: Props<T>) {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> =
-    React.useCallback(
-      (evt) => {
-        setMode(thisMode);
-      },
-      [setMode, thisMode]
-    );
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+    (evt) => {
+      setMode(thisMode);
+    },
+    [setMode, thisMode]
+  );
 
   return (
     <label>
@@ -58,7 +57,7 @@ export function Selector<T extends string | number>({
   children,
 }: GroupProps<T>) {
   const dispatch = useAppDispatch();
-  const setter = React.useCallback(
+  const setter = useCallback(
     (value: T) => {
       dispatch(action(value));
     },

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type React from 'react';
 import MaybeError from '../MaybeError';
 import { GameMode } from '../game-modes';
 import { useAppSelector } from '../store';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type React from 'react';
 import { Selector } from '../Radio';
 import { GameMode, Geoid } from '../game-modes';
 import { setGeoid, setMode } from '../gameSlice';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type React from 'react';
 import type { Point } from 'geojson';
 import { DistanceProps } from '../computation';
 import { gcFmtLine } from '../gcmap';

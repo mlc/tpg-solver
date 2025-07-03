@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type React from 'react';
 import Icon from '../Icon';
 
 // https://stackoverflow.com/a/9284473

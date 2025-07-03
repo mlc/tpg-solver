@@ -5,7 +5,6 @@
  *
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import About from './About';
 import Data from './Data';

@@ -51,6 +51,7 @@ const ctx = await esbuild.context({
   target: resolveToEsbuildTarget(browserslist()),
   loader: { '.woff2': 'file' },
   metafile: !dev,
+  jsxDev: dev,
 });
 
 if (dev) {

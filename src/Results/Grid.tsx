@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type React from 'react';
 import type { FeatureCollection, Point } from 'geojson';
 import DataCell from './DataCell';
 import DistanceCell from './DistanceCell';

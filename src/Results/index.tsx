@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { decorate } from '../computation';
 import { selectExtraGc, selectGameConfig } from '../gameConfig';
 import { useAppSelector } from '../store';
@@ -8,7 +8,7 @@ const Results: React.FC = () => {
   const game = useAppSelector(selectGameConfig);
   const extraGc = useAppSelector(selectExtraGc);
   const photos = useAppSelector((state) => state.data.photos);
-  const results = React.useMemo(() => {
+  const results = useMemo(() => {
     if (game && photos && photos.features.length > 0) {
       return decorate(game, photos);
     } else {
