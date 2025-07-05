@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { ChangeEventHandler, useCallback } from 'preact/compat';
 import { ActionCreator } from 'redux';
 import { useAppDispatch } from './store';
 
@@ -17,7 +17,7 @@ export function Radio<T extends string | number>({
   setMode,
   group,
 }: Props<T>) {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+  const onChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (evt) => {
       setMode(thisMode);
     },

@@ -1,4 +1,4 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 import MaybeError from '../MaybeError';
 import { GameMode } from '../game-modes';
 import { useAppSelector } from '../store';
@@ -6,7 +6,7 @@ import BasicInput from './BasicInput';
 import LineInput from './LineInput';
 import MultiInput from './MultiInput';
 
-const GameInput: React.FC = () => {
+const GameInput: FunctionComponent = () => {
   const mode = useAppSelector((state) => state.game.mode);
 
   switch (mode) {
@@ -19,12 +19,12 @@ const GameInput: React.FC = () => {
   }
 };
 
-const GameError: React.FC = () => {
+const GameError: FunctionComponent = () => {
   const error = useAppSelector((state) => state.game.error);
   return <MaybeError error={error} />;
 };
 
-const GameParams: React.FC = () => (
+const GameParams: FunctionComponent = () => (
   <div id="game-params">
     <GameInput />
     <GameError />

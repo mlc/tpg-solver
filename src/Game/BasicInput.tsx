@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
+import { ChangeEventHandler, useCallback } from 'preact/compat';
 import { setBasic } from '../gameSlice';
 import { useAppDispatch, useAppSelector } from '../store';
 
 const BasicInput = () => {
   const dispatch = useAppDispatch();
   const text = useAppSelector((state) => state.game.basicText);
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    (evt) => dispatch(setBasic(evt.target.value)),
+  const onChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (evt) => dispatch(setBasic(evt.currentTarget.value)),
     [dispatch]
   );
 

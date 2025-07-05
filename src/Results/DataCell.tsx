@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FunctionComponent } from 'preact';
 import Icon from '../Icon';
 
 // https://stackoverflow.com/a/9284473
@@ -19,7 +19,7 @@ interface Props {
   data: any;
 }
 
-const Data: React.FC<Props> = ({ data }: Props) => {
+const Data: FunctionComponent<Props> = ({ data }: Props) => {
   const val = stringify(data);
   const isUrl = URL_REGEX.test(val);
   if (typeof data === 'boolean') {
@@ -31,7 +31,7 @@ const Data: React.FC<Props> = ({ data }: Props) => {
   }
 };
 
-const DataCell: React.FC<Props> = ({ data }) => (
+const DataCell: FunctionComponent<Props> = ({ data }) => (
   <td>
     <Data data={data} />
   </td>

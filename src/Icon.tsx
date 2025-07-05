@@ -1,4 +1,4 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 
 interface Props {
   name: string;
@@ -6,7 +6,7 @@ interface Props {
   onClick?: () => void;
 }
 
-const Icon: React.FC<Props> = ({ name, label, onClick }) => (
+const Icon: FunctionComponent<Props> = ({ name, label, onClick }) => (
   <span
     className="icon"
     role={onClick ? 'button' : 'img'}

@@ -1,4 +1,4 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 import type { Point } from 'geojson';
 import Icon from '../Icon';
 import { formatCoord } from '../util';
@@ -7,7 +7,7 @@ interface Props {
   coord: Point;
 }
 
-const PositionCell: React.FC<Props> = ({ coord }) => {
+const PositionCell: FunctionComponent<Props> = ({ coord }) => {
   const stringCoord = formatCoord(coord);
   const params = new URLSearchParams({
     api: '1',

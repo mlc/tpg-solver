@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import { FunctionComponent } from 'preact';
+import { useMemo } from 'preact/compat';
 import { decorate } from '../computation';
 import { selectExtraGc, selectGameConfig } from '../gameConfig';
 import { useAppSelector } from '../store';
 import Grid from './Grid';
 
-const Results: React.FC = () => {
+const Results: FunctionComponent = () => {
   const game = useAppSelector(selectGameConfig);
   const extraGc = useAppSelector(selectExtraGc);
   const photos = useAppSelector((state) => state.data.photos);

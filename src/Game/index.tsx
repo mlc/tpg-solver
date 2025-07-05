@@ -1,11 +1,11 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 import { Selector } from '../Radio';
 import { GameMode, Geoid } from '../game-modes';
 import { setGeoid, setMode } from '../gameSlice';
 import { useAppSelector } from '../store';
 import GameParams from './Params';
 
-const Game: React.FC = () => {
+const Game: FunctionComponent = () => {
   const mode = useAppSelector((state) => state.game.mode);
   const geoid = useAppSelector((state) => state.game.geoid);
 

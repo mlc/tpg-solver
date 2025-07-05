@@ -1,4 +1,4 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 import type { Point } from 'geojson';
 import { DistanceProps } from '../computation';
 import { gcFmtLine } from '../gcmap';
@@ -8,7 +8,7 @@ interface Props extends DistanceProps {
   extraGc?: string[];
 }
 
-const DistanceCell: React.FC<Props> = ({
+const DistanceCell: FunctionComponent<Props> = ({
   distance,
   dest,
   coord,

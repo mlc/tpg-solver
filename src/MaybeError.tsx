@@ -1,10 +1,10 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 
 interface Props {
   error: string | null | undefined;
 }
 
-const MaybeError: React.FC<Props> = ({ error }) => {
+const MaybeError: FunctionComponent<Props> = ({ error }) => {
   if (error) {
     return <p className="error">{error}</p>;
   } else {

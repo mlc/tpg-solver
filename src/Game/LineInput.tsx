@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { ChangeEventHandler, useCallback } from 'preact/compat';
 import FileInput from '../FileInput';
 import {
   setLine0,
@@ -18,19 +18,18 @@ const LineInput = () => {
     (state) => state.game.lineTarget.geometry.coordinates.length === 2
   );
   const wraparound = useAppSelector((state) => state.game.lineWraparound);
-  const onChange0: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    (evt) => dispatch(setLine0(evt.target.value)),
+  const onChange0: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (evt) => dispatch(setLine0(evt.currentTarget.value)),
     [dispatch]
   );
-  const onChange1: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    (evt) => dispatch(setLine1(evt.target.value)),
+  const onChange1: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (evt) => dispatch(setLine1(evt.currentTarget.value)),
     [dispatch]
   );
-  const onChangeWraparound: React.ChangeEventHandler<HTMLInputElement> =
-    useCallback(
-      (evt) => dispatch(setLineWraparound(evt.target.checked)),
-      [dispatch]
-    );
+  const onChangeWraparound: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (evt) => dispatch(setLineWraparound(evt.currentTarget.checked)),
+    [dispatch]
+  );
   const onFile = useCallback(
     async (file: File) => {
       try {
