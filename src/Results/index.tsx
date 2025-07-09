@@ -1,21 +1,23 @@
 import { FunctionComponent } from 'preact';
-import { useMemo } from 'preact/compat';
 import { decorate } from '../computation';
 import { selectExtraGc, selectGameConfig } from '../gameConfig';
-import { useAppSelector } from '../store';
+import { createAppSelector, useAppSelector } from '../store';
 import Grid from './Grid';
 
-const Results: FunctionComponent = () => {
-  const game = useAppSelector(selectGameConfig);
-  const extraGc = useAppSelector(selectExtraGc);
-  const photos = useAppSelector((state) => state.data.photos);
-  const results = useMemo(() => {
+const selectResults = createAppSelector(
+  [selectGameConfig, (state) => state.data.photos],
+  (game, photos) => {
     if (game && photos && photos.features.length > 0) {
       return decorate(game, photos);
     } else {
       return null;
     }
-  }, [game, photos]);
+  }
+);
+
+const Results: FunctionComponent = () => {
+  const extraGc = useAppSelector(selectExtraGc);
+  const results = useAppSelector(selectResults);
   if (results && results.features.length > 0) {
     return (
       <>
