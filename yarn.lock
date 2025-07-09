@@ -2453,6 +2453,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@turf/polygon-to-line@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@turf/polygon-to-line@npm:7.2.0"
+  dependencies:
+    "@turf/helpers": "npm:^7.2.0"
+    "@turf/invariant": "npm:^7.2.0"
+    "@types/geojson": "npm:^7946.0.10"
+    tslib: "npm:^2.8.1"
+  checksum: 10c0/b840b218e631a252655d233b2c569607d4d3e8d3715a1eab7d26394e4acc1f325b736837d2a82e5c4f678600b2ddc32004782ed3825ca5b1027dce12a4e4cde9
+  languageName: node
+  linkType: hard
+
 "@types/geojson@npm:7946.0.16, @types/geojson@npm:^7946.0.10":
   version: 7946.0.16
   resolution: "@types/geojson@npm:7946.0.16"
@@ -4905,6 +4917,7 @@ __metadata:
     "@turf/helpers": "npm:7.2.0"
     "@turf/invariant": "npm:7.2.0"
     "@turf/meta": "npm:7.2.0"
+    "@turf/polygon-to-line": "npm:7.2.0"
     "@types/geojson": "npm:7946.0.16"
     "@types/node": "npm:22.16.0"
     "@types/papaparse": "npm:5.3.16"

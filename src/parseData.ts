@@ -1,5 +1,6 @@
 import { feature, featureCollection, point } from '@turf/helpers';
 import { collectionOf, featureOf, geojsonType } from '@turf/invariant';
+import polygonToLine from '@turf/polygon-to-line';
 import type {
   Feature,
   FeatureCollection,
@@ -7,6 +8,7 @@ import type {
   Geometry,
   LineString,
   Point,
+  Polygon,
 } from 'geojson';
 import Papa from 'papaparse';
 import { kml } from './togeojson';
@@ -140,11 +142,16 @@ export const parseLineString = async (
       throw new Error('Need exactly one feature');
     }
   }
-  if ((json as GeoJSON).type === 'LineString') {
-    geojsonType(json, 'LineString', 'LineString');
-    return feature(json as LineString);
+  if (
+    (json as GeoJSON).type === 'Polygon' ||
+    (json as GeoJSON).type === 'LineString'
+  ) {
+    json = feature(json as Polygon | LineString);
   }
   if ((json as GeoJSON).type === 'Feature') {
+    if ((json as Feature).geometry.type === 'Polygon') {
+      json = polygonToLine(json as Feature<Polygon>);
+    }
     featureOf(json as Feature<any>, 'LineString', 'Feature');
     return json as Feature<LineString>;
   }
