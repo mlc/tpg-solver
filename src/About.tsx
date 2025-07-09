@@ -1,6 +1,6 @@
-import type React from 'react';
+import type { FunctionComponent } from 'preact';
 
-const About: React.FC = () => (
+const About: FunctionComponent = () => (
   <>
     <h2>About</h2>
     <p className="hint">

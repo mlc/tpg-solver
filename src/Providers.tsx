@@ -1,9 +1,9 @@
-import type { FC, ReactNode } from 'react';
+import type { FunctionComponent } from 'preact';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './store';
 
-const Providers: FC<{ children: ReactNode }> = ({ children }) => (
+const Providers: FunctionComponent = ({ children }) => (
   <ReduxProvider store={store}>
     <PersistGate persistor={persistor}>{children}</PersistGate>
   </ReduxProvider>

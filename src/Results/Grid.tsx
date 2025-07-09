@@ -1,4 +1,4 @@
-import type React from 'react';
+import { FunctionComponent } from 'preact';
 import type { FeatureCollection, Point } from 'geojson';
 import DataCell from './DataCell';
 import DistanceCell from './DistanceCell';
@@ -9,7 +9,7 @@ interface Props {
   extraGc?: string[];
 }
 
-const Grid: React.FC<Props> = ({ results: { features }, extraGc }) => {
+const Grid: FunctionComponent<Props> = ({ results: { features }, extraGc }) => {
   const headers = Object.keys(features[0].properties).filter(
     (h) => !['distance', 'dest'].includes(h)
   );

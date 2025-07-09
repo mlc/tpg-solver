@@ -1,4 +1,5 @@
-import React, { useCallback, useRef } from 'react';
+import type { FunctionComponent } from 'preact';
+import { ChangeEventHandler, useCallback, useRef } from 'preact/compat';
 
 type Kind = 'csv' | 'kml' | 'json';
 
@@ -20,23 +21,22 @@ const exts: Record<Kind, string> = {
   kml: '.kml',
 };
 
-const FileInput: React.FC<Props> = ({ kind, onFile, children }) => {
+const FileInput: FunctionComponent<Props> = ({ kind, onFile, children }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onLoadClick = useCallback(() => {
     inputRef.current?.click();
   }, []);
 
-  const onFileChange: React.ChangeEventHandler<HTMLInputElement> =
-    React.useCallback(
-      (evt) => {
-        const files = evt.target.files;
-        if (files?.length === 1 && onFile) {
-          onFile(files[0]);
-        }
-      },
-      [onFile]
-    );
+  const onFileChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (evt) => {
+      const files = evt.currentTarget.files;
+      if (files?.length === 1 && onFile) {
+        onFile(files[0]);
+      }
+    },
+    [onFile]
+  );
 
   const accept = [mimes, exts]
     .flatMap((map) => kind.map((k) => map[k]))

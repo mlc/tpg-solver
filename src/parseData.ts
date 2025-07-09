@@ -14,7 +14,13 @@ import { kml } from './togeojson';
 const readFile = (f: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () => resolve(reader.result as string));
+    reader.addEventListener('load', () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject('Could not read data');
+      }
+    });
     reader.addEventListener('error', (e) => reject('Could not read file'));
     reader.readAsText(f);
   });

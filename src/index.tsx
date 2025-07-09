@@ -5,7 +5,7 @@
  *
  *   0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-import * as ReactDOM from 'react-dom/client';
+import { render } from 'preact';
 import About from './About';
 import Data from './Data';
 import Game from './Game';
@@ -23,4 +23,4 @@ const App = () => (
   </Providers>
 );
 
-ReactDOM.createRoot(document.getElementById('app')!).render(<App />);
+render(<App />, document.getElementById('app')!);
