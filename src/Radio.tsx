@@ -65,7 +65,7 @@ export function Selector<T extends string | number>({
   );
 
   return (
-    <p id={id} className="selector">
+    <p id={id} class="selector">
       {children}
       {values.map(([value, name]) => (
         <Radio

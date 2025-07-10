@@ -6,7 +6,7 @@ interface Props {
 
 const MaybeError: FunctionComponent<Props> = ({ error }) => {
   if (error) {
-    return <p className="error">{error}</p>;
+    return <p class="error">{error}</p>;
   } else {
     return null;
   }

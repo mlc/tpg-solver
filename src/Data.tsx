@@ -34,7 +34,7 @@ const Data: FunctionComponent = () => {
         Load File
       </FileInput>
       <MaybeError error={error} />
-      <p className="hint">
+      <p class="hint">
         Supported files:{' '}
         <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>{' '}
         with latitude and longitude columns, or{' '}

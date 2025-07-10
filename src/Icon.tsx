@@ -8,7 +8,7 @@ interface Props {
 
 const Icon: FunctionComponent<Props> = ({ name, label, onClick }) => (
   <span
-    className="icon"
+    class="icon"
     role={onClick ? 'button' : 'img'}
     aria-label={label}
     onClick={onClick}

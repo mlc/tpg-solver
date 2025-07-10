@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'preact';
 const About: FunctionComponent = () => (
   <>
     <h2>About</h2>
-    <p className="hint">
+    <p class="hint">
       This is a utility for finding your closest photo for several different
       game modes. All computations are performed on your computer and no data is
       transmitted anywhere. If you want to see or modify the source code, feel

@@ -19,7 +19,7 @@ const PositionCell: FunctionComponent<Props> = ({ coord }) => {
     navigator.clipboard.writeText(stringCoord).catch(console.error);
   }, [stringCoord]);
   return (
-    <td className="position">
+    <td class="position">
       <a href={url}>{stringCoord}</a>
       <Icon name="copy" label="Copy coordinates" onClick={onCopyClick} />
     </td>
