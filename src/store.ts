@@ -14,8 +14,8 @@ import {
   persistReducer,
   persistStore,
 } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+import storage from 'redux-persist/es/storage';
 import dataReducer from './dataSlice';
 import gameReducer from './gameSlice';
 
