@@ -59,6 +59,7 @@
   --main-bg-color: #222;
   --main-text-color: #ffe;
   --error-color: #e77;
+  --secondary-text-color: #cca;
   font-family: 'Inter', sans-serif;
   font-optical-sizing: auto;
   font-weight: 300;
@@ -101,6 +102,10 @@ b {
   font-weight: 550;
 }
 
+strong.verystrong {
+  font-weight: 800;
+}
+
 .selector {
   display: flex;
   flex-direction: row;
@@ -121,7 +126,7 @@ b {
 
 .hint {
   font-size: 0.75em;
-  color: #cca;
+  color: var(--secondary-text-color);
 }
 
 #game-params input:not([type]),

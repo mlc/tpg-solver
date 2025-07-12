@@ -1,4 +1,5 @@
 import type { FunctionComponent } from 'preact';
+import { useEffect, useState } from 'preact/compat';
 
 const dayLeftString = (days: number): string => {
   if (days === 0) {
@@ -10,15 +11,29 @@ const dayLeftString = (days: number): string => {
   }
 };
 
-const Promo: FunctionComponent = () => {
+const computeDaysLeft = () => {
   const now = Date.now();
-  const daysLeft = Math.floor((1752735600000 - now) / (86400 * 1000));
+  return Math.floor((1752735600000 - now) / 86_400_000);
+};
+
+const Promo: FunctionComponent = () => {
+  const [daysLeft, setDaysLeft] = useState(computeDaysLeft);
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setDaysLeft(computeDaysLeft()),
+      60_000
+    );
+    return () => clearInterval(intervalId);
+  }, []);
   if (daysLeft < 0) {
     return null;
   } else {
     return (
       <p class="votenote">
-        <strong>{dayLeftString(daysLeft)}</strong> Please consider{' '}
+        <strong class={daysLeft < 2 ? 'verystrong' : undefined}>
+          {dayLeftString(daysLeft)}
+        </strong>
+        {' Please consider '}
         <a target="_blank" href="https://www.youtube.com/shorts/4h8mYt6qnlw">
           voting for Jaspinko in the GeoGuessr Remix challenge
         </a>
