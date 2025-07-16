@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'preact';
-import { useEffect, useState } from 'preact/compat';
+import { useEffect, useState } from 'preact/hooks';
 
 const dayLeftString = (days: number): string => {
   if (days === 0) {
@@ -13,7 +13,7 @@ const dayLeftString = (days: number): string => {
 
 const computeDaysLeft = () => {
   const now = Date.now();
-  return Math.floor((1752735600000 - now) / 86_400_000);
+  return Math.floor((1752714000000 - now) / 86_400_000);
 };
 
 const Promo: FunctionComponent = () => {
