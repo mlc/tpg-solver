@@ -9,7 +9,6 @@ import { render } from 'preact';
 import About from './About';
 import Data from './Data';
 import Game from './Game';
-import Promo from './Promo';
 import Providers from './Providers';
 import Results from './Results';
 import './style.css';
@@ -17,7 +16,6 @@ import './style.css';
 const App = () => (
   <Providers>
     <h1>tpg solver</h1>
-    <Promo />
     <Game />
     <Data />
     <Results />
