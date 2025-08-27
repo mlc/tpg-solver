@@ -3349,24 +3349,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"geographiclib-dms@npm:2.1.1":
-  version: 2.1.1
-  resolution: "geographiclib-dms@npm:2.1.1"
-  checksum: 10c0/0be83cbc0875dbec89c821da2327f23461161dfce2816db72d63ba6909b922243e38dd8a85061e535bb146423951db46e30a07443b37bf6384e649641168d7ad
+"geographiclib-dms@npm:2.2.0":
+  version: 2.2.0
+  resolution: "geographiclib-dms@npm:2.2.0"
+  checksum: 10c0/5bbf4ce49b25fe2edfd702ea319a34052320fe418654ee05006e9b3b1383d365b600598d7f458b60b9b5791b262f5d8acae6b188158f62748f1dd3598bae77f0
   languageName: node
   linkType: hard
 
-"geographiclib-geodesic@npm:2.1.1":
-  version: 2.1.1
-  resolution: "geographiclib-geodesic@npm:2.1.1"
-  checksum: 10c0/9a79d24a3a95d9bdc53499e35983ae717b48459d58a79279313df309570d342c6fbcca4b274b068d3ff39d8bf3080bce7c48c9c795641f46918241951226e30b
-  languageName: node
-  linkType: hard
-
-"geographiclib-geodesic@patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch":
-  version: 2.1.1
-  resolution: "geographiclib-geodesic@patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch::version=2.1.1&hash=fcd512"
-  checksum: 10c0/77224357da9ec35687554aade5b6159410b8e6632fc31cb89141397f4221bb09de174db39d7d77a488dfcdde9c438f7620b47b267a37ddb396159f6abf82f692
+"geographiclib-geodesic@npm:2.2.0":
+  version: 2.2.0
+  resolution: "geographiclib-geodesic@npm:2.2.0"
+  checksum: 10c0/ae617eb33cbb859f6425de4e21a046427e0a360f1eaead00dcc25537a8fbecdbcc92910f592cc575e87d5ce949bd8d4f29db2ee2370680622b0ecdd7793e190a
   languageName: node
   linkType: hard
 
@@ -4538,10 +4531,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:10.26.9":
-  version: 10.26.9
-  resolution: "preact@npm:10.26.9"
-  checksum: 10c0/15f187e3278ae749b70e887f88bb01be63ebcc2eea46ffa86be69180716db40b8b4304e9768767fd68a5910ef5fd1f9ea6389e17cd25e950be76574d568e8fc3
+"preact@npm:10.27.1":
+  version: 10.27.1
+  resolution: "preact@npm:10.27.1"
+  checksum: 10c0/28c2862c94e1d69e81a476068e016aeca25a815874bb52cfbb31c3e78e0ab6799911a51cbdfcc9f8a3c183d81996a015dd7ac9850eaf90f2719d2f2e20d5b56f
   languageName: node
   linkType: hard
 
@@ -4939,15 +4932,15 @@ __metadata:
     constructs: "npm:10.4.2"
     esbuild: "npm:0.25.6"
     esbuild-plugin-browserslist: "npm:1.0.1"
-    geographiclib-dms: "npm:2.1.1"
-    geographiclib-geodesic: "patch:geographiclib-geodesic@npm%3A2.1.1#~/.yarn/patches/geographiclib-geodesic-npm-2.1.1-2da4df7f31.patch"
+    geographiclib-dms: "npm:2.2.0"
+    geographiclib-geodesic: "npm:2.2.0"
     htmlnano: "npm:2.1.2"
     husky: "npm:9.1.7"
     lint-staged: "npm:16.1.2"
     papaparse: "npm:5.5.3"
     postcss: "npm:8.5.6"
     postcss-preset-env: "npm:10.2.4"
-    preact: "npm:10.26.9"
+    preact: "npm:10.27.1"
     prettier: "npm:3.6.2"
     react-redux: "npm:9.2.0"
     redux: "npm:5.0.1"
