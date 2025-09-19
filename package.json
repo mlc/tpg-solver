@@ -6,7 +6,7 @@
     "name": "mlc"
   },
   "repository": "github:mlc/tpg-solver",
-  "packageManager": "yarn@4.10.0",
+  "packageManager": "yarn@4.10.2",
   "scripts": {
     "build": "node build.mjs",
     "serve": "node build.mjs serve",
