@@ -34,14 +34,42 @@ export class TpgSolverStack extends cdk.Stack {
       domainName,
       validation: acm.CertificateValidation.fromDns(zone),
     });
+    const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
+      this,
+      'responseHeadersPolicy',
+      {
+        comment: `response headers for ${domainName}`,
+        securityHeadersBehavior: {
+          contentTypeOptions: { override: true },
+          frameOptions: {
+            frameOption: cloudfront.HeadersFrameOption.SAMEORIGIN,
+            override: true,
+          },
+          referrerPolicy: {
+            referrerPolicy:
+              cloudfront.HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
+            override: true,
+          },
+          strictTransportSecurity: {
+            override: true,
+            accessControlMaxAge: cdk.Duration.seconds(31536000),
+          },
+          xssProtection: {
+            override: true,
+            protection: true,
+            modeBlock: true,
+          },
+        },
+        removeHeaders: ['x-amz-server-side-encryption', 'server'],
+      }
+    );
     const distribution = new cloudfront.Distribution(this, 'distribution', {
       certificate,
       defaultBehavior: {
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         origin: origins.S3BucketOrigin.withOriginAccessControl(bucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        responseHeadersPolicy:
-          cloudfront.ResponseHeadersPolicy.SECURITY_HEADERS,
+        responseHeadersPolicy,
       },
       defaultRootObject: 'index.html',
       domainNames: [domainName],
