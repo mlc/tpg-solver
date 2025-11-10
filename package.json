@@ -6,7 +6,7 @@
     "name": "mlc"
   },
   "repository": "github:mlc/tpg-solver",
-  "packageManager": "yarn@4.10.3",
+  "packageManager": "yarn@4.11.0",
   "scripts": {
     "build": "node build.mjs",
     "serve": "node build.mjs serve",
@@ -16,21 +16,21 @@
     "postinstall": "husky"
   },
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "3.922.0",
-    "@aws-sdk/client-cloudfront": "3.922.0",
-    "@aws-sdk/client-s3": "3.922.0",
+    "@aws-sdk/client-cloudformation": "3.927.0",
+    "@aws-sdk/client-cloudfront": "3.927.0",
+    "@aws-sdk/client-s3": "3.927.0",
     "@chialab/esbuild-plugin-html": "0.19.0",
     "@deanc/esbuild-plugin-postcss": "1.0.2",
     "@trivago/prettier-plugin-sort-imports": "6.0.0",
     "@types/geojson": "7946.0.16",
-    "@types/node": "24.9.2",
-    "@types/papaparse": "5.3.16",
+    "@types/node": "24.10.0",
+    "@types/papaparse": "5.5.0",
     "autoprefixer": "10.4.21",
-    "aws-cdk-lib": "2.221.1",
+    "aws-cdk-lib": "2.222.0",
     "browserslist": "4.27.0",
-    "cdk": "2.1031.1",
-    "constructs": "10.4.2",
-    "esbuild": "0.25.11",
+    "cdk": "2.1031.2",
+    "constructs": "10.4.3",
+    "esbuild": "0.27.0",
     "esbuild-plugin-browserslist": "1.0.2",
     "htmlnano": "2.1.5",
     "husky": "9.1.7",
@@ -42,7 +42,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "2.9.2",
+    "@reduxjs/toolkit": "2.10.1",
     "@turf/distance": "7.2.0",
     "@turf/helpers": "7.2.0",
     "@turf/invariant": "7.2.0",
