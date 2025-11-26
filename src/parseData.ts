@@ -12,6 +12,7 @@ import type {
 } from 'geojson';
 import Papa from 'papaparse';
 import { kml } from './togeojson';
+import { decodeCoord } from './util';
 
 const readFile = (f: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -40,6 +41,22 @@ const NUMERIC_RE = /^-?[0-9]+(:?\.[0-9]+)?$/;
 
 const isNumeric = (s: string) => NUMERIC_RE.test(s.trim());
 
+type RowParser = (row: Record<string, string>) => Feature<Point>;
+
+const parseWithLatLng =
+  (latCol: string, lngCol: string): RowParser =>
+  (row: Record<string, string>) => {
+    const { [latCol]: lat, [lngCol]: lng, ...rest } = row;
+    return point([Number(lng), Number(lat)], rest);
+  };
+
+const parseWithPos =
+  (posCol: string): RowParser =>
+  (row: Record<string, string>) => {
+    const { [posCol]: pos, ...rest } = row;
+    return feature(decodeCoord(pos), rest);
+  };
+
 const parseCsv = (csv: string) => {
   const firstRowResult = Papa.parse<string[]>(csv, {
     preview: 1,
@@ -47,8 +64,7 @@ const parseCsv = (csv: string) => {
     worker: false,
     download: false,
   });
-  let latCol: string;
-  let lngCol: string;
+  let parser: RowParser;
   let finalCsv: string;
   if (firstRowResult.data.length === 0) {
     throw new Error('Empty CSV File');
@@ -58,17 +74,19 @@ const parseCsv = (csv: string) => {
     isNumeric(firstRowResult.data[0][1])
   ) {
     // special case for https://tpg.scottytremaine.uk/ exports
-    latCol = 'lat';
-    lngCol = 'lng';
+    parser = parseWithLatLng('lat', 'lng');
     finalCsv = 'lat,lng,Label,Image\n' + csv;
   } else {
     const maybeLatCol = firstRowResult.data[0].find((col) => /lat/i.test(col));
     const maybeLngCol = firstRowResult.data[0].find((col) =>
       /lon|lng/i.test(col)
     );
+    const maybePosCol = firstRowResult.data[0].find((col) => /^pos/i.test(col));
     if (maybeLatCol && maybeLngCol) {
-      latCol = maybeLatCol;
-      lngCol = maybeLngCol;
+      parser = parseWithLatLng(maybeLatCol, maybeLngCol);
+      finalCsv = csv;
+    } else if (maybePosCol) {
+      parser = parseWithPos(maybePosCol);
       finalCsv = csv;
     } else {
       throw new Error('CSV must contain latitude & longitude columns');
@@ -81,12 +99,7 @@ const parseCsv = (csv: string) => {
     skipEmptyLines: true,
   });
 
-  return featureCollection(
-    result.data.map((row) => {
-      const { [latCol]: lat, [lngCol]: lng, ...rest } = row;
-      return point([Number(lng), Number(lat)], rest);
-    })
-  );
+  return featureCollection(result.data.map(parser));
 };
 
 const isJson = (data: string, type: string) =>
