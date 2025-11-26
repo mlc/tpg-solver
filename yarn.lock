@@ -3392,16 +3392,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-plugin-browserslist@npm:1.0.2":
-  version: 1.0.2
-  resolution: "esbuild-plugin-browserslist@npm:1.0.2"
+"esbuild-plugin-browserslist@npm:2.0.0":
+  version: 2.0.0
+  resolution: "esbuild-plugin-browserslist@npm:2.0.0"
   dependencies:
     debug: "npm:^4.4.3"
     zod: "npm:^4.1.12"
   peerDependencies:
-    browserslist: ^4.21.8
-    esbuild: ~0.25.10
-  checksum: 10c0/69944778b49157bc720d5c4ec33bce6fe606f397463da335e54f1ac6afad966c3b4cc3a4900bc665bf18d6632ea7c498a278369b71765081c6ba0e7fd50fb204
+    browserslist: ^4.28.0
+    esbuild: ~0.27.0
+  checksum: 10c0/0b735708aedc0e607544a6c4735951d20ebba20881ada075fc0c3d45ad2a6c4dbe1f1f027f9a610df25bf2be0e6475f92e4cac240717664f1ce4867e81b5483b
   languageName: node
   linkType: hard
 
@@ -5240,7 +5240,7 @@ __metadata:
     cdk: "npm:2.1031.2"
     constructs: "npm:10.4.3"
     esbuild: "npm:0.27.0"
-    esbuild-plugin-browserslist: "npm:1.0.2"
+    esbuild-plugin-browserslist: "npm:2.0.0"
     geographiclib-dms: "npm:2.2.0"
     geographiclib-geodesic: "npm:2.2.0"
     htmlnano: "npm:2.1.5"
