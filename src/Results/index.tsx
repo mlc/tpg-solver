@@ -3,6 +3,7 @@ import { decorate } from '../computation';
 import { selectExtraGc, selectGameConfig } from '../gameConfig';
 import { createAppSelector, useAppSelector } from '../store';
 import Grid from './Grid';
+import MapLink from './MapLink';
 
 const selectResults = createAppSelector(
   [selectGameConfig, (state) => state.data.photos],
@@ -21,7 +22,9 @@ const Results: FunctionComponent = () => {
   if (results && results.features.length > 0) {
     return (
       <>
-        <h2>Results</h2>
+        <h2>
+          Results <MapLink results={results} />
+        </h2>
         <Grid results={results} extraGc={extraGc} />
       </>
     );
