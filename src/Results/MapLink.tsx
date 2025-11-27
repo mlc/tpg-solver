@@ -19,21 +19,25 @@ const makeRed = <T extends Geometry, P extends GeoJsonProperties>(
   f: Feature<T, P>
 ) => ({
   ...f,
-  properties: { ...f.properties, title: 'Target', 'marker-color': '#f00' },
+  properties: { ...f.properties, title: 'Target', 'marker-color': '#ff0000' },
 });
+
+const medalColors = ['#d4af37', '#c0c0c0', '#cd7f32'];
+
+const color = (i: number) => medalColors[i] ?? '#444444';
 
 const makePlacements = <P extends GeoJsonProperties>(
   f: Feature<Point, P>,
   i: number
 ): Feature<Point, P> => {
-  if (i >= 9) {
-    return f;
-  } else {
-    return {
-      ...f,
-      properties: { ...f.properties, 'marker-symbol': i + 1 },
-    };
-  }
+  return {
+    ...f,
+    properties: {
+      ...f.properties,
+      'marker-symbol': i < 9 ? i + 1 : undefined,
+      'marker-color': color(i),
+    },
+  };
 };
 
 const MapLink: FunctionComponent<Props> = ({ results }) => {
@@ -41,7 +45,6 @@ const MapLink: FunctionComponent<Props> = ({ results }) => {
   const target = gameConfig?.target;
 
   const onClick = useCallback(() => {
-    const a = document.createElement('a');
     let targets: Feature[];
     if (!target) {
       targets = [];
