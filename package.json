@@ -42,7 +42,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "2.11.0",
+    "@reduxjs/toolkit": "2.11.2",
     "@turf/distance": "7.3.1",
     "@turf/helpers": "7.3.1",
     "@turf/invariant": "7.3.1",
@@ -51,7 +51,7 @@
     "geographiclib-dms": "2.2.0",
     "geographiclib-geodesic": "2.2.0",
     "papaparse": "5.5.3",
-    "preact": "10.27.2",
+    "preact": "10.28.0",
     "react-redux": "9.2.0",
     "redux": "5.0.1",
     "redux-persist": "6.0.0",
