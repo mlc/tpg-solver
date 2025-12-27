@@ -32,7 +32,7 @@
     "constructs": "10.4.4",
     "esbuild": "0.27.2",
     "esbuild-plugin-browserslist": "2.0.0",
-    "htmlnano": "2.1.5",
+    "htmlnano": "3.0.0",
     "husky": "9.1.7",
     "lint-staged": "16.2.7",
     "postcss": "8.5.6",

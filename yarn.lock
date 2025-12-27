@@ -3149,7 +3149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^14.0.2":
+"commander@npm:^14.0.0, commander@npm:^14.0.2":
   version: 14.0.2
   resolution: "commander@npm:14.0.2"
   checksum: 10c0/245abd1349dbad5414cb6517b7b5c584895c02c4f7836ff5395f301192b8566f9796c82d7bd6c92d07eba8775fe4df86602fca5d86d8d10bcc2aded1e21c2aeb
@@ -3706,11 +3706,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htmlnano@npm:2.1.5":
-  version: 2.1.5
-  resolution: "htmlnano@npm:2.1.5"
+"htmlnano@npm:3.0.0":
+  version: 3.0.0
+  resolution: "htmlnano@npm:3.0.0"
   dependencies:
     "@types/relateurl": "npm:^0.2.33"
+    commander: "npm:^14.0.0"
     cosmiconfig: "npm:^9.0.0"
     posthtml: "npm:^0.16.5"
   peerDependencies:
@@ -3739,7 +3740,9 @@ __metadata:
       optional: true
     uncss:
       optional: true
-  checksum: 10c0/6a5df55ffacdc8682ccda08d1d39456dcaeee77934ec6234a7bfdc24cf0f8648ba223f4008b40dd73c8ed39e3c2cac05ab11ab398dcc261c6f62634ee324cb81
+  bin:
+    htmlnano: dist/bin.js
+  checksum: 10c0/9752cd6df78b938160b394d8293acb5132865e4efbfb46dcdd1f1e0572e10178d67428a3d37db41b79d95986412ff8a4cb420ced45c4c2b78bcc323b022117d7
   languageName: node
   linkType: hard
 
@@ -5271,7 +5274,7 @@ __metadata:
     esbuild-plugin-browserslist: "npm:2.0.0"
     geographiclib-dms: "npm:2.2.0"
     geographiclib-geodesic: "npm:2.2.0"
-    htmlnano: "npm:2.1.5"
+    htmlnano: "npm:3.0.0"
     husky: "npm:9.1.7"
     lint-staged: "npm:16.2.7"
     papaparse: "npm:5.5.3"
