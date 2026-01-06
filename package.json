@@ -51,7 +51,7 @@
     "geographiclib-dms": "2.2.0",
     "geographiclib-geodesic": "2.2.0",
     "papaparse": "5.5.3",
-    "preact": "10.28.0",
+    "preact": "10.28.2",
     "react-redux": "9.2.0",
     "redux": "5.0.1",
     "redux-persist": "6.0.0",
