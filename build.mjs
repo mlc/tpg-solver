@@ -40,7 +40,7 @@ const ctx = await esbuild.context({
   chunkNames: '[dir]/[name]-[hash]',
   platform: 'browser',
   plugins: [
-    htmlPlugin({ minifyOptions: { minifySvg: false } }),
+    htmlPlugin({}),
     //postCssPlugin({ plugins: [postcssPresetEnv()] }),
   ],
   charset: 'utf8',
