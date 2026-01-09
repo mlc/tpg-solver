@@ -30,9 +30,10 @@ export class TpgSolverStack extends cdk.Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
-    const certificate = new acm.Certificate(this, 'cert', {
+    const certificate = new acm.Certificate(this, 'certEc', {
       domainName,
       validation: acm.CertificateValidation.fromDns(zone),
+      keyAlgorithm: acm.KeyAlgorithm.EC_PRIME256V1,
     });
     const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
       this,
