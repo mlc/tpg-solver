@@ -151,6 +151,17 @@ if (deploy) {
     )
     .catch(ifNoneMatchOkay);
 
+  console.log('404.txt');
+  await s3.send(
+    new PutObjectCommand({
+      Bucket,
+      Key: '404.txt',
+      ContentType: mimeTypes['.txt'],
+      Body: '404 Not Found\n',
+      ChecksumAlgorithm: 'SHA256',
+    })
+  );
+
   console.log('index.html');
   await s3.send(
     new PutObjectCommand({

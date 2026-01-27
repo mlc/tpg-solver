@@ -76,6 +76,13 @@ export class TpgSolverStack extends cdk.Stack {
       domainNames: [domainName],
       enableIpv6: true,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
+      errorResponses: [
+        {
+          httpStatus: 403,
+          responseHttpStatus: 404,
+          responsePagePath: '/404.txt',
+        },
+      ],
     });
     new LogDelivery(this, 'logDelivery', {
       distribution,
