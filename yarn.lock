@@ -2770,59 +2770,59 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@turf/distance@npm:7.3.2":
-  version: 7.3.2
-  resolution: "@turf/distance@npm:7.3.2"
+"@turf/distance@npm:7.3.3":
+  version: 7.3.3
+  resolution: "@turf/distance@npm:7.3.3"
   dependencies:
-    "@turf/helpers": "npm:7.3.2"
-    "@turf/invariant": "npm:7.3.2"
+    "@turf/helpers": "npm:7.3.3"
+    "@turf/invariant": "npm:7.3.3"
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/943e3d17c804f6f12c60803ecf33b09b16d1c9135328a6602192b88e018bec0e9bbcc00195442949e1000185f06e138892f0512a1b79b7f6dc9d0c02e8f3f1a7
+  checksum: 10c0/5e214b9f395df8dc8f4f29474656f6b4bf78daecb541bfb3cb59a0aa835e43c5e49c69fbc339e78552a96531b4ea19500fda1766f595f2e5f38ad0ab175e2101
   languageName: node
   linkType: hard
 
-"@turf/helpers@npm:7.3.2":
-  version: 7.3.2
-  resolution: "@turf/helpers@npm:7.3.2"
+"@turf/helpers@npm:7.3.3":
+  version: 7.3.3
+  resolution: "@turf/helpers@npm:7.3.3"
   dependencies:
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/8576c32793268b2e7ba9d82691a57f6d544d2362ca2176a351ac11c2fac8e04ff069ab327c26b21cf1929b7b8562e77fd56d6db61718cb7bb01621fce06dabfb
+  checksum: 10c0/dd4ea19b6d6f93bb268a46846ecb731f731b1a8a0bc2e864dd9a74ac5aee6ba72cab34202d6ef4394793464aa5dc0c21a99aa12832a72e29150536a98bf18bce
   languageName: node
   linkType: hard
 
-"@turf/invariant@npm:7.3.2":
-  version: 7.3.2
-  resolution: "@turf/invariant@npm:7.3.2"
+"@turf/invariant@npm:7.3.3":
+  version: 7.3.3
+  resolution: "@turf/invariant@npm:7.3.3"
   dependencies:
-    "@turf/helpers": "npm:7.3.2"
+    "@turf/helpers": "npm:7.3.3"
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/dbccec9d67071ed9a9f637fcf3ee466cc7b9a3ceef5d781f4706d59383e58676ffc9a199b966e245f40e742a6f3ee2032da594244ff1e04b970b9f2cce735291
+  checksum: 10c0/c64c13637b947afaeb7465c91cbb2dd920e397409e4183883996d59d32bc5cf773dbd02c42a5293a6d483b14a511fda6db642a1d4a02ac6e924d9d4556f3739f
   languageName: node
   linkType: hard
 
-"@turf/meta@npm:7.3.2":
-  version: 7.3.2
-  resolution: "@turf/meta@npm:7.3.2"
+"@turf/meta@npm:7.3.3":
+  version: 7.3.3
+  resolution: "@turf/meta@npm:7.3.3"
   dependencies:
-    "@turf/helpers": "npm:7.3.2"
+    "@turf/helpers": "npm:7.3.3"
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/fa0dbf88e54d8416463d85dcb79f23a106765efe27e21284a36c54a53859f95a19494680f865df8b2c1a0c66e95d7f5d8c6d546fe33b3309668bacd86d505233
+  checksum: 10c0/4b8824dff1f3d9d7511989e2176ba53a8b21723e959b508fe46ad35d2619513b558d6b159ef5acdfbadde30230be9a7f02ee04f4fb0161122cceb5dc3be63f7b
   languageName: node
   linkType: hard
 
-"@turf/polygon-to-line@npm:7.3.2":
-  version: 7.3.2
-  resolution: "@turf/polygon-to-line@npm:7.3.2"
+"@turf/polygon-to-line@npm:7.3.3":
+  version: 7.3.3
+  resolution: "@turf/polygon-to-line@npm:7.3.3"
   dependencies:
-    "@turf/helpers": "npm:7.3.2"
-    "@turf/invariant": "npm:7.3.2"
+    "@turf/helpers": "npm:7.3.3"
+    "@turf/invariant": "npm:7.3.3"
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/2776fb0d164e63e55cf80150f99867154b371ccba9d9d56f60fb532c63610b033871fbc445da8cd15005fcfa37c7a20e950d107e1f72c7d8bfd4542a8b535afa
+  checksum: 10c0/ce904cd88ecb17dcc8879a591cd10fc2015581784eeb94669bf1f9e21c0fa9cf7750521ce22c26249f226ffdee50a85eee2ba46c6b923d22f1d692bd9d12a547
   languageName: node
   linkType: hard
 
@@ -4239,10 +4239,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:10.28.2":
-  version: 10.28.2
-  resolution: "preact@npm:10.28.2"
-  checksum: 10c0/eb60bf526eb6971701e6ac9c25236aca451f17f99e9c24704419196989b15bb576ed3101e084b151cd0fb30546b3e5e1ba73b774e8be2f2ed8187db42ec65faf
+"preact@npm:10.28.3":
+  version: 10.28.3
+  resolution: "preact@npm:10.28.3"
+  checksum: 10c0/e8854fae8d8d40c918538f7a90888dd4f8acd388b8ba8e0c612ed0eb1a7d2cc6c15a7dc0a7b7c7bb5c361d2df63aa283e501cf1d47f8eb1413979cee611a38ef
   languageName: node
   linkType: hard
 
@@ -4492,11 +4492,11 @@ __metadata:
     "@deanc/esbuild-plugin-postcss": "npm:1.0.2"
     "@reduxjs/toolkit": "npm:2.11.2"
     "@trivago/prettier-plugin-sort-imports": "npm:6.0.2"
-    "@turf/distance": "npm:7.3.2"
-    "@turf/helpers": "npm:7.3.2"
-    "@turf/invariant": "npm:7.3.2"
-    "@turf/meta": "npm:7.3.2"
-    "@turf/polygon-to-line": "npm:7.3.2"
+    "@turf/distance": "npm:7.3.3"
+    "@turf/helpers": "npm:7.3.3"
+    "@turf/invariant": "npm:7.3.3"
+    "@turf/meta": "npm:7.3.3"
+    "@turf/polygon-to-line": "npm:7.3.3"
     "@types/geojson": "npm:7946.0.16"
     "@types/node": "npm:24.10.9"
     "@types/papaparse": "npm:5.5.2"
@@ -4514,7 +4514,7 @@ __metadata:
     papaparse: "npm:5.5.3"
     postcss: "npm:8.5.6"
     postcss-preset-env: "npm:10.6.1"
-    preact: "npm:10.28.2"
+    preact: "npm:10.28.3"
     prettier: "npm:3.8.1"
     react-redux: "npm:9.2.0"
     redux: "npm:5.0.1"
