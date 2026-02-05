@@ -49,6 +49,7 @@
     "@turf/polygon-to-line": "7.3.3",
     "geographiclib-dms": "2.2.0",
     "geographiclib-geodesic": "2.2.0",
+    "mnemonist": "0.40.3",
     "papaparse": "5.5.3",
     "preact": "10.28.3",
     "react-redux": "9.2.0",
