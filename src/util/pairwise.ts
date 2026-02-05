@@ -1,12 +1,18 @@
 import type { Coord } from '@turf/helpers';
 import { getCoords } from '@turf/invariant';
-import { MaxHeap } from 'mnemonist';
+import type {
+  Feature,
+  FeatureCollection,
+  GeoJsonProperties,
+  Point,
+} from 'geojson';
+import { Heap } from 'mnemonist';
 
 const LEAF = 32;
 
 type Vec3 = readonly [number, number, number];
 
-export const pointToVec3 = (p: Coord): Vec3 => {
+const pointToVec3 = (p: Coord): Vec3 => {
   const [lngD, latD] = getCoords(p);
 
   const lng = (lngD * Math.PI) / 180;
@@ -164,111 +170,128 @@ interface State {
   bestJ: number;
 }
 
-const evalLeafPair = (
-  points1: readonly Vec3[],
-  points2: readonly Vec3[],
-  A: Node,
-  B: Node,
-  T: Vec3,
-  { bestScore, bestI, bestJ }: State
-): State => {
-  for (const i of A.idx) {
-    for (const j of B.idx) {
-      const s = addVec3(points1[i], points2[j]);
-      const sn = norm(s);
-      if (sn < 1e-12) {
+export default class PairwiseComputer<P = GeoJsonProperties> {
+  constructor(
+    s1: FeatureCollection<Point, P>,
+    s2?: FeatureCollection<Point, P>
+  ) {
+    this.#s1 = s1;
+    this.#s2 = s2 ?? s1;
+    const S1 = s1.features.map((f) => pointToVec3(f.geometry.coordinates));
+    const S2 = s2?.features?.map((f) => pointToVec3(f.geometry.coordinates));
+    this.#S1 = S1;
+    this.#S2 = S2 ?? S1;
+    this.root1 = buildBallTree(S1, Array.from(Array(S1.length).keys()));
+    this.root2 = S2
+      ? buildBallTree(S2, Array.from(Array(S2.length).keys()))
+      : this.root1;
+  }
+
+  evalLeafPair = (
+    A: Node,
+    B: Node,
+    T: Vec3,
+    { bestScore, bestI, bestJ }: State
+  ): State => {
+    for (const i of A.idx) {
+      for (const j of B.idx) {
+        const s = addVec3(this.#S1[i], this.#S2[j]);
+        const sn = norm(s);
+        if (sn < 1e-12) {
+          continue;
+        }
+        const score = dot(T, s) / sn;
+        if (score > bestScore) {
+          bestScore = score;
+          bestI = i;
+          bestJ = j;
+        }
+      }
+    }
+    return { bestScore, bestI, bestJ };
+  };
+
+  bestMidpointPair = (
+    t: Vec3 | Point | Feature<Point, any>
+  ): [Feature<Point, P>, Feature<Point, P>] => {
+    const T: Vec3 = 'type' in t ? pointToVec3(t) : t;
+
+    let leaf1 = this.root1;
+    while (!leaf1.isLeaf) {
+      leaf1 = leaf1.left!;
+    }
+    let leaf2 = this.root2;
+    while (!leaf2.isLeaf) {
+      leaf2 = leaf2.left!;
+    }
+
+    let state = this.evalLeafPair(leaf1, leaf2, T, {
+      bestScore: -1.0,
+      bestI: -1,
+      bestJ: -1,
+    });
+
+    const pq = new Heap<PairItem>((a, b) => b.ub - a.ub);
+    let ub0 = upperBound(this.root1, this.root2, T);
+    pq.push({ A: this.root1, B: this.root2, ub: ub0 });
+
+    while (pq.size > 0) {
+      const { A, B, ub } = pq.pop()!;
+
+      if (ub <= state.bestScore) {
         continue;
       }
-      const score = dot(T, s) / sn;
-      if (score > bestScore) {
-        bestScore = score;
-        bestI = i;
-        bestJ = j;
+
+      if (A.isLeaf && B.isLeaf) {
+        state = this.evalLeafPair(A, B, T, state);
+        continue;
+      }
+
+      let splitA: boolean;
+      if (B.isLeaf) {
+        splitA = true;
+      } else if (A.isLeaf) {
+        splitA = false;
+      } else if (A.R > B.R) {
+        splitA = true;
+      } else if (A.R < B.R) {
+        splitA = false;
+      } else {
+        splitA = A.idx.length >= B.idx.length;
+      }
+
+      if (splitA) {
+        const A1 = A.left!;
+        const A2 = A.right!;
+        const ub1 = upperBound(A1, B, T);
+        const ub2 = upperBound(A2, B, T);
+        if (ub1 > state.bestScore) {
+          pq.push({ A: A1, B, ub: ub1 });
+        }
+        if (ub2 > state.bestScore) {
+          pq.push({ A: A2, B, ub: ub2 });
+        }
+      } else {
+        const B1 = B.left!;
+        const B2 = B.right!;
+        const ub1 = upperBound(A, B1, T);
+        const ub2 = upperBound(A, B2, T);
+        if (ub1 > state.bestScore) {
+          pq.push({ A, B: B1, ub: ub1 });
+        }
+        if (ub2 > state.bestScore) {
+          pq.push({ A, B: B2, ub: ub2 });
+        }
       }
     }
-  }
-  return { bestScore, bestI, bestJ };
-};
 
-export const bestMidpointPair = (
-  S1: readonly Vec3[],
-  S2: readonly Vec3[],
-  T: Vec3
-) => {
-  const idx1 = S1.map((_, i) => i);
-  const idx2 = S2.map((_, i) => i);
+    return [this.#s1.features[state.bestI], this.#s2.features[state.bestJ]];
+  };
 
-  const root1 = buildBallTree(S1, idx1);
-  const root2 = buildBallTree(S2, idx2);
-
-  let leaf1 = root1;
-  while (!leaf1.isLeaf) {
-    leaf1 = leaf1.left!;
-  }
-  let leaf2 = root2;
-  while (!leaf2.isLeaf) {
-    leaf2 = leaf2.left!;
-  }
-
-  let state = evalLeafPair(S1, S2, leaf1, leaf2, T, {
-    bestScore: -1.0,
-    bestI: -1,
-    bestJ: -1,
-  });
-
-  const pq = new MaxHeap<PairItem>((a, b) => a.ub - b.ub);
-  let ub0 = upperBound(root1, root2, T);
-  pq.push({ A: root1, B: root2, ub: ub0 });
-
-  while (pq.size > 0) {
-    const { A, B, ub } = pq.pop()!;
-
-    if (ub <= state.bestScore) {
-      continue;
-    }
-
-    if (A.isLeaf && B.isLeaf) {
-      state = evalLeafPair(S1, S2, A, B, T, state);
-      continue;
-    }
-
-    let splitA: boolean;
-    if (B.isLeaf) {
-      splitA = true;
-    } else if (A.isLeaf) {
-      splitA = false;
-    } else if (A.R > B.R) {
-      splitA = true;
-    } else if (A.R < B.R) {
-      splitA = false;
-    } else {
-      splitA = A.idx.length >= B.idx.length;
-    }
-
-    if (splitA) {
-      const A1 = A.left!;
-      const A2 = A.right!;
-      const ub1 = upperBound(A1, B, T);
-      const ub2 = upperBound(A2, B, T);
-      if (ub1 > state.bestScore) {
-        pq.push({ A: A1, B, ub: ub1 });
-      }
-      if (ub2 > state.bestScore) {
-        pq.push({ A: A2, B, ub: ub2 });
-      }
-    } else {
-      const B1 = B.left!;
-      const B2 = B.right!;
-      const ub1 = upperBound(A, B1, T);
-      const ub2 = upperBound(A, B2, T);
-      if (ub1 > state.bestScore) {
-        pq.push({ A, B: B1, ub: ub1 });
-      }
-      if (ub2 > state.bestScore) {
-        pq.push({ A, B: B2, ub: ub2 });
-      }
-    }
-  }
-
-  return [state.bestI, state.bestJ];
-};
+  readonly #s1: FeatureCollection<Point, P>;
+  readonly #s2: FeatureCollection<Point, P>;
+  readonly #S1: readonly Vec3[];
+  readonly #S2: readonly Vec3[];
+  readonly root1: Node;
+  readonly root2: Node;
+}
