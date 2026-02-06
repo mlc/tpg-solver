@@ -1,9 +1,11 @@
 import turfDist from '@turf/distance';
-import { Coord, lineString } from '@turf/helpers';
+import { type Coord, earthRadius, lineString } from '@turf/helpers';
 import { getCoord, getCoords } from '@turf/invariant';
 import { Geodesic } from 'geographiclib-geodesic';
 import type { Feature, LineString, Position } from 'geojson';
 import { Geoid } from '../game-modes';
+
+export const SPHERICAL_EARTH = new Geodesic.Geodesic(earthRadius, 0);
 
 const wgs84Dist = (a: Coord, b: Coord) => {
   const [lon1, lat1] = getCoord(a);

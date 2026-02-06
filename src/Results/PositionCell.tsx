@@ -8,7 +8,7 @@ interface Props {
   coord: Point;
 }
 
-const PositionCell: FunctionComponent<Props> = ({ coord }) => {
+export const PositionDisplay: FunctionComponent<Props> = ({ coord }) => {
   const stringCoord = formatCoord(coord);
   const params = new URLSearchParams({
     api: '1',
@@ -19,11 +19,17 @@ const PositionCell: FunctionComponent<Props> = ({ coord }) => {
     navigator.clipboard.writeText(stringCoord).catch(console.error);
   }, [stringCoord]);
   return (
-    <td class="position">
+    <>
       <a href={url}>{stringCoord}</a>
       <Icon name="copy" label="Copy coordinates" onClick={onCopyClick} />
-    </td>
+    </>
   );
 };
+
+const PositionCell: FunctionComponent<Props> = ({ coord }) => (
+  <td class="position">
+    <PositionDisplay coord={coord} />
+  </td>
+);
 
 export default PositionCell;

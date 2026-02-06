@@ -1,35 +1,14 @@
-import { FunctionComponent } from 'preact';
-import { decorate } from '../computation';
-import { selectExtraGc, selectGameConfig } from '../gameConfig';
-import { createAppSelector, useAppSelector } from '../store';
-import Grid from './Grid';
-import MapLink from './MapLink';
+import { GameMode } from '../game-modes';
+import { useAppSelector } from '../store';
+import GridResults from './GridResults';
+import MidpointResults from './MidpointResults';
 
-const selectResults = createAppSelector(
-  [selectGameConfig, (state) => state.data.photos],
-  (game, photos) => {
-    if (game && photos && photos.features.length > 0) {
-      return decorate(game, photos);
-    } else {
-      return null;
-    }
-  }
-);
-
-const Results: FunctionComponent = () => {
-  const extraGc = useAppSelector(selectExtraGc);
-  const results = useAppSelector(selectResults);
-  if (results && results.features.length > 0) {
-    return (
-      <>
-        <h2>
-          Results <MapLink results={results} />
-        </h2>
-        <Grid results={results} extraGc={extraGc} />
-      </>
-    );
+const Results = () => {
+  const mode = useAppSelector((state) => state.game.mode);
+  if (mode === GameMode.MIDPOINT) {
+    return <MidpointResults />;
   } else {
-    return null;
+    return <GridResults />;
   }
 };
 

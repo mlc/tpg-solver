@@ -34,6 +34,7 @@ interface MultiGame {
 interface MidpointGame {
   mode: GameMode.MIDPOINT;
   target: Feature<Point>;
+  minDistance: number | null;
 }
 
 export type GameConfig = BasicGame | LineGame | MultiGame | MidpointGame;

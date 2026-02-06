@@ -21,6 +21,8 @@ export interface GameState {
   multiTarget: FeatureCollection<Point>;
   midpointText: string;
   midpointTarget: Feature<Point>;
+  midpointMinDistText: string;
+  midpointMinDist: number | null;
   geoid: Geoid;
   error: string | null;
 }
@@ -39,6 +41,8 @@ const initialState: GameState = {
   multiTarget: points([]),
   midpointText: '',
   midpointTarget: point([0, 0]),
+  midpointMinDistText: '0',
+  midpointMinDist: null,
   geoid: Geoid.SPHERE,
   error: null,
 };
@@ -92,6 +96,16 @@ export const gameSlice = createSlice({
         state.error = stringifyError(e);
       }
     },
+    setMidpointMinDist: (state, action: PayloadAction<string>) => {
+      state.midpointMinDistText = action.payload;
+      const parsed = Number(action.payload || '0');
+      if (isNaN(parsed) || parsed < 0) {
+        state.error = 'Invalid minimum distance';
+      } else {
+        state.midpointMinDist = parsed === 0 ? null : parsed;
+        state.error = null;
+      }
+    },
     setUploadError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
@@ -143,6 +157,7 @@ export const {
   setLineWraparound,
   setMulti,
   setMidpoint,
+  setMidpointMinDist,
   setUploadLine,
   setUploadError,
   setGeoid,

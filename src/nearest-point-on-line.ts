@@ -1,7 +1,7 @@
 // ref https://github.com/Turfjs/turf/blob/master/packages/turf-nearest-point-on-line/index.ts
 // but use our geodesic-intercept.ts instead of their buggy code for the
 // nearestPointOnSegment bit
-import { Coord, earthRadius, lineString, point } from '@turf/helpers';
+import { type Coord, lineString, point } from '@turf/helpers';
 import { getCoords } from '@turf/invariant';
 import { flattenEach } from '@turf/meta';
 import { Geodesic } from 'geographiclib-geodesic';
@@ -14,10 +14,9 @@ import type {
 } from 'geojson';
 import { Geoid } from './game-modes';
 import geodesicIntercept, { NearestPointProps } from './geodesic-intercept';
+import { SPHERICAL_EARTH } from './util';
 
 type NearestPointFeature = Feature<Point, NearestPointProps>;
-
-const SPHERICAL_EARTH = new Geodesic.Geodesic(earthRadius, 0);
 
 const nearestPointOnLine = <G extends LineString | MultiLineString>(
   lines: G | Feature<G>,

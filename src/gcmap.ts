@@ -30,3 +30,12 @@ export const gcFmtFeature = ({ geometry: g }: Feature): string => {
       return g.geometries.map((g) => gcFmtFeature(feature(g))).join(',');
   }
 };
+
+export const gcUrl = (P: string | string[]) => {
+  const params = new URLSearchParams({
+    P: Array.isArray(P) ? P.join(',') : P,
+    MS: 'wls',
+    DU: 'km',
+  });
+  return 'http://www.gcmap.com/mapui?' + params.toString();
+};

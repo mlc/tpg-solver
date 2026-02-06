@@ -4,6 +4,7 @@ import { GameMode } from '../game-modes';
 import { useAppSelector } from '../store';
 import BasicInput from './BasicInput';
 import LineInput from './LineInput';
+import MidpointInput from './MidpointInput';
 import MultiInput from './MultiInput';
 
 const GameInput: FunctionComponent = () => {
@@ -16,6 +17,8 @@ const GameInput: FunctionComponent = () => {
       return <LineInput />;
     case GameMode.MULTI:
       return <MultiInput />;
+    case GameMode.MIDPOINT:
+      return <MidpointInput />;
   }
 };
 

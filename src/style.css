@@ -131,12 +131,17 @@ strong.verystrong {
 
 #game-params input:not([type]),
 #game-params input[type='text'],
+#game-params input[type='number'],
 #game-params textarea {
   font: inherit;
   width: 12em;
   border: none;
   background-color: var(--main-text-color);
   color: var(--main-bg-color);
+}
+
+#game-params input.shorter {
+  width: 6em;
 }
 
 #game-params input {

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import type { Point } from 'geojson';
 import { DistanceProps } from '../computation';
-import { gcFmtLine } from '../gcmap';
+import { gcFmtLine, gcUrl } from '../gcmap';
 
 interface Props extends DistanceProps {
   coord: Point;
@@ -15,12 +15,10 @@ const DistanceCell: FunctionComponent<Props> = ({
   extraGc = [],
 }) => {
   const km = `${distance.toFixed(3)}\u2009km`;
-  const params = new URLSearchParams({
-    P: [gcFmtLine([dest.coordinates, coord.coordinates]), ...extraGc].join(','),
-    MS: 'wls',
-    DU: 'km',
-  });
-  const url = 'http://www.gcmap.com/mapui?' + params.toString();
+  const url = gcUrl([
+    gcFmtLine([dest.coordinates, coord.coordinates]),
+    ...extraGc,
+  ]);
   return (
     <td>
       <a href={url}>{km}</a>
