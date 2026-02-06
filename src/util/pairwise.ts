@@ -6,7 +6,9 @@ import type {
   GeoJsonProperties,
   Point,
 } from 'geojson';
-import { Heap } from 'mnemonist';
+
+// esm of individual data structures is broken with mnemonist
+const Heap = require('mnemonist/heap').MinHeap;
 
 const LEAF = 32;
 const SEED_TRIES = 2000;
@@ -295,6 +297,7 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
 
     let state = this.seed(T, cosThetaMin);
 
+    // @ts-ignore
     const pq = new Heap<PairItem>((a, b) => b.ub - a.ub);
     let ub0 = upperBound(this.root1, this.root2, T);
     pq.push({ A: this.root1, B: this.root2, ub: ub0 });
