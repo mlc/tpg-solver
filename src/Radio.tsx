@@ -1,4 +1,5 @@
-import { ChangeEventHandler, useCallback } from 'preact/compat';
+import type { GenericEventHandler } from 'preact';
+import { useCallback } from 'preact/hooks';
 import { ActionCreator } from 'redux';
 import { useAppDispatch } from './store';
 
@@ -8,6 +9,7 @@ interface Props<T extends string | number> {
   currentMode: T;
   setMode: (mode: T) => void;
   group: string;
+  disabled: boolean;
 }
 
 export function Radio<T extends string | number>({
@@ -16,8 +18,9 @@ export function Radio<T extends string | number>({
   currentMode,
   setMode,
   group,
+  disabled,
 }: Props<T>) {
-  const onChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+  const onChange: GenericEventHandler<HTMLInputElement> = useCallback(
     (evt) => {
       setMode(thisMode);
     },
@@ -33,6 +36,7 @@ export function Radio<T extends string | number>({
         name={group}
         checked={thisMode === currentMode}
         onChange={onChange}
+        disabled={disabled}
       />
       {name}
     </label>
@@ -45,6 +49,7 @@ interface GroupProps<T extends string | number> {
   action: ActionCreator<any, [T]>;
   values: [value: T, name: string][];
   group: string;
+  disabled?: boolean;
   children?: React.ReactNode;
 }
 
@@ -54,6 +59,7 @@ export function Selector<T extends string | number>({
   action,
   values,
   group,
+  disabled = false,
   children,
 }: GroupProps<T>) {
   const dispatch = useAppDispatch();
@@ -74,6 +80,7 @@ export function Selector<T extends string | number>({
           thisMode={value}
           currentMode={current}
           setMode={setter}
+          disabled={disabled}
           group={group}
         />
       ))}

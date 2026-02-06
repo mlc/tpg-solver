@@ -14,7 +14,9 @@ const FARAWAY_DISTANCE: DistanceProps = {
   dest: { type: 'Point', coordinates: [0, 0] },
 };
 
-const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
+const distanceCalc = (
+  game: GameConfig
+): ((p: Coord) => DistanceProps) | null => {
   switch (game.mode) {
     case GameMode.BASIC:
       return (p) => ({
@@ -34,8 +36,7 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
           dest: result.geometry,
         };
       };
-
-    default:
+    case GameMode.MULTI:
       return (p) =>
         game.target.features.reduce<DistanceProps>((best, f) => {
           const thisDist = distance(p, f, game.geoid);
@@ -43,6 +44,8 @@ const distanceCalc = (game: GameConfig): ((p: Coord) => DistanceProps) => {
             ? { distance: thisDist, dest: f.geometry }
             : best;
         }, FARAWAY_DISTANCE);
+    default:
+      return null;
   }
 };
 
@@ -51,6 +54,9 @@ export const decorate = <P extends {}>(
   photos: FeatureCollection<Point, P>
 ): FeatureCollection<Point, P & DistanceProps> => {
   const calculator = distanceCalc(game);
+  if (!calculator) {
+    return featureCollection([]);
+  }
   try {
     return featureCollection(
       photos.features

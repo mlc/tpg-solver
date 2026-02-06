@@ -21,12 +21,14 @@ const Game: FunctionComponent = () => {
           [GameMode.BASIC, 'Basic'],
           [GameMode.MULTI, 'Multi'],
           [GameMode.LINE, 'Line'],
+          [GameMode.MIDPOINT, 'Midpoint'],
         ]}
       />
       <GameParams />
       <Selector
         group="geoid"
-        current={geoid}
+        current={mode === GameMode.MIDPOINT ? Geoid.SPHERE : geoid}
+        disabled={mode === GameMode.MIDPOINT}
         action={setGeoid}
         values={[
           [Geoid.SPHERE, 'Sphere (Great Circle)'],

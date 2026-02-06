@@ -19,6 +19,8 @@ export interface GameState {
   lineWraparound: boolean;
   multiText: string;
   multiTarget: FeatureCollection<Point>;
+  midpointText: string;
+  midpointTarget: Feature<Point>;
   geoid: Geoid;
   error: string | null;
 }
@@ -35,6 +37,8 @@ const initialState: GameState = {
   lineWraparound: false,
   multiText: '',
   multiTarget: points([]),
+  midpointText: '',
+  midpointTarget: point([0, 0]),
   geoid: Geoid.SPHERE,
   error: null,
 };
@@ -74,6 +78,15 @@ export const gameSlice = createSlice({
             .split('\n')
             .map((row) => feature(decodeCoord(row)))
         );
+        state.error = null;
+      } catch (e) {
+        state.error = stringifyError(e);
+      }
+    },
+    setMidpoint: (state, action: PayloadAction<string>) => {
+      state.midpointText = action.payload;
+      try {
+        state.midpointTarget = feature(decodeCoord(action.payload));
         state.error = null;
       } catch (e) {
         state.error = stringifyError(e);
@@ -129,6 +142,7 @@ export const {
   setLine1,
   setLineWraparound,
   setMulti,
+  setMidpoint,
   setUploadLine,
   setUploadError,
   setGeoid,

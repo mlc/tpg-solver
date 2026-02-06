@@ -4,6 +4,7 @@ export enum GameMode {
   BASIC = 'basic',
   LINE = 'line',
   MULTI = 'multi',
+  MIDPOINT = 'midpoint',
 }
 
 export enum Geoid {
@@ -30,4 +31,9 @@ interface MultiGame {
   geoid: Geoid;
 }
 
-export type GameConfig = BasicGame | LineGame | MultiGame;
+interface MidpointGame {
+  mode: GameMode.MIDPOINT;
+  target: Feature<Point>;
+}
+
+export type GameConfig = BasicGame | LineGame | MultiGame | MidpointGame;

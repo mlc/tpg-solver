@@ -16,6 +16,7 @@ export const selectGameConfig = createAppSelector(
     (state) => state.game.lineWraparound,
     (state) => state.game.basicTarget,
     (state) => state.game.multiTarget,
+    (state) => state.game.midpointTarget,
     (state) => state.game.geoid,
     (state) => state.game.error,
   ],
@@ -25,6 +26,7 @@ export const selectGameConfig = createAppSelector(
     lineWraparound,
     basicTarget,
     multiTarget,
+    midpointTarget,
     geoid,
     error
   ): GameConfig | null => {
@@ -42,6 +44,8 @@ export const selectGameConfig = createAppSelector(
       };
     } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
       return { mode, target: multiTarget, geoid };
+    } else if (mode === GameMode.MIDPOINT) {
+      return { mode, target: midpointTarget };
     } else {
       return null;
     }
