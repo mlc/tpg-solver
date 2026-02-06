@@ -51,7 +51,7 @@ const subVec3 = (a: Vec3, b: Vec3): Vec3 => [
 
 const divVec3 = (a: Vec3, b: number): Vec3 => [a[0] / b, a[1] / b, a[2] / b];
 
-const norm2 = (v: Vec3): number => v.reduce((acc, x) => acc + x * x, 0);
+const norm2 = (v: Vec3): number => v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
 const norm = (v: Vec3): number => Math.sqrt(norm2(v));
 
 const dot = (a: Vec3, b: Vec3): number =>
@@ -71,8 +71,17 @@ const computeCenterAndRadius = (
     c = divVec3(mean, normMean);
   }
 
-  const R = Math.max(...idx.map((i) => norm(subVec3(points[i], c))));
-  return { c, R };
+  let Rsquared = 0;
+  for (const i of idx) {
+    const dx = points[i][0] - c[0];
+    const dy = points[i][1] - c[1];
+    const dz = points[i][2] - c[2];
+    const r = dx * dx + dy * dy + dz * dz;
+    if (r > Rsquared) {
+      Rsquared = r;
+    }
+  }
+  return { c, R: Math.sqrt(Rsquared) };
 };
 
 const splitIndices = (points: readonly Vec3[], idx: readonly number[]) => {
@@ -215,18 +224,24 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
   }
 
   private score = (i: number, j: number, T: Vec3, cosThetaMin?: number) => {
-    const s = addVec3(this.S1[i], this.S2[j]);
-    const sn = norm(s);
-    if (sn < 1e-12) {
+    const a = this.S1[i];
+    const b = this.S2[j];
+
+    if (cosThetaMin !== undefined) {
+      const dp = a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+      if (dp > cosThetaMin) {
+        return undefined;
+      }
+    }
+    const sx = a[0] + b[0];
+    const sy = a[1] + b[1];
+    const sz = a[2] + b[2];
+    const sn2 = sx * sx + sy * sy + sz * sz;
+    if (sn2 < 1e-24) {
       return undefined;
     }
-    if (
-      typeof cosThetaMin === 'number' &&
-      dot(this.S1[i], this.S2[j]) > cosThetaMin
-    ) {
-      return undefined;
-    }
-    return dot(T, s) / sn;
+    const Ts = T[0] * sx + T[1] * sy + T[2] * sz;
+    return Ts / Math.sqrt(sn2);
   };
 
   // try some points at random to seed the search, and return the best pair
@@ -273,7 +288,7 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
   bestMidpointPair = (
     t: Vec3 | Point | Feature<Point, any>,
     minDistance?: number
-  ): [Feature<Point, P>, Feature<Point, P>] => {
+  ): [Feature<Point, P>, Feature<Point, P>] | null => {
     const T: Vec3 = 'type' in t ? pointToVec3(t) : t;
 
     const { cosThetaMin, chordMin } = computeMinParams(minDistance);
@@ -338,7 +353,11 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
       }
     }
 
-    return [this.s1.features[state.bestI], this.s2.features[state.bestJ]];
+    if (state.bestI === -1 || state.bestJ === -1) {
+      return null;
+    } else {
+      return [this.s1.features[state.bestI], this.s2.features[state.bestJ]];
+    }
   };
 
   private readonly s1: FeatureCollection<Point, P>;
