@@ -9,6 +9,7 @@ import type {
 import { Heap } from 'mnemonist';
 
 const LEAF = 32;
+const SEED_TRIES = 2000;
 
 type Vec3 = readonly [number, number, number];
 
@@ -213,6 +214,42 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
       : this.root1;
   }
 
+  private score = (i: number, j: number, T: Vec3, cosThetaMin?: number) => {
+    const s = addVec3(this.S1[i], this.S2[j]);
+    const sn = norm(s);
+    if (sn < 1e-12) {
+      return undefined;
+    }
+    if (
+      typeof cosThetaMin === 'number' &&
+      dot(this.S1[i], this.S2[j]) > cosThetaMin
+    ) {
+      return undefined;
+    }
+    return dot(T, s) / sn;
+  };
+
+  // try some points at random to seed the search, and return the best pair
+  // that we found.
+  private seed = (T: Vec3, cosThetaMin?: number): State => {
+    let bestScore = -1.0;
+    let bestI = -1;
+    let bestJ = -1;
+
+    for (let t = 0; t < SEED_TRIES; t++) {
+      const i = Math.floor(Math.random() * this.S1.length);
+      const j = Math.floor(Math.random() * this.S2.length);
+      const score = this.score(i, j, T, cosThetaMin);
+      if (typeof score === 'number' && score > bestScore) {
+        bestScore = score;
+        bestI = i;
+        bestJ = j;
+      }
+    }
+
+    return { bestScore, bestI, bestJ };
+  };
+
   private evalLeafPair = (
     A: Node,
     B: Node,
@@ -222,17 +259,8 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
   ): State => {
     for (const i of A.idx) {
       for (const j of B.idx) {
-        const s = addVec3(this.S1[i], this.S2[j]);
-        const sn = norm(s);
-        if (sn < 1e-12) {
-          continue;
-        }
-        const score = dot(T, s) / sn;
-        if (
-          score > bestScore &&
-          (cosThetaMin === undefined ||
-            dot(this.S1[i], this.S2[j]) <= cosThetaMin)
-        ) {
+        const score = this.score(i, j, T, cosThetaMin);
+        if (typeof score === 'number' && score > bestScore) {
           bestScore = score;
           bestI = i;
           bestJ = j;
@@ -250,26 +278,7 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
 
     const { cosThetaMin, chordMin } = computeMinParams(minDistance);
 
-    let leaf1 = this.root1;
-    while (!leaf1.isLeaf) {
-      leaf1 = leaf1.left!;
-    }
-    let leaf2 = this.root2;
-    while (!leaf2.isLeaf) {
-      leaf2 = leaf2.left!;
-    }
-
-    let state = this.evalLeafPair(
-      leaf1,
-      leaf2,
-      T,
-      {
-        bestScore: -1.0,
-        bestI: -1,
-        bestJ: -1,
-      },
-      cosThetaMin
-    );
+    let state = this.seed(T, cosThetaMin);
 
     const pq = new Heap<PairItem>((a, b) => b.ub - a.ub);
     let ub0 = upperBound(this.root1, this.root2, T);
