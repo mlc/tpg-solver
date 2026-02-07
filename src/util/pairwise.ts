@@ -9,6 +9,7 @@ import type {
 
 // esm of individual data structures is broken with mnemonist
 const Heap = require('mnemonist/heap').MinHeap;
+const FixedReverseHeap = require('mnemonist/fixed-reverse-heap');
 
 const LEAF = 32;
 const SEED_TRIES = 2000;
@@ -202,11 +203,20 @@ const allPairsTooClose = (A: Node, B: Node, chordMin?: number): boolean => {
   }
 };
 
-interface State {
-  bestScore: number;
-  bestI: number;
-  bestJ: number;
+interface BestItem {
+  score: number;
+  i: number;
+  j: number;
 }
+
+// @ts-ignore
+type TopK = FixedReverseHeap<BestItem>;
+
+const compareBest = (a: BestItem, b: BestItem) => {
+  if (a.score > b.score) return -1;
+  if (a.score < b.score) return 1;
+  return 0;
+};
 
 export default class PairwiseComputer<P = GeoJsonProperties> {
   constructor(
@@ -226,6 +236,10 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
   }
 
   private score = (i: number, j: number, T: Vec3, cosThetaMin?: number) => {
+    if (this.S1 === this.S2 && i < j) {
+      return undefined;
+    }
+
     const a = this.S1[i];
     const b = this.S2[j];
 
@@ -246,56 +260,51 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
     return Ts / Math.sqrt(sn2);
   };
 
-  // try some points at random to seed the search, and return the best pair
-  // that we found.
-  private seed = (T: Vec3, cosThetaMin?: number): State => {
-    let bestScore = -1.0;
-    let bestI = -1;
-    let bestJ = -1;
-
+  // try some points at random to seed the search
+  private seed = (T: Vec3, topK: TopK, cosThetaMin?: number) => {
     for (let t = 0; t < SEED_TRIES; t++) {
       const i = Math.floor(Math.random() * this.S1.length);
       const j = Math.floor(Math.random() * this.S2.length);
       const score = this.score(i, j, T, cosThetaMin);
-      if (typeof score === 'number' && score > bestScore) {
-        bestScore = score;
-        bestI = i;
-        bestJ = j;
+      if (typeof score === 'number') {
+        topK.push({ score, i, j });
       }
     }
-
-    return { bestScore, bestI, bestJ };
   };
 
   private evalLeafPair = (
     A: Node,
     B: Node,
     T: Vec3,
-    { bestScore, bestI, bestJ }: State,
+    topK: TopK,
+    threshold: () => number,
     cosThetaMin?: number
-  ): State => {
+  ) => {
     for (const i of A.idx) {
       for (const j of B.idx) {
         const score = this.score(i, j, T, cosThetaMin);
-        if (typeof score === 'number' && score > bestScore) {
-          bestScore = score;
-          bestI = i;
-          bestJ = j;
+        if (typeof score === 'number' && score > threshold()) {
+          topK.push({ score, i, j });
         }
       }
     }
-    return { bestScore, bestI, bestJ };
   };
 
-  bestMidpointPair = (
+  bestMidpointPairs = (
     t: Vec3 | Point | Feature<Point, any>,
-    minDistance?: number
-  ): [Feature<Point, P>, Feature<Point, P>] | null => {
+    minDistance?: number,
+    K: number = 100
+  ): [Feature<Point, P>, Feature<Point, P>][] => {
     const T: Vec3 = 'type' in t ? pointToVec3(t) : t;
 
     const { cosThetaMin, chordMin } = computeMinParams(minDistance);
+    // @ts-ignore
+    const topK = new FixedReverseHeap<BestItem>(Array, compareBest, K);
 
-    let state = this.seed(T, cosThetaMin);
+    const threshold = (): number =>
+      topK.size < K ? -Infinity : topK.peek().score;
+
+    this.seed(T, topK, cosThetaMin);
 
     // @ts-ignore
     const pq = new Heap<PairItem>((a, b) => b.ub - a.ub);
@@ -305,7 +314,7 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
     while (pq.size > 0) {
       const { A, B, ub } = pq.pop()!;
 
-      if (ub <= state.bestScore) {
+      if (ub <= threshold()) {
         continue;
       }
 
@@ -314,7 +323,7 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
       }
 
       if (A.isLeaf && B.isLeaf) {
-        state = this.evalLeafPair(A, B, T, state, cosThetaMin);
+        this.evalLeafPair(A, B, T, topK, threshold, cosThetaMin);
         continue;
       }
 
@@ -336,10 +345,11 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
         const A2 = A.right!;
         const ub1 = upperBound(A1, B, T);
         const ub2 = upperBound(A2, B, T);
-        if (ub1 > state.bestScore) {
+        const th = threshold();
+        if (ub1 > th) {
           pq.push({ A: A1, B, ub: ub1 });
         }
-        if (ub2 > state.bestScore) {
+        if (ub2 > th) {
           pq.push({ A: A2, B, ub: ub2 });
         }
       } else {
@@ -347,20 +357,18 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
         const B2 = B.right!;
         const ub1 = upperBound(A, B1, T);
         const ub2 = upperBound(A, B2, T);
-        if (ub1 > state.bestScore) {
+        const th = threshold();
+        if (ub1 > th) {
           pq.push({ A, B: B1, ub: ub1 });
         }
-        if (ub2 > state.bestScore) {
+        if (ub2 > th) {
           pq.push({ A, B: B2, ub: ub2 });
         }
       }
     }
 
-    if (state.bestI === -1 || state.bestJ === -1) {
-      return null;
-    } else {
-      return [this.s1.features[state.bestI], this.s2.features[state.bestJ]];
-    }
+    const items: BestItem[] = topK.consume() as BestItem[];
+    return items.map(({ i, j }) => [this.s1.features[i], this.s2.features[j]]);
   };
 
   private readonly s1: FeatureCollection<Point, P>;
