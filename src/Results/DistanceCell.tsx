@@ -10,12 +10,11 @@ interface Props extends DistanceProps {
 
 export const BaseDistanceCell: FunctionComponent<{
   distance: number;
-  url: string;
-}> = ({ distance, url }) => (
-  <td>
-    <a href={url}>{`${distance.toFixed(3)}\u2009km`}</a>
-  </td>
-);
+  url?: string;
+}> = ({ distance, url }) => {
+  const dist = `${distance.toFixed(3)}\u2009km`;
+  return <td>{url ? <a href={url}>{dist}</a> : dist}</td>;
+};
 
 const DistanceCell: FunctionComponent<Props> = ({
   distance,

@@ -68,6 +68,7 @@ const PairRow: FunctionComponent<RowProps> = ({ p0, p1, h0, h1, target }) => {
       <PositionCell coord={p0.geometry} />
       <PositionCell coord={p1.geometry} />
       <BaseDistanceCell distance={distOff} url={url} />
+      <BaseDistanceCell distance={distBetween} />
       {h0.map((h) => (
         <DataCell key={`${p0.id}.${h}`} data={p0.properties?.[h]} />
       ))}
@@ -98,6 +99,7 @@ const PairResults: FunctionComponent<{
           <th>Position 1</th>
           <th>Position 2</th>
           <th>Distance</th>
+          <th>Apart</th>
           {h0.map((h) => (
             <th key={`${h}0`}>{h}</th>
           ))}
