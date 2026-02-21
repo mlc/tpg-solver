@@ -20,7 +20,7 @@
     "@aws-sdk/client-cloudfront": "3.995.0",
     "@aws-sdk/client-s3": "3.995.0",
     "@chialab/esbuild-plugin-html": "0.19.0",
-    "@deanc/esbuild-plugin-postcss": "1.0.2",
+    "@deanc/esbuild-plugin-postcss": "3.0.0",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@types/geojson": "7946.0.16",
     "@types/node": "24.10.13",
