@@ -1,4 +1,4 @@
-import { Feature, FeatureCollection, LineString, Point } from 'geojson';
+import type { Feature, FeatureCollection, LineString, Point } from 'geojson';
 
 export enum GameMode {
   BASIC = 'basic',
@@ -35,6 +35,7 @@ interface MidpointGame {
   mode: GameMode.MIDPOINT;
   target: Feature<Point>;
   minDistance: number | null;
+  geoid: Geoid;
 }
 
 export type GameConfig = BasicGame | LineGame | MultiGame | MidpointGame;

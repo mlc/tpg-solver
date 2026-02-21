@@ -1,15 +1,13 @@
-import { type Coord, earthRadius } from '@turf/helpers';
+import { type Coord, earthRadius, point } from '@turf/helpers';
 import { getCoords } from '@turf/invariant';
+import { Geodesic } from 'geographiclib-geodesic';
 import type {
   Feature,
   FeatureCollection,
   GeoJsonProperties,
   Point,
 } from 'geojson';
-
-// esm of individual data structures is broken with mnemonist
-const Heap = require('mnemonist/heap').MinHeap;
-const FixedReverseHeap = require('mnemonist/fixed-reverse-heap');
+import { FixedReverseHeap, MinHeap as Heap } from 'mnemonist';
 
 const LEAF = 32;
 const SEED_TRIES = 2000;
@@ -23,6 +21,12 @@ const pointToVec3 = (p: Coord): Vec3 => {
   const lat = (latD * Math.PI) / 180;
   const clat = Math.cos(lat);
   return [clat * Math.cos(lng), clat * Math.sin(lng), Math.sin(lat)];
+};
+
+const vec3ToPoint = (p: Vec3): Feature<Point, {}> => {
+  const lat = Math.asin(clamp(p[2], -1, 1));
+  const lng = Math.atan2(p[1], p[0]);
+  return point([(lng * 180) / Math.PI, (lat * 180) / Math.PI]);
 };
 
 interface Node {
@@ -209,8 +213,10 @@ interface BestItem {
   j: number;
 }
 
-// @ts-ignore
 type TopK = FixedReverseHeap<BestItem>;
+
+const clamp = (n: number, min: number, max: number): number =>
+  Math.min(Math.max(n, min), max);
 
 const compareBest = (a: BestItem, b: BestItem) => {
   if (a.score > b.score) return -1;
@@ -218,7 +224,29 @@ const compareBest = (a: BestItem, b: BestItem) => {
   return 0;
 };
 
-export default class PairwiseComputer<P = GeoJsonProperties> {
+const earthDistance = (a: Vec3, b: Vec3) => {
+  const c = clamp(dot(a, b), -1, 1);
+  let theta;
+  if (1 - c < 1e-8) {
+    const h = (1 - c) * 0.5;
+    theta = 2 * Math.asin(Math.sqrt(Math.max(0, h)));
+  } else {
+    theta = Math.acos(c);
+  }
+  return (earthRadius * theta) / 1000;
+};
+
+export interface PairwiseOutputItem<P extends GeoJsonProperties> {
+  a: Feature<Point, P>;
+  b: Feature<Point, P>;
+  midpoint: Feature<Point, {}> | null;
+  distance: number | null;
+  distBetween: number;
+}
+
+export default class PairwiseComputer<
+  P extends GeoJsonProperties = GeoJsonProperties,
+> {
   constructor(
     s1: FeatureCollection<Point, P>,
     s2?: FeatureCollection<Point, P>
@@ -262,12 +290,17 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
 
   // try some points at random to seed the search
   private seed = (T: Vec3, topK: TopK, cosThetaMin?: number) => {
+    const seen = new Set<number>();
     for (let t = 0; t < SEED_TRIES; t++) {
       const i = Math.floor(Math.random() * this.S1.length);
       const j = Math.floor(Math.random() * this.S2.length);
-      const score = this.score(i, j, T, cosThetaMin);
-      if (typeof score === 'number') {
-        topK.push({ score, i, j });
+      const key = i * this.S2.length + j;
+      if (!seen.has(key)) {
+        seen.add(key);
+        const score = this.score(i, j, T, cosThetaMin);
+        if (typeof score === 'number') {
+          topK.push({ score, i, j });
+        }
       }
     }
   };
@@ -280,25 +313,52 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
     threshold: () => number,
     cosThetaMin?: number
   ) => {
+    let thresh = threshold();
+
     for (const i of A.idx) {
       for (const j of B.idx) {
         const score = this.score(i, j, T, cosThetaMin);
-        if (typeof score === 'number' && score > threshold()) {
+        if (typeof score === 'number' && score > thresh) {
           topK.push({ score, i, j });
+          thresh = threshold();
         }
       }
     }
+  };
+
+  private decoratedPair = (
+    i: number,
+    j: number,
+    T: Vec3
+  ): PairwiseOutputItem<P> => {
+    const A = this.S1[i];
+    const B = this.S2[j];
+    const sx = A[0] + B[0];
+    const sy = A[1] + B[1];
+    const sz = A[2] + B[2];
+    const sn2 = sx * sx + sy * sy + sz * sz;
+    let midpoint: Vec3 | undefined;
+    if (sn2 > 1e-24) {
+      const invsn = 1 / Math.sqrt(sn2);
+      midpoint = [sx * invsn, sy * invsn, sz * invsn];
+    }
+    return {
+      a: this.s1.features[i],
+      b: this.s2.features[j],
+      distBetween: earthDistance(A, B),
+      midpoint: midpoint ? vec3ToPoint(midpoint) : null,
+      distance: midpoint ? earthDistance(midpoint, T) : null,
+    };
   };
 
   bestMidpointPairs = (
     t: Vec3 | Point | Feature<Point, any>,
     minDistance?: number,
     K: number = 100
-  ): [Feature<Point, P>, Feature<Point, P>][] => {
+  ): PairwiseOutputItem<P>[] => {
     const T: Vec3 = 'type' in t ? pointToVec3(t) : t;
 
     const { cosThetaMin, chordMin } = computeMinParams(minDistance);
-    // @ts-ignore
     const topK = new FixedReverseHeap<BestItem>(Array, compareBest, K);
 
     const threshold = (): number =>
@@ -306,9 +366,8 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
 
     this.seed(T, topK, cosThetaMin);
 
-    // @ts-ignore
     const pq = new Heap<PairItem>((a, b) => b.ub - a.ub);
-    let ub0 = upperBound(this.root1, this.root2, T);
+    const ub0 = upperBound(this.root1, this.root2, T);
     pq.push({ A: this.root1, B: this.root2, ub: ub0 });
 
     while (pq.size > 0) {
@@ -368,7 +427,7 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
     }
 
     const items: BestItem[] = topK.consume() as BestItem[];
-    return items.map(({ i, j }) => [this.s1.features[i], this.s2.features[j]]);
+    return items.map(({ i, j }) => this.decoratedPair(i, j, T));
   };
 
   private readonly s1: FeatureCollection<Point, P>;
@@ -378,3 +437,65 @@ export default class PairwiseComputer<P = GeoJsonProperties> {
   private readonly root1: Node;
   private readonly root2: Node;
 }
+
+const isNumber = (n: number | undefined | null): n is number =>
+  typeof n === 'number' && !isNaN(n);
+
+const compareOutputItems = (
+  { distance: a }: PairwiseOutputItem<any>,
+  { distance: b }: PairwiseOutputItem<any>
+) => {
+  if (!isNumber(a)) {
+    return isNumber(b) ? 1 : 0;
+  } else if (!isNumber(b)) {
+    return -1;
+  } else {
+    return a - b;
+  }
+};
+
+export const filterWgs = <P extends GeoJsonProperties = GeoJsonProperties>(
+  inputPairs: PairwiseOutputItem<P>[],
+  T: Coord,
+  K = 100,
+  earth = Geodesic.WGS84
+): PairwiseOutputItem<P>[] => {
+  const resultHeap = new FixedReverseHeap<PairwiseOutputItem<P>>(
+    Array,
+    compareOutputItems,
+    K
+  );
+  const [lngt, latt] = getCoords(T);
+  for (const { a, b } of inputPairs) {
+    const [lng1, lat1] = getCoords(a);
+    const [lng2, lat2] = getCoords(b);
+    const line = earth.InverseLine(
+      lat1,
+      lng1,
+      lat2,
+      lng2,
+      Geodesic.STANDARD | Geodesic.DISTANCE_IN
+    );
+    const midpoint = line.Position(
+      line.s13 / 2,
+      Geodesic.LATITUDE | Geodesic.LONGITUDE
+    );
+    const distance =
+      earth.Inverse(
+        midpoint.lat2!,
+        midpoint.lon2!,
+        latt,
+        lngt,
+        Geodesic.DISTANCE
+      ).s12! / 1000;
+    resultHeap.push({
+      a,
+      b,
+      midpoint: point([midpoint.lon2!, midpoint.lat2!]),
+      distance,
+      distBetween: line.s13! / 1000,
+    });
+  }
+
+  return resultHeap.consume() as PairwiseOutputItem<P>[];
+};

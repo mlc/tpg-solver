@@ -1,13 +1,12 @@
-import { FunctionComponent } from 'preact';
+import { type FunctionComponent } from 'preact';
 import { useMemo } from 'preact/hooks';
-import { point } from '@turf/helpers';
-import { Geodesic } from 'geographiclib-geodesic';
-import type { Feature, Point } from 'geojson';
+import type { Feature, GeoJsonProperties, Point } from 'geojson';
 import { GameMode, Geoid } from '../game-modes';
 import { selectGameConfig } from '../gameConfig';
 import { gcFmtLine, gcUrl } from '../gcmap';
 import { createAppSelector, useAppSelector } from '../store';
-import { PairwiseComputer, SPHERICAL_EARTH, distance } from '../util';
+import { PairwiseComputer } from '../util';
+import { type PairwiseOutputItem, filterWgs } from '../util/pairwise';
 import DataCell from './DataCell';
 import { BaseDistanceCell } from './DistanceCell';
 import PositionCell from './PositionCell';
@@ -25,39 +24,26 @@ const selectPairwiseComputer = createAppSelector(
 );
 
 interface RowProps {
-  p0: Feature<Point>;
-  p1: Feature<Point>;
+  item: PairwiseOutputItem<GeoJsonProperties>;
   h0: string[];
   h1: string[];
   target?: Feature<Point>;
 }
 
-const PairRow: FunctionComponent<RowProps> = ({ p0, p1, h0, h1, target }) => {
-  const [distBetween, distOff, midpoint] = useMemo(() => {
-    const s = SPHERICAL_EARTH.InverseLine(
-      p0.geometry.coordinates[1],
-      p0.geometry.coordinates[0],
-      p1.geometry.coordinates[1],
-      p1.geometry.coordinates[0],
-      Geodesic.STANDARD | Geodesic.DISTANCE_IN
-    );
-    const midpointPosition = s.Position(
-      s.s13 / 2,
-      Geodesic.LATITUDE | Geodesic.LONGITUDE
-    );
-    const midpoint = point([midpointPosition.lon2!, midpointPosition.lat2!]);
-    return [
-      s.s13 / 1000,
-      target ? distance(midpoint, target, Geoid.SPHERE) : 0,
-      midpoint,
-    ];
-  }, [target, p0.geometry.coordinates, p1.geometry.coordinates]);
-
+const PairRow: FunctionComponent<RowProps> = ({
+  item: { a, b, distance, distBetween, midpoint },
+  h0,
+  h1,
+  target,
+}) => {
+  if (!midpoint || typeof distance !== 'number') {
+    return null;
+  }
   const url = gcUrl([
     gcFmtLine([
-      p0.geometry.coordinates,
+      a.geometry.coordinates,
       midpoint.geometry.coordinates,
-      p1.geometry.coordinates,
+      b.geometry.coordinates,
     ]),
     target
       ? gcFmtLine([midpoint.geometry.coordinates, target.geometry.coordinates])
@@ -65,29 +51,29 @@ const PairRow: FunctionComponent<RowProps> = ({ p0, p1, h0, h1, target }) => {
   ]);
   return (
     <tr>
-      <PositionCell coord={p0.geometry} />
-      <PositionCell coord={p1.geometry} />
-      <BaseDistanceCell distance={distOff} url={url} />
+      <PositionCell coord={a.geometry} />
+      <PositionCell coord={b.geometry} />
+      <BaseDistanceCell distance={distance} url={url} />
       <BaseDistanceCell distance={distBetween} />
       {h0.map((h) => (
-        <DataCell key={`${p0.id}.${h}`} data={p0.properties?.[h]} />
+        <DataCell key={`${a.id}.${h}`} data={a.properties?.[h]} />
       ))}
       {h1.map((h) => (
-        <DataCell key={`${p1.id}.${h}`} data={p1.properties?.[h]} />
+        <DataCell key={`${b.id}.${h}`} data={b.properties?.[h]} />
       ))}
     </tr>
   );
 };
 
 const PairResults: FunctionComponent<{
-  result: [Feature<Point>, Feature<Point>][];
+  result: PairwiseOutputItem<GeoJsonProperties>[];
   target?: Feature<Point>;
 }> = ({ result, target }) => {
-  const p0 = result[0][0].properties;
+  const p0 = result[0].a.properties;
   const h0 = p0
     ? Object.keys(p0).filter((h) => !['distance', 'dest'].includes(h))
     : [];
-  const p1 = result[0][1].properties;
+  const p1 = result[0].b.properties;
   const h1 = p1
     ? Object.keys(p1).filter((h) => !['distance', 'dest'].includes(h))
     : [];
@@ -109,11 +95,10 @@ const PairResults: FunctionComponent<{
         </tr>
       </thead>
       <tbody>
-        {result.map(([p0, p1]) => (
+        {result.map((item) => (
           <PairRow
-            key={`${p0.id}.${p1.id}`}
-            p0={p0}
-            p1={p1}
+            key={`${item.a.id}.${item.b.id}`}
+            item={item}
             h0={h0}
             h1={h1}
             target={target}
@@ -129,10 +114,14 @@ const MidpointResults = () => {
   const game = useAppSelector(selectGameConfig);
   const result = useMemo(() => {
     if (computer && game?.mode === GameMode.MIDPOINT) {
-      return computer.bestMidpointPairs(
+      const basePairs = computer.bestMidpointPairs(
         game.target,
-        game.minDistance ?? undefined
+        game.minDistance ?? undefined,
+        game.geoid === Geoid.WGS84 ? 2000 : undefined
       );
+      return game.geoid === Geoid.WGS84
+        ? filterWgs(basePairs, game.target)
+        : basePairs;
     } else {
       return undefined;
     }

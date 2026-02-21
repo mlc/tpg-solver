@@ -218,6 +218,10 @@ a:any-link {
   cursor: pointer;
 }
 
-.votenote {
+.note {
   color: var(--error-color);
+}
+
+.note .icon svg {
+  fill: var(--error-color);
 }

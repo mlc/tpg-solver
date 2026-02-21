@@ -47,7 +47,12 @@ export const selectGameConfig = createAppSelector(
     } else if (mode === GameMode.MULTI && multiTarget.features.length > 0) {
       return { mode, target: multiTarget, geoid };
     } else if (mode === GameMode.MIDPOINT) {
-      return { mode, target: midpointTarget, minDistance: midpointMinDist };
+      return {
+        mode,
+        target: midpointTarget,
+        minDistance: midpointMinDist,
+        geoid,
+      };
     } else {
       return null;
     }

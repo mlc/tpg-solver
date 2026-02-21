@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'preact';
+import type { FunctionComponent } from 'preact';
 import type { Point } from 'geojson';
-import { DistanceProps } from '../computation';
+import type { DistanceProps } from '../computation';
 import { gcFmtLine, gcUrl } from '../gcmap';
 
 interface Props extends DistanceProps {

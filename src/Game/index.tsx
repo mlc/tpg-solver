@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'preact';
+import Icon from '../Icon';
 import { Selector } from '../Radio';
 import { GameMode, Geoid } from '../game-modes';
 import { setGeoid, setMode } from '../gameSlice';
@@ -27,8 +28,7 @@ const Game: FunctionComponent = () => {
       <GameParams />
       <Selector
         group="geoid"
-        current={mode === GameMode.MIDPOINT ? Geoid.SPHERE : geoid}
-        disabled={mode === GameMode.MIDPOINT}
+        current={geoid}
         action={setGeoid}
         values={[
           [Geoid.SPHERE, 'Sphere (Great Circle)'],
@@ -37,6 +37,17 @@ const Game: FunctionComponent = () => {
       >
         Datum:
       </Selector>
+      {geoid === Geoid.WGS84 && mode === GameMode.MIDPOINT ? (
+        <p class="note">
+          <Icon
+            style={{ padding: 0, width: '1em' }}
+            name="triangle-exclamation"
+            label="Warning"
+          />{' '}
+          Using midpoint mode with the WGS84 ellipsoid is currently experimental
+          and may sometimes miss the best results.
+        </p>
+      ) : null}
     </form>
   );
 };
