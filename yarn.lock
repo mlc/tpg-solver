@@ -714,6 +714,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mlc/cdk-helpers@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@mlc/cdk-helpers@npm:0.1.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40mlc%2Fcdk-helpers%2F0.1.2%2F652dab57ec4c83f9c7256327c3946000d9f8d2a8"
+  dependencies:
+    aws-cdk-lib: "npm:^2.268.0"
+    constructs: "npm:^10.8.1"
+  checksum: 10c0/6e91df4b2b4eed237a3b4e26582dde04101e5b0ae90c196c2b2055d88ecae2c791c325a45954a7290de5b469f18b5c0ab952372bae84e73960fabad613a96602
+  languageName: node
+  linkType: hard
+
 "@napi-rs/magic-string-android-arm-eabi@npm:0.3.4":
   version: 0.3.4
   resolution: "@napi-rs/magic-string-android-arm-eabi@npm:0.3.4"
@@ -1189,7 +1199,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-cdk-lib@npm:2.268.0":
+"aws-cdk-lib@npm:2.268.0, aws-cdk-lib@npm:^2.268.0":
   version: 2.268.0
   resolution: "aws-cdk-lib@npm:2.268.0"
   dependencies:
@@ -1318,7 +1328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"constructs@npm:10.8.1":
+"constructs@npm:10.8.1, constructs@npm:^10.8.1":
   version: 10.8.1
   resolution: "constructs@npm:10.8.1"
   checksum: 10c0/7069893e7e63d2b2ae8901ff797e58903cdabd6dfe7df7dde1e19ed6d9d793eed9a8b4ff027652250d959aa23a5201ccca2040660ee8be58e3329d8ce7db2765
@@ -1863,6 +1873,7 @@ __metadata:
     "@aws-sdk/client-cloudfront": "npm:3.1129.0"
     "@aws-sdk/client-s3": "npm:3.1129.0"
     "@chialab/esbuild-plugin-html": "npm:0.19.1"
+    "@mlc/cdk-helpers": "npm:0.1.2"
     "@reduxjs/toolkit": "npm:2.12.0"
     "@trivago/prettier-plugin-sort-imports": "npm:6.0.2"
     "@turf/distance": "npm:7.4.0"
