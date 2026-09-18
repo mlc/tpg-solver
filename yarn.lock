@@ -55,9 +55,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-cloudformation@npm:3.1129.0":
-  version: 3.1129.0
-  resolution: "@aws-sdk/client-cloudformation@npm:3.1129.0"
+"@aws-sdk/client-cloudformation@npm:3.1135.0":
+  version: 3.1135.0
+  resolution: "@aws-sdk/client-cloudformation@npm:3.1135.0"
   dependencies:
     "@aws-sdk/core": "npm:^3.978.0"
     "@aws-sdk/credential-provider-node": "npm:^3.972.83"
@@ -67,13 +67,13 @@ __metadata:
     "@smithy/node-http-handler": "npm:^4.11.3"
     "@smithy/types": "npm:^4.17.2"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/6aa1108e8e9f9df8086871d23b49d3f53cf8ea0a80071a1e1b5e4df035848c71fdfb880d3457d8e213007f2c240966f37d2441df688cce8cd5ea8eab88fb24a9
+  checksum: 10c0/2a171c3e780994c4330e2e0366c34f5d07762c8b4d3afd88dbea6369f4e8b7d6fe41b108d213b2c24bf1e26e7792143a3772dc27e8114598a621af0f5474a01a
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-cloudfront@npm:3.1129.0":
-  version: 3.1129.0
-  resolution: "@aws-sdk/client-cloudfront@npm:3.1129.0"
+"@aws-sdk/client-cloudfront@npm:3.1135.0":
+  version: 3.1135.0
+  resolution: "@aws-sdk/client-cloudfront@npm:3.1135.0"
   dependencies:
     "@aws-sdk/core": "npm:^3.978.0"
     "@aws-sdk/credential-provider-node": "npm:^3.972.83"
@@ -83,13 +83,13 @@ __metadata:
     "@smithy/node-http-handler": "npm:^4.11.3"
     "@smithy/types": "npm:^4.17.2"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/a5c2f1297cdac512b016ed34942b466816b3a0498f5c912b11566c9824704744ece26a52e1123c9f231cd8a842798eace8c47dafa072e18aa603e0c91ac2ed61
+  checksum: 10c0/9f2bd496d24be21ee46adbf19437be0adc5ba2802e24234224fb72bed416c8407ef4f074b677a4023b838afdc57ff688f850264a0e572eec8bcc959c326e320c
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-s3@npm:3.1129.0":
-  version: 3.1129.0
-  resolution: "@aws-sdk/client-s3@npm:3.1129.0"
+"@aws-sdk/client-s3@npm:3.1135.0":
+  version: 3.1135.0
+  resolution: "@aws-sdk/client-s3@npm:3.1135.0"
   dependencies:
     "@aws-sdk/checksums": "npm:^3.1001.0"
     "@aws-sdk/core": "npm:^3.978.0"
@@ -102,7 +102,7 @@ __metadata:
     "@smithy/node-http-handler": "npm:^4.11.3"
     "@smithy/types": "npm:^4.17.2"
     tslib: "npm:^2.6.2"
-  checksum: 10c0/52a9decf23c53fb8ead58e0b0d7db636ed74a86d61f70e28562b8a803473b9700d790a368d6a6b9fd6b724516b74b39a198b33371ef13ca735231e00e63d0441
+  checksum: 10c0/671e64e127210dcb1719cb62dbcc5461dde0f350f29cb7dcd41373774bb8b7008db9dc3b491943faeb8696ee713bcff7c2f3a12a11343975a2077014f0aa4679
   languageName: node
   linkType: hard
 
@@ -322,10 +322,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws/cloudformation-validate@npm:1.8.0-beta":
-  version: 1.8.0-beta
-  resolution: "@aws/cloudformation-validate@npm:1.8.0-beta"
-  checksum: 10c0/9aac10a19b57e760a1147dc6b57138ca40ba11d75777bed8e00eae8b86c6cba3aed40677a6c9d88e3d680b07da1d03dd94bfa7dec18e47b73375c036cb6d884a
+"@aws/cloudformation-validate@npm:1.9.0-beta":
+  version: 1.9.0-beta
+  resolution: "@aws/cloudformation-validate@npm:1.9.0-beta"
+  checksum: 10c0/3cd6be12cd1895ea67de23564711c5ffc58b179c0c9f7250498317ddb18d72caa6f48c8f95ded0f2a0f3fdb9ed65af0392b2788fb6fe112fee6a5b0ac0948ad4
   languageName: node
   linkType: hard
 
@@ -1149,12 +1149,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:24.13.4":
-  version: 24.13.4
-  resolution: "@types/node@npm:24.13.4"
+"@types/node@npm:*, @types/node@npm:24.13.5":
+  version: 24.13.5
+  resolution: "@types/node@npm:24.13.5"
   dependencies:
     undici-types: "npm:~7.18.0"
-  checksum: 10c0/a12196e984cb09ead549651217b4b395961ea011f3a3791a9f78311d70b5f3be343c6fc935376553c06a34c14d963d4f637ad7829837b0c88cf441919f422893
+  checksum: 10c0/f6c7f564e7b16670bc72ce119f2aaba0f6d6ebb886c13d8cd3656a96e4825d91d826be3d0995fc776df4e19eceb4d3074e5e18d54ce1aebd3f6e0ba12b9108cb
   languageName: node
   linkType: hard
 
@@ -1199,15 +1199,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-cdk-lib@npm:2.268.0, aws-cdk-lib@npm:^2.268.0":
-  version: 2.268.0
-  resolution: "aws-cdk-lib@npm:2.268.0"
+"aws-cdk-lib@npm:2.270.0, aws-cdk-lib@npm:^2.268.0":
+  version: 2.270.0
+  resolution: "aws-cdk-lib@npm:2.270.0"
   dependencies:
     "@aws-cdk/asset-awscli-v1": "npm:2.2.292"
     "@aws-cdk/asset-node-proxy-agent-v6": "npm:^2.1.2"
     "@aws-cdk/cloud-assembly-api": "npm:^2.2.6"
     "@aws-cdk/cloud-assembly-schema": "npm:^54.11.0"
-    "@aws/cloudformation-validate": "npm:1.8.0-beta"
+    "@aws/cloudformation-validate": "npm:1.9.0-beta"
     "@balena/dockerignore": "npm:^1.0.2"
     case: "npm:1.6.3"
     fs-extra: "npm:^11.3.6"
@@ -1220,16 +1220,16 @@ __metadata:
     yaml: "npm:1.10.3"
   peerDependencies:
     constructs: ^10.5.0
-  checksum: 10c0/c87c32dd16e11abcdc1f09ac5d7194fefb82e524e6c41a35d3b9c5ecf91915c14cb94d69b82a72bec2c031bf8e98ec473986fbbaea0b057d37468fdabe1f5d6f
+  checksum: 10c0/fab5ab82062b4b790a5a2cc689dcaf3f823b1bdd36a8cd01aab27c440cfb91fe8d1e292b2de04cb9e1cd2afd481386e209543f682da42c1fbd701835931db231
   languageName: node
   linkType: hard
 
-"aws-cdk@npm:2.1141.0":
-  version: 2.1141.0
-  resolution: "aws-cdk@npm:2.1141.0"
+"aws-cdk@npm:2.1142.0":
+  version: 2.1142.0
+  resolution: "aws-cdk@npm:2.1142.0"
   bin:
     cdk: bin/cdk
-  checksum: 10c0/3842489bfb84b00445c1339c2b1169b42873fb2504f4fb07c4138a6782ebb49f19247b2993db726fe29fcc2f54bac87cdbe72ef5ef5a9f13d1f1e51256eeb598
+  checksum: 10c0/bc2ea7c1a37f3670571a3a52be219b902134186ded82a1cc26001559e93312216e0d1933102ec5187f15b4727ab5cc6471712c1212c8009e5adaef284f941e2f
   languageName: node
   linkType: hard
 
@@ -1247,12 +1247,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.11.20":
-  version: 2.11.21
-  resolution: "baseline-browser-mapping@npm:2.11.21"
+"baseline-browser-mapping@npm:^2.11.23":
+  version: 2.11.25
+  resolution: "baseline-browser-mapping@npm:2.11.25"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10c0/1110ca70b60de9fa673e6d71154cbb2752225c28e069266c2f455f5a26367efc0e5b47a52afba22c9ef1e06d56a6c81aa964dda1fbc66c487e65c18a7c1e11c4
+  checksum: 10c0/d725a78420b3c8b0bf401d2c724ff662e7e1b67a123b17bb4417bbd6f6f00d8245bdbda862edbca84ed65618aa80a184fec83ad5d6f7c4031cced4b8ab2e7f11
   languageName: node
   linkType: hard
 
@@ -1281,18 +1281,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:4.28.9":
-  version: 4.28.9
-  resolution: "browserslist@npm:4.28.9"
+"browserslist@npm:4.29.0":
+  version: 4.29.0
+  resolution: "browserslist@npm:4.29.0"
   dependencies:
-    baseline-browser-mapping: "npm:^2.11.20"
+    baseline-browser-mapping: "npm:^2.11.23"
     caniuse-lite: "npm:^1.0.30001810"
-    electron-to-chromium: "npm:^1.5.420"
-    node-releases: "npm:^2.0.54"
-    update-browserslist-db: "npm:^1.3.2"
+    electron-to-chromium: "npm:^1.5.427"
+    node-releases: "npm:^2.0.55"
+    update-browserslist-db: "npm:^1.3.3"
   bin:
     browserslist: cli.js
-  checksum: 10c0/c4c7457cccb188bb904bb84566ff2d09e6f45ccf48619333111e5d60dfad456522a64e3e4af7c7608bc171371fc006f32bcc296877b0586bf80fb9f60841a110
+  checksum: 10c0/0490dad3a4b8e9b187fa1ba79fa84f5753dc148020c298026a6af2a3ad279a419d4507a7a42c0754dbae0ff343c2db3dfa4b9a5e9766b3d60029458dc17b66ae
   languageName: node
   linkType: hard
 
@@ -1310,14 +1310,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cdk@npm:2.1141.0":
-  version: 2.1141.0
-  resolution: "cdk@npm:2.1141.0"
+"cdk@npm:2.1142.0":
+  version: 2.1142.0
+  resolution: "cdk@npm:2.1142.0"
   dependencies:
-    aws-cdk: "npm:2.1141.0"
+    aws-cdk: "npm:2.1142.0"
   bin:
     cdk: bin/cdk
-  checksum: 10c0/fda084504c54a6e28e21378f0c7fd13367b4a94221e5a533b8c6124ee5d0b214455e2268ade790653e880d1c69aa1f5023506361ca5e125862139aa5c40ca6a2
+  checksum: 10c0/6476e27c24b983c4f41c99fda809e096ce61837b51d9e10c52c1b07b8faf6740a8b0595b496b9c441cbe0c0207bcafa54ae7d68264c91008758f08bb24e6cb10
   languageName: node
   linkType: hard
 
@@ -1370,10 +1370,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.420":
-  version: 1.5.425
-  resolution: "electron-to-chromium@npm:1.5.425"
-  checksum: 10c0/c911780d2a0914a97a677e3d0782a608699aac6891d56035b1ee96fe214e1c0b9e947a87af21cb99d117c77b3343cc7bac77b9411310840838d4b62b04f56d7b
+"electron-to-chromium@npm:^1.5.427":
+  version: 1.5.430
+  resolution: "electron-to-chromium@npm:1.5.430"
+  checksum: 10c0/60448619a642b9d612ffe9d50986043c0a92ac5216afe2af696649457e839f756313bde2277372dcf85cd35c4d8735222509b2b9b0cd0422759a7a67a1ae67e2
   languageName: node
   linkType: hard
 
@@ -1598,9 +1598,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:17.5.0":
-  version: 17.5.0
-  resolution: "lint-staged@npm:17.5.0"
+"lint-staged@npm:17.5.1":
+  version: 17.5.1
+  resolution: "lint-staged@npm:17.5.1"
   dependencies:
     picomatch: "npm:^4.0.7"
     string-argv: "npm:^0.3.2"
@@ -1611,7 +1611,7 @@ __metadata:
       optional: true
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/fcf3f8baeb9dee5366698bf55ecd40a5004b79c60a29e8cd3ed30f62475af3da67492aa88b3432ea61bbf416577ef9fb8d7f73428c71000c0cd937945809a7ed
+  checksum: 10c0/8063dab2c1d44b126432bd08a74ed98fcd90976dc5ed94172c3e70f2466b1268aa98c4b646f810c22e9b56923be7772f549f70e5b985d59b4bd0c68e36fe6524
   languageName: node
   linkType: hard
 
@@ -1679,10 +1679,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.54":
-  version: 2.0.55
-  resolution: "node-releases@npm:2.0.55"
-  checksum: 10c0/35a779a188b3c1801820b77ea3c429d0aacac346368016a92c357dfd781f2908540fc3782b25d41647c3334dec83c976890f40d254bfd788eb5e72c3730146d1
+"node-releases@npm:^2.0.55":
+  version: 2.0.56
+  resolution: "node-releases@npm:2.0.56"
+  checksum: 10c0/d62240b1440f660a6742e0a45ed7eef14bc79228447042ddb58363f73f4a5971b40fc5647f2e40f26854b24ac575ad4a21453d627c3554b4d4b31b4d596d6e8e
   languageName: node
   linkType: hard
 
@@ -1775,12 +1775,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.9.6":
-  version: 3.9.6
-  resolution: "prettier@npm:3.9.6"
+"prettier@npm:3.9.8":
+  version: 3.9.8
+  resolution: "prettier@npm:3.9.8"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/9f7ddae234035868f3daab3dc34e6de7e54622185afb017378029f0c09a9c023248ccf6f34def0b17a0538e18c47aa1b3188bab72965d1bf735919baa0747e99
+  checksum: 10c0/257e5ef11ba5006d0b0712271705701c065c8003e07763f996ce185d39633902f3fe1f814839eed76f75c97b6d5376d6157bd9f44db18cacb1dbdcb263cc66ae
   languageName: node
   linkType: hard
 
@@ -1869,9 +1869,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tpg-solver@workspace:."
   dependencies:
-    "@aws-sdk/client-cloudformation": "npm:3.1129.0"
-    "@aws-sdk/client-cloudfront": "npm:3.1129.0"
-    "@aws-sdk/client-s3": "npm:3.1129.0"
+    "@aws-sdk/client-cloudformation": "npm:3.1135.0"
+    "@aws-sdk/client-cloudfront": "npm:3.1135.0"
+    "@aws-sdk/client-s3": "npm:3.1135.0"
     "@chialab/esbuild-plugin-html": "npm:0.19.1"
     "@mlc/cdk-helpers": "npm:0.1.2"
     "@reduxjs/toolkit": "npm:2.12.0"
@@ -1882,22 +1882,22 @@ __metadata:
     "@turf/meta": "npm:7.4.0"
     "@turf/polygon-to-line": "npm:7.4.0"
     "@types/geojson": "npm:7946.0.16"
-    "@types/node": "npm:24.13.4"
+    "@types/node": "npm:24.13.5"
     "@types/papaparse": "npm:5.5.2"
-    aws-cdk-lib: "npm:2.268.0"
-    browserslist: "npm:4.28.9"
-    cdk: "npm:2.1141.0"
+    aws-cdk-lib: "npm:2.270.0"
+    browserslist: "npm:4.29.0"
+    cdk: "npm:2.1142.0"
     constructs: "npm:10.8.1"
     esbuild: "npm:0.28.2"
     esbuild-plugin-browserslist: "npm:4.0.0"
     geographiclib-dms: "npm:2.2.0"
     geographiclib-geodesic: "npm:2.2.0"
     husky: "npm:9.1.7"
-    lint-staged: "npm:17.5.0"
+    lint-staged: "npm:17.5.1"
     mnemonist: "npm:0.40.4"
     papaparse: "npm:5.7.0"
     preact: "npm:10.29.8"
-    prettier: "npm:3.9.6"
+    prettier: "npm:3.9.8"
     react-redux: "npm:9.3.0"
     redux: "npm:5.0.1"
     redux-persist: "npm:6.0.0"
@@ -1986,9 +1986,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"update-browserslist-db@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "update-browserslist-db@npm:1.3.2"
+"update-browserslist-db@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "update-browserslist-db@npm:1.3.3"
   dependencies:
     escalade: "npm:^3.2.0"
     picocolors: "npm:^1.1.1"
@@ -1996,7 +1996,7 @@ __metadata:
     browserslist: ">= 4.21.0"
   bin:
     update-browserslist-db: cli.js
-  checksum: 10c0/837b4ea8c4934228c5c2a922ea747a54b0ec9d1c408d2fbc9220a9b98327c04109776e6ea1206fa056ea61ed8534863af472d9f2cfce569d35f04e98c95db739
+  checksum: 10c0/07bab166c18f47ba51f3b755e42f109ef5069d0d7c7224887decbd523d5ccd404f63661ebd5a740099972ed47f41f0e28c04df8be31d76716a346f948ce2aa61
   languageName: node
   linkType: hard
 
