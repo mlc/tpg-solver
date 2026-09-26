@@ -1663,12 +1663,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mnemonist@npm:0.40.4":
-  version: 0.40.4
-  resolution: "mnemonist@npm:0.40.4"
+"mnemonist@npm:0.40.5":
+  version: 0.40.5
+  resolution: "mnemonist@npm:0.40.5"
   dependencies:
     obliterator: "npm:^2.0.4"
-  checksum: 10c0/06bb84023d641d2103e147f041ce17de43f1ef289808a2822b41d28a0bafde52cc58d77ff68fbf4e867782b713be3c0fcf940fd59acb0a5b0b2f25d580371814
+  checksum: 10c0/e66ea410277e6ec3d170d9c4f8890bf22c75bfdc7cf53879a235ce961b76768165a6bd7bfe40105203d8e00e721861b2259e98a2c09369cfd9cec37ae87d2379
   languageName: node
   linkType: hard
 
@@ -1894,7 +1894,7 @@ __metadata:
     geographiclib-geodesic: "npm:2.2.0"
     husky: "npm:9.1.7"
     lint-staged: "npm:17.5.0"
-    mnemonist: "npm:0.40.4"
+    mnemonist: "npm:0.40.5"
     papaparse: "npm:5.7.0"
     preact: "npm:10.29.8"
     prettier: "npm:3.9.6"
