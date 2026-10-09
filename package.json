@@ -48,7 +48,7 @@
     "geographiclib-geodesic": "2.2.0",
     "mnemonist": "0.40.4",
     "papaparse": "5.7.0",
-    "preact": "10.29.8",
+    "preact": "11.0.1",
     "react-redux": "9.3.0",
     "redux": "5.0.1",
     "redux-persist": "6.0.0",
