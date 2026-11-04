@@ -38,7 +38,7 @@
     "typescript": "6.0.3"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "2.12.0",
+    "@reduxjs/toolkit": "2.14.0",
     "@turf/distance": "7.4.0",
     "@turf/helpers": "7.4.0",
     "@turf/invariant": "7.4.0",
@@ -46,13 +46,13 @@
     "@turf/polygon-to-line": "7.4.0",
     "geographiclib-dms": "2.2.0",
     "geographiclib-geodesic": "2.2.0",
-    "mnemonist": "0.40.4",
+    "mnemonist": "0.40.7",
     "papaparse": "5.7.0",
     "preact": "10.29.8",
-    "react-redux": "9.3.0",
+    "react-redux": "9.3.1",
     "redux": "5.0.1",
     "redux-persist": "6.0.0",
-    "tslib": "2.8.1"
+    "tslib": "2.9.1"
   },
   "browserslist": [
     "> 0.5% in US, not IE 11, not ios_saf < 11, not safari < 9, firefox esr"
